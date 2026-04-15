@@ -621,10 +621,17 @@
         subjectAverages.mtk +
         subjectAverages.eng +
         subjectAverages.ipa
-      ) / 4;
+      ) / 4; //tidak sesuai juknis
+	  
+	  const sumRapor = (
+  subjectAverages.indo +
+  subjectAverages.mtk +
+  subjectAverages.eng +
+  subjectAverages.ipa
+); // max 400 //tidak sesuai juknis
 
       return {
-        raporFinal: avgRapor,
+        raporFinal: sumRapor,
         subjectAverages
       };
     }
@@ -652,8 +659,8 @@
       let breakdown = {};
 
       if (type === "2026") {
-        // Normalize 4 test subjects to a 0-100 scale before applying 60% weight.
-        const totalTes = (tka_mtk + tka_indo + tkad_ipa + tkad_eng) / 4;
+const totalTes = tka_mtk + tka_indo + tkad_ipa + tkad_eng; // max 400
+
         nilaiTes = 0.6 * totalTes;
         breakdown = {
           mode: "TKA + TKAD",
@@ -662,12 +669,19 @@
         };
       } else {
         const aspdTransformed = (aspd_read * 1.72) + (aspd_sci * 1.14) + (aspd_num * 1.14);
-        // Normalize weighted ASPD back to a 0-100 scale before applying 60% weight.
-        const avgASPD = aspdTransformed / (1.72 + 1.14 + 1.14);
-        nilaiTes = 0.6 * avgASPD;
+        // Normalize weighted ASPD back to a 0-100 scale before applying 60% weight. ini salah, tidak sesuai juknis
+        //const avgASPD = aspdTransformed / (1.72 + 1.14 + 1.14);
+//nilaiTes = 0.6 * avgASPD;	
+		
+		//ini yang benar:
+		const totalASPD = (aspd_read * 1.72) + (aspd_sci * 1.14) + (aspd_num * 1.14);
+nilaiTes = 0.6 * totalASPD;
+
+
+
         breakdown = {
           mode: "ASPD",
-          aspdTransformed: avgASPD,
+          aspdTransformed: totalASPD,
           weightedTes: nilaiTes
         };
       }
