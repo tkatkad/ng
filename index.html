@@ -245,11 +245,11 @@
             </div>
             <div class="space-y-2 text-sm">
               <div class="flex items-center justify-between">
-                <span id="tesLabel" class="text-slate-700">TKA/D (60%)</span>
+                <span id="tesLabel" class="text-slate-700">TKA/D (bobot 60%)</span>
                 <strong id="tesValue">0.00</strong>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-slate-700">Rapor (40%)</span>
+                <span class="text-slate-700">Rapor (bobot 40%)</span>
                 <strong id="raporValue">0.00</strong>
               </div>
               <div class="flex items-center justify-between">
@@ -616,19 +616,14 @@
         subjectAverages[subject.key] = average;
       });
 
-      const avgRapor = (
-        subjectAverages.indo +
-        subjectAverages.mtk +
-        subjectAverages.eng +
-        subjectAverages.ipa
-      ) / 4; //tidak sesuai juknis
+
 	  
 	  const sumRapor = (
   subjectAverages.indo +
   subjectAverages.mtk +
   subjectAverages.eng +
   subjectAverages.ipa
-); // max 400 //tidak sesuai juknis
+); // max 400 //
 
       return {
         raporFinal: sumRapor,
@@ -653,8 +648,9 @@
       validateType(type);
 
       const raporResult = calculateRapor(normalized);
-      const avgRapor = raporResult.raporFinal;
-      const weightedRapor = 0.4 * avgRapor;
+      //const avgRapor = raporResult.raporFinal;
+	  const raporTotal = raporResult.raporFinal;
+      const weightedRapor = 0.4 * raporTotal;
       let nilaiTes = 0;
       let breakdown = {};
 
@@ -669,9 +665,7 @@ const totalTes = tka_mtk + tka_indo + tkad_ipa + tkad_eng; // max 400
         };
       } else {
         const aspdTransformed = (aspd_read * 1.72) + (aspd_sci * 1.14) + (aspd_num * 1.14);
-        // Normalize weighted ASPD back to a 0-100 scale before applying 60% weight. ini salah, tidak sesuai juknis
-        //const avgASPD = aspdTransformed / (1.72 + 1.14 + 1.14);
-//nilaiTes = 0.6 * avgASPD;	
+
 		
 		//ini yang benar:
 		const totalASPD = (aspd_read * 1.72) + (aspd_sci * 1.14) + (aspd_num * 1.14);
@@ -693,7 +687,7 @@ nilaiTes = 0.6 * totalASPD;
         detail: {
           tes: nilaiTes,
           rapor: weightedRapor,
-          raporRaw: avgRapor,
+          raporRaw: raporTotal,
           prestasi,
           subjectAverages: raporResult.subjectAverages,
           ...breakdown
@@ -744,15 +738,15 @@ nilaiTes = 0.6 * totalASPD;
       const lines = [];
       if (type === "2026") {
         lines.push(["Mode hitung", result.detail.mode]);
-        lines.push(["Rerata Tes Akademik", formatNumber(result.detail.totalTes)]);
+        lines.push(["Jumlah Tes Akademik", formatNumber(result.detail.totalTes)]);
         lines.push(["Komponen Tes Akademik", formatNumber(result.detail.weightedTes)]);
       } else {
         lines.push(["Mode hitung", result.detail.mode]);
-        lines.push(["Rerata ASPD Terkonversi", formatNumber(result.detail.aspdTransformed)]);
+        lines.push(["Total Nilai ASPD Terkonversi", formatNumber(result.detail.aspdTransformed)]);
         lines.push(["Komponen ASPD", formatNumber(result.detail.weightedTes)]);
       }
 
-      lines.push(["Rerata rapor (R)", formatNumber(result.detail.raporRaw)]);
+      lines.push(["Jumlah rerata 4 mapel rapor (R)", formatNumber(result.detail.raporRaw)]);
       lines.push(["Komponen rapor", formatNumber(result.detail.rapor)]);
       lines.push(["Rerata B. Indonesia", formatNumber(result.detail.subjectAverages.indo)]);
       lines.push(["Rerata Matematika", formatNumber(result.detail.subjectAverages.mtk)]);
