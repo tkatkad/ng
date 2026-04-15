@@ -260,7 +260,7 @@
         <div class="mt-3 space-y-3 text-sm text-slate-600">
           <div>
             <p class="font-semibold text-ink">Bagaimana rumus rapor dihitung?</p>
-            <p>R diambil dari rerata tiap mapel selama Semester 1 sampai 5, lalu dijumlahkan: B. Indonesia + Matematika + B. Inggris + IPA.</p>
+            <p>R diambil dari rerata tiap mapel selama sekolah SMP Semester 1 sampai 5, lalu dijumlahkan: B. Indonesia + Matematika + B. Inggris + IPA.</p>
           </div>
           <div>
             <p class="font-semibold text-ink">Apakah nilai prestasi ikut dibobot?</p>
@@ -276,8 +276,7 @@
       <section id="tentang" class="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-card backdrop-blur">
         <h2 class="font-display text-2xl font-bold">Tentang</h2>
         <p class="mt-3 text-sm leading-6 text-slate-600">
-          Halaman ini dibuat sebagai simulator mobile-first berbasis rumus Nilai Gabungan SPMB DIY Tahun Pelajaran 2026/2027.
-          Perhitungan dilakukan langsung di browser menggunakan JavaScript tanpa backend.
+          Halaman ini hanyalah sebagai simulator berbasis rumus Nilai Gabungan SPMB DIY Tahun Pelajaran 2026/2027.
         </p>
       </section>
     </main>
@@ -420,6 +419,13 @@
       return getActiveFields(type).filter((key) => key !== "prestasi");
     }
 
+    function getCompactFieldOrder(type) {
+      const leadingFields = type === "2025"
+        ? [...ASPD_KEYS_2025]
+        : [...TES_KEYS_2026];
+      return [...leadingFields, ...RAPOR_KEYS, "prestasi"];
+    }
+
     function collectInput() {
       const data = { type: getCurrentType() };
       ALL_INPUTS.forEach((input) => {
@@ -460,30 +466,60 @@
       return value === "" || value === null || value === undefined;
     }
 
-    function normalizeScore(value, { optional = false } = {}) {
+    function normalizeRequired(value, label) {
       if (isEmpty(value)) {
-        return optional ? 0 : NaN;
+        throw new Error(`${label} belum diisi.`);
       }
 
       const parsed = Number(value);
-      return Number.isFinite(parsed) ? parsed : NaN;
+      if (!Number.isFinite(parsed)) {
+        throw new Error(`${label} harus berupa angka yang valid.`);
+      }
+
+      return parsed;
+    }
+
+    function normalizeOptional(value, label) {
+      if (isEmpty(value)) {
+        return 0;
+      }
+
+      const parsed = Number(value);
+      if (!Number.isFinite(parsed)) {
+        throw new Error(`${label} harus berupa angka yang valid.`);
+      }
+
+      return parsed;
+    }
+
+    function assertRaporComplete(rawData) {
+      RAPOR_SUBJECTS.forEach((subject) => {
+        const subjectKeys = RAPOR_SEMESTERS.map((semester) => `rapor_${subject.key}_s${semester}`);
+        const subjectComplete = subjectKeys.every((key) => !isEmpty(rawData[key]));
+
+        if (!subjectComplete) {
+          throw new Error(`Nilai rapor ${subject.label} Semester 1 sampai 5 harus terisi lengkap.`);
+        }
+      });
     }
 
     function normalizeInput(input = {}) {
+      const type = input.type;
+      const is2026 = type === "2026";
       const normalized = {
-        type: input.type,
-        tka_mtk: normalizeScore(input.tka_mtk),
-        tka_indo: normalizeScore(input.tka_indo),
-        tkad_ipa: normalizeScore(input.tkad_ipa),
-        tkad_eng: normalizeScore(input.tkad_eng),
-        aspd_read: normalizeScore(input.aspd_read),
-        aspd_sci: normalizeScore(input.aspd_sci),
-        aspd_num: normalizeScore(input.aspd_num),
-        prestasi: normalizeScore(input.prestasi, { optional: true })
+        type,
+        tka_mtk: is2026 ? normalizeRequired(input.tka_mtk, FIELD_LABELS.tka_mtk) : 0,
+        tka_indo: is2026 ? normalizeRequired(input.tka_indo, FIELD_LABELS.tka_indo) : 0,
+        tkad_ipa: is2026 ? normalizeRequired(input.tkad_ipa, FIELD_LABELS.tkad_ipa) : 0,
+        tkad_eng: is2026 ? normalizeRequired(input.tkad_eng, FIELD_LABELS.tkad_eng) : 0,
+        aspd_read: is2026 ? 0 : normalizeRequired(input.aspd_read, FIELD_LABELS.aspd_read),
+        aspd_sci: is2026 ? 0 : normalizeRequired(input.aspd_sci, FIELD_LABELS.aspd_sci),
+        aspd_num: is2026 ? 0 : normalizeRequired(input.aspd_num, FIELD_LABELS.aspd_num),
+        prestasi: normalizeOptional(input.prestasi, FIELD_LABELS.prestasi)
       };
 
       RAPOR_KEYS.forEach((key) => {
-        normalized[key] = normalizeScore(input[key]);
+        normalized[key] = normalizeRequired(input[key], FIELD_LABELS[key]);
       });
 
       return normalized;
@@ -500,21 +536,7 @@
       const requiredFields = getRequiredFields(rawData.type);
 
       requiredFields.forEach((key) => {
-        const rawValue = rawData[key];
         const numericValue = normalizedData[key];
-        const isRaporField = RAPOR_KEYS.includes(key);
-
-        if (isEmpty(rawValue)) {
-          if (!isRaporField) {
-            errors.push(`${FIELD_LABELS[key]} belum diisi.`);
-          }
-          return;
-        }
-
-        if (!Number.isFinite(numericValue)) {
-          errors.push(`${FIELD_LABELS[key]} harus berupa angka yang valid.`);
-          return;
-        }
 
         if (numericValue < 0) {
           errors.push(`${FIELD_LABELS[key]} tidak boleh negatif.`);
@@ -526,19 +548,9 @@
         }
       });
 
-      RAPOR_SUBJECTS.forEach((subject) => {
-        const subjectKeys = RAPOR_SEMESTERS.map((semester) => `rapor_${subject.key}_s${semester}`);
-        const subjectComplete = subjectKeys.every((key) => !isEmpty(rawData[key]) && Number.isFinite(normalizedData[key]));
-        if (!subjectComplete) {
-          errors.push(`Nilai rapor ${subject.label} Semester 1 sampai 5 harus terisi lengkap.`);
-        }
-      });
-
       if (!isEmpty(rawData.prestasi)) {
         const prestasiValue = normalizedData.prestasi;
-        if (!Number.isFinite(prestasiValue)) {
-          errors.push("Prestasi harus berupa angka yang valid.");
-        } else if (prestasiValue < 0) {
+        if (prestasiValue < 0) {
           errors.push("Prestasi tidak boleh negatif.");
         } else if (prestasiValue > 100) {
           errors.push("Prestasi harus di antara 0 sampai 100.");
@@ -550,17 +562,22 @@
 
     function calculateRapor(normalizedInput) {
       const subjectAverages = {};
-      let raporFinal = 0;
 
       RAPOR_SUBJECTS.forEach((subject) => {
         const values = RAPOR_SEMESTERS.map((semester) => normalizedInput[`rapor_${subject.key}_s${semester}`]);
         const average = values.reduce((sum, value) => sum + value, 0) / RAPOR_SEMESTERS.length;
         subjectAverages[subject.key] = round(average);
-        raporFinal += average;
       });
 
+      const avgRapor = (
+        subjectAverages.indo +
+        subjectAverages.mtk +
+        subjectAverages.eng +
+        subjectAverages.ipa
+      ) / 4;
+
       return {
-        raporFinal: round(raporFinal),
+        raporFinal: round(avgRapor),
         subjectAverages
       };
     }
@@ -582,8 +599,7 @@
       validateType(type);
 
       const raporResult = calculateRapor(normalized);
-      // Normalize rapor aggregate back to 0-100 before applying 40% weight.
-      const avgRapor = raporResult.raporFinal / 4;
+      const avgRapor = raporResult.raporFinal;
       const weightedRapor = 0.4 * avgRapor;
       let nilaiTes = 0;
       let breakdown = {};
@@ -703,7 +719,7 @@
 
     function buildShareText(result, type) {
       const modeLabel = type === "2026" ? "Lulusan 2026" : "Lulusan 2025 atau sebelumnya";
-      const tesLabel = type === "2026" ? "Tes Akademik" : "ASPD";
+      const tesLabel = type === "2026" ? "TKA TKAD" : "ASPD";
 
       return [
         `Nilai Gabungan SPMB DIY: ${formatNumber(result.nilaiGabungan)}`,
@@ -718,13 +734,54 @@
       ].join("\n");
     }
 
+    function encodeToCompactStringYOURS(data) {
+      const type = data.type === "2025" ? "2025" : "2026";
+      return getCompactFieldOrder(type).map((key) => {
+        return isEmpty(data[key]) ? "" : String(data[key]);
+      }).join("#");
+    }
+	
+	function encodeToCompactString(data) {
+  const type = data.type === "2025" ? "2025" : "2026";
+
+  return getCompactFieldOrder(type)
+    .map((key) => {
+      const val = data[key];
+
+      if (val === "" || val === null || val === undefined) {
+        return "";
+      }
+
+      const num = Number(val);
+
+      if (!Number.isFinite(num)) {
+        return "";
+      }
+
+      // normalize ke 2 decimal (biar konsisten)
+      return num.toFixed(2);
+    })
+    .join("#");
+}
+
+
+    function decodeFromCompactString(compactString, type) {
+      const values = String(compactString || "").split("#");
+      const orderedFields = getCompactFieldOrder(type);
+      const decoded = { type };
+
+      orderedFields.forEach((key, index) => {
+        decoded[key] = values[index] !== undefined ? values[index] : "";
+      });
+
+      return decoded;
+    }
+
     function syncQueryString(rawData) {
       const params = new URLSearchParams();
-      params.set("type", rawData.type || "2026");
-
-      FORM_KEYS.forEach((key) => {
-        params.set(key, isEmpty(rawData[key]) ? "" : String(rawData[key]));
-      });
+      const type = rawData.type === "2025" ? "2025" : "2026";
+      params.set("type", type);
+      params.set("d", encodeToCompactString({ ...rawData, type }));
 
       const url = new URL(window.location.href);
       url.search = params.toString();
@@ -766,6 +823,7 @@
     function calculateAndRender(options = {}) {
       try {
         const rawData = collectInput();
+        assertRaporComplete(rawData);
         const normalizedData = normalizeInput(rawData);
         const errors = validateScores(rawData, normalizedData);
         const shouldShowErrors = options.forceErrors || hasStartedActiveInput(rawData);
@@ -860,6 +918,19 @@
       }
 
       updateVisibility(type);
+
+      const compactData = params.get("d");
+      if (compactData !== null) {
+        const decoded = decodeFromCompactString(compactData, type);
+
+        ALL_INPUTS.forEach((input) => {
+          const value = decoded[input.dataset.field];
+          if (value !== undefined) {
+            input.value = value;
+          }
+        });
+        return;
+      }
 
       FORM_KEYS.forEach((key) => {
         const input = elements.form.querySelector(`[data-field="${key}"]`);
