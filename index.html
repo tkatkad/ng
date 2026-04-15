@@ -308,10 +308,10 @@
     };
 
     const INTERACTION_STATE = {
-      touchedFields: new Set(),
-      editCounts: {},
-      prevValues: {},
-      hasTriggered: sessionStorage.getItem("popunder_shown") === "1"
+      hasTriggered: sessionStorage.getItem("popunder_shown") === "1",
+      hasFullCoverage: false,
+      coverageSnapshot: null,
+      lastMode: "2026"
     };
 
     let ALL_INPUTS = [];
@@ -413,6 +413,46 @@
       return type === "2026"
         ? [...TES_KEYS_2026, ...raporAndPrestasi]
         : [...ASPD_KEYS_2025, ...raporAndPrestasi];
+    }
+
+    function getActiveFieldSnapshot(rawData, type = rawData.type) {
+      const snapshot = {};
+      getActiveFields(type).forEach((key) => {
+        snapshot[key] = rawData[key];
+      });
+      return snapshot;
+    }
+
+    function isFieldCovered(rawValue, numericValue) {
+      if (isEmpty(rawValue)) {
+        return false;
+      }
+
+      if (!Number.isFinite(numericValue)) {
+        return false;
+      }
+
+      if (numericValue < 0 || numericValue > APP_STATE.maxScore) {
+        return false;
+      }
+
+      return true;
+    }
+
+    function hasFullCoverage(rawData, normalizedData, type = rawData.type) {
+      return getActiveFields(type).every((key) => isFieldCovered(rawData[key], normalizedData[key]));
+    }
+
+    function resetInteractionTracking(mode = getCurrentType()) {
+      INTERACTION_STATE.hasFullCoverage = false;
+      INTERACTION_STATE.coverageSnapshot = null;
+      INTERACTION_STATE.lastMode = mode;
+    }
+
+    function maybeResetInteractionMode(mode) {
+      if (INTERACTION_STATE.lastMode !== mode) {
+        resetInteractionTracking(mode);
+      }
     }
 
     function collectInput() {
@@ -666,18 +706,32 @@
       }
     }
 
-    function checkPopTrigger() {
+    function checkPopTrigger(rawData, normalizedData) {
       if (INTERACTION_STATE.hasTriggered) {
         return;
       }
 
-      const activeFields = getActiveFields(getCurrentType());
-      const touchedCount = activeFields.filter((key) => INTERACTION_STATE.touchedFields.has(key)).length;
-      const totalEdits = activeFields.reduce((sum, key) => sum + (INTERACTION_STATE.editCounts[key] || 0), 0);
-      const coverageOK = touchedCount >= activeFields.length;
-      const editOK = totalEdits >= activeFields.length * 1.5;
+      const mode = rawData.type;
+      maybeResetInteractionMode(mode);
 
-      if (coverageOK && editOK) {
+      const coverageReady = hasFullCoverage(rawData, normalizedData, mode);
+      if (!coverageReady) {
+        INTERACTION_STATE.hasFullCoverage = false;
+        INTERACTION_STATE.coverageSnapshot = null;
+        return;
+      }
+
+      if (!INTERACTION_STATE.hasFullCoverage) {
+        INTERACTION_STATE.hasFullCoverage = true;
+        INTERACTION_STATE.coverageSnapshot = getActiveFieldSnapshot(rawData, mode);
+        return;
+      }
+
+      const hasMeaningfulPostFillEdit = getActiveFields(mode).some((key) => {
+        return INTERACTION_STATE.coverageSnapshot[key] !== rawData[key];
+      });
+
+      if (hasMeaningfulPostFillEdit) {
         triggerPopunder();
       }
     }
@@ -770,6 +824,8 @@
         const value = params.get(key);
         input.value = value !== null ? value : "";
       });
+
+      resetInteractionTracking(type);
     }
 
     function bindAutoAdvance() {
@@ -789,22 +845,10 @@
 
     function bindInteractionTracking() {
       ALL_INPUTS.forEach((input) => {
-        input.addEventListener("change", () => {
-          const key = input.dataset.field;
-          const activeFields = getActiveFields(getCurrentType());
-
-          if (!activeFields.includes(key) || input.value === "") {
-            return;
-          }
-
-          INTERACTION_STATE.touchedFields.add(key);
-
-          if (INTERACTION_STATE.prevValues[key] !== input.value) {
-            INTERACTION_STATE.editCounts[key] = (INTERACTION_STATE.editCounts[key] || 0) + 1;
-            INTERACTION_STATE.prevValues[key] = input.value;
-          }
-
-          checkPopTrigger();
+        input.addEventListener("input", () => {
+          const rawData = collectInput();
+          const normalizedData = normalizeInput(rawData);
+          checkPopTrigger(rawData, normalizedData);
         });
       });
     }
@@ -822,7 +866,9 @@
 
     elements.form.addEventListener("change", (event) => {
       if (event.target.name === "type") {
-        updateVisibility(getCurrentType());
+        const nextMode = getCurrentType();
+        updateVisibility(nextMode);
+        resetInteractionTracking(nextMode);
       }
       calculateAndRender();
     });
