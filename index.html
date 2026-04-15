@@ -234,9 +234,10 @@
 
           <div id="errorBox" class="hidden rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
 
-          <div class="grid gap-2 sm:grid-cols-2">
+          <div class="grid gap-2 sm:grid-cols-3">
             <button id="calculateButton" type="button" class="rounded-2xl bg-ink px-4 py-3 font-semibold text-white transition hover:opacity-95">Hitung NG</button>
             <button id="screenshotButton" type="button" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 transition hover:bg-slate-50">Mode Screenshot</button>
+            <button id="resetButton" type="button" class="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 font-semibold text-red-700 transition hover:bg-red-100">Reset</button>
           </div>
         </form>
       </section>
@@ -302,21 +303,18 @@
     );
     const FORM_KEYS = [...TES_KEYS_2026, ...ASPD_KEYS_2025, ...RAPOR_KEYS, "prestasi"];
 
-    const APP_STATE = {
-      screenshotMode: false
+    const STORAGE_KEYS = {
+      formData: "form_data",
+      calcClickCount: "calc_click_count",
+      popupShown: "popup_shown"
     };
 
-    const INTERACTION_STATE = {
-      hasTriggered: sessionStorage.getItem("popunder_shown") === "1",
-      coverageRatio: 0,
-      snapshot: null,
-      hasMeaningfulChange: false,
-      lastMode: "2026"
+    const APP_STATE = {
+      screenshotMode: false,
+      popupTimerId: null
     };
 
     let ALL_INPUTS = [];
-    let calculationDebounceTimer = null;
-    let interactionDebounceTimer = null;
 
     const FIELD_LABELS = {
       tka_mtk: "Matematika (TKA)",
@@ -356,6 +354,7 @@
       modeBadge: document.getElementById("modeBadge"),
       detailLines: document.getElementById("detailLines"),
       calculateButton: document.getElementById("calculateButton"),
+      resetButton: document.getElementById("resetButton"),
       screenshotButton: document.getElementById("screenshotButton"),
       screenshotExitButton: document.getElementById("screenshotExitButton"),
       whatsappShare: document.getElementById("whatsappShare"),
@@ -420,56 +419,40 @@
       return getActiveFields(type).filter((key) => key !== "prestasi");
     }
 
-    function getRequiredFieldSnapshot(normalizedData, type = normalizedData.type) {
-      const snapshot = {};
-      getRequiredFields(type).forEach((key) => {
-        snapshot[key] = normalizedData[key];
-      });
-      return snapshot;
-    }
-
-    function isFieldCovered(rawValue, numericValue) {
-      if (isEmpty(rawValue)) {
-        return false;
-      }
-
-      if (!Number.isFinite(numericValue)) {
-        return false;
-      }
-
-      if (numericValue < 0 || numericValue > 100) {
-        return false;
-      }
-
-      return true;
-    }
-
-    function getCoverageRatio(rawData, normalizedData, type = rawData.type) {
-      const requiredFields = getRequiredFields(type);
-      const coveredFields = requiredFields.filter((key) => isFieldCovered(rawData[key], normalizedData[key]));
-      return requiredFields.length ? coveredFields.length / requiredFields.length : 0;
-    }
-
-    function resetInteractionTracking(mode = getCurrentType()) {
-      clearTimeout(interactionDebounceTimer);
-      INTERACTION_STATE.coverageRatio = 0;
-      INTERACTION_STATE.snapshot = null;
-      INTERACTION_STATE.hasMeaningfulChange = false;
-      INTERACTION_STATE.lastMode = mode;
-    }
-
-    function maybeResetInteractionMode(mode) {
-      if (INTERACTION_STATE.lastMode !== mode) {
-        resetInteractionTracking(mode);
-      }
-    }
-
     function collectInput() {
       const data = { type: getCurrentType() };
       ALL_INPUTS.forEach((input) => {
         data[input.dataset.field] = input.value;
       });
       return data;
+    }
+
+    function safeReadStoredFormData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.formData);
+        if (!raw) {
+          return {};
+        }
+
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveFormData(data = collectInput()) {
+      localStorage.setItem(STORAGE_KEYS.formData, JSON.stringify(data));
+    }
+
+    function getCalcClickCount() {
+      return Number(localStorage.getItem(STORAGE_KEYS.calcClickCount) || 0);
+    }
+
+    function incrementCalcClickCount() {
+      const nextCount = getCalcClickCount() + 1;
+      localStorage.setItem(STORAGE_KEYS.calcClickCount, String(nextCount));
+      return nextCount;
     }
 
     function isEmpty(value) {
@@ -598,12 +581,15 @@
       validateType(type);
 
       const raporResult = calculateRapor(normalized);
-      const weightedRapor = 0.4 * raporResult.raporFinal;
+      // Normalize rapor aggregate back to 0-100 before applying 40% weight.
+      const avgRapor = raporResult.raporFinal / 4;
+      const weightedRapor = 0.4 * avgRapor;
       let nilaiTes = 0;
       let breakdown = {};
 
       if (type === "2026") {
-        const totalTes = tka_mtk + tka_indo + tkad_ipa + tkad_eng;
+        // Normalize 4 test subjects to a 0-100 scale before applying 60% weight.
+        const totalTes = (tka_mtk + tka_indo + tkad_ipa + tkad_eng) / 4;
         nilaiTes = 0.6 * totalTes;
         breakdown = {
           mode: "TKA + TKAD",
@@ -612,10 +598,12 @@
         };
       } else {
         const aspdTransformed = (aspd_read * 1.72) + (aspd_sci * 1.14) + (aspd_num * 1.14);
-        nilaiTes = 0.6 * aspdTransformed;
+        // Normalize weighted ASPD back to a 0-100 scale before applying 60% weight.
+        const avgASPD = aspdTransformed / (1.72 + 1.14 + 1.14);
+        nilaiTes = 0.6 * avgASPD;
         breakdown = {
           mode: "ASPD",
-          aspdTransformed,
+          aspdTransformed: avgASPD,
           weightedTes: nilaiTes
         };
       }
@@ -627,7 +615,7 @@
         detail: {
           tes: round(nilaiTes),
           rapor: round(weightedRapor),
-          raporRaw: round(raporResult.raporFinal),
+          raporRaw: round(avgRapor),
           prestasi: round(prestasi),
           subjectAverages: raporResult.subjectAverages,
           ...mapRounded(breakdown)
@@ -678,15 +666,15 @@
       const lines = [];
       if (type === "2026") {
         lines.push(["Mode hitung", result.detail.mode]);
-        lines.push(["Total Tes Akademik", formatNumber(result.detail.totalTes)]);
+        lines.push(["Rerata Tes Akademik", formatNumber(result.detail.totalTes)]);
         lines.push(["Komponen Tes Akademik", formatNumber(result.detail.weightedTes)]);
       } else {
         lines.push(["Mode hitung", result.detail.mode]);
-        lines.push(["Total ASPD Terkonversi", formatNumber(result.detail.aspdTransformed)]);
+        lines.push(["Rerata ASPD Terkonversi", formatNumber(result.detail.aspdTransformed)]);
         lines.push(["Komponen ASPD", formatNumber(result.detail.weightedTes)]);
       }
 
-      lines.push(["Total rerata rapor (R)", formatNumber(result.detail.raporRaw)]);
+      lines.push(["Rerata rapor (R)", formatNumber(result.detail.raporRaw)]);
       lines.push(["Komponen rapor", formatNumber(result.detail.rapor)]);
       lines.push(["Rerata B. Indonesia", formatNumber(result.detail.subjectAverages.indo)]);
       lines.push(["Rerata Matematika", formatNumber(result.detail.subjectAverages.mtk)]);
@@ -729,17 +717,6 @@
       ].join("\n");
     }
 
-    function flushInteractionTracking() {
-      if (interactionDebounceTimer) {
-        clearTimeout(interactionDebounceTimer);
-        interactionDebounceTimer = null;
-      }
-
-      const rawData = collectInput();
-      const normalizedData = normalizeInput(rawData);
-      updateInteractionTracking(rawData, normalizedData);
-    }
-
     function syncQueryString(rawData) {
       const params = new URLSearchParams();
       params.set("type", rawData.type || "2026");
@@ -753,62 +730,40 @@
       window.history.replaceState({}, "", url);
     }
 
-    function triggerPopunder() {
-      if (INTERACTION_STATE.hasTriggered) {
+    function schedulePopupIfEligible() {
+      if (APP_STATE.popupTimerId) {
         return;
       }
 
-      const popup = window.open("https://shopee.co.id/", "_blank", "noopener,noreferrer");
-      if (popup) {
-        INTERACTION_STATE.hasTriggered = true;
-        sessionStorage.setItem("popunder_shown", "1");
+      if (localStorage.getItem(STORAGE_KEYS.popupShown)) {
+        return;
       }
-    }
 
-    function updateInteractionTracking(rawData, normalizedData) {
-      const mode = rawData.type;
-      maybeResetInteractionMode(mode);
+      if (getCalcClickCount() < 2) {
+        return;
+      }
 
-      const coverageRatio = getCoverageRatio(rawData, normalizedData, mode);
-      const previousSnapshot = INTERACTION_STATE.snapshot;
-      const nextSnapshot = getRequiredFieldSnapshot(normalizedData, mode);
+      APP_STATE.popupTimerId = window.setTimeout(() => {
+        APP_STATE.popupTimerId = null;
 
-      INTERACTION_STATE.coverageRatio = coverageRatio;
-
-      if (previousSnapshot) {
-        const hasMeaningfulDelta = getRequiredFields(mode).some((key) => {
-          const previousValue = previousSnapshot[key];
-          const nextValue = nextSnapshot[key];
-
-          if (!Number.isFinite(previousValue) || !Number.isFinite(nextValue)) {
-            return false;
-          }
-
-          return Math.abs(nextValue - previousValue) > 0.01;
-        });
-
-        if (coverageRatio >= 0.8 && hasMeaningfulDelta) {
-          INTERACTION_STATE.hasMeaningfulChange = true;
+        if (localStorage.getItem(STORAGE_KEYS.popupShown)) {
+          return;
         }
-      }
 
-      INTERACTION_STATE.snapshot = nextSnapshot;
+        const popup = window.open("https://example.com", "_blank", "noopener,noreferrer");
+        if (popup) {
+          localStorage.setItem(STORAGE_KEYS.popupShown, "1");
+        }
+      }, 10000);
     }
 
-    function maybeTriggerPopunderFromGesture() {
-      if (INTERACTION_STATE.hasTriggered) {
+    function clearPopupSchedule() {
+      if (!APP_STATE.popupTimerId) {
         return;
       }
 
-      if (INTERACTION_STATE.coverageRatio < 0.8) {
-        return;
-      }
-
-      if (!INTERACTION_STATE.hasMeaningfulChange) {
-        return;
-      }
-
-      triggerPopunder();
+      clearTimeout(APP_STATE.popupTimerId);
+      APP_STATE.popupTimerId = null;
     }
 
     function calculateAndRender(options = {}) {
@@ -836,6 +791,7 @@
         };
       } catch (error) {
         showError([error.message || "Terjadi kesalahan perhitungan."]);
+        clearResultUI();
         return null;
       }
     }
@@ -880,6 +836,24 @@
         });
     }
 
+    function applyStoredFormData() {
+      const saved = safeReadStoredFormData();
+
+      if (saved.type === "2025" || saved.type === "2026") {
+        const radio = elements.form.querySelector(`input[name="type"][value="${saved.type}"]`);
+        if (radio) {
+          radio.checked = true;
+        }
+      }
+
+      ALL_INPUTS.forEach((input) => {
+        const savedValue = saved[input.dataset.field];
+        if (savedValue !== undefined) {
+          input.value = savedValue;
+        }
+      });
+    }
+
     function applyQueryValues() {
       const params = new URLSearchParams(window.location.search);
       const type = params.get("type") === "2025" ? "2025" : "2026";
@@ -897,10 +871,10 @@
         }
 
         const value = params.get(key);
-        input.value = value !== null ? value : "";
+        if (value !== null) {
+          input.value = value;
+        }
       });
-
-      resetInteractionTracking(type);
     }
 
     function bindAutoAdvance() {
@@ -909,9 +883,6 @@
         input.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
             event.preventDefault();
-            flushInteractionTracking();
-            maybeTriggerPopunderFromGesture();
-            calculateAndRender({ forceErrors: true });
             const nextInput = inputs[index + 1];
             if (nextInput) {
               nextInput.focus();
@@ -921,43 +892,52 @@
       });
     }
 
-    function bindInteractionTracking() {
-      ALL_INPUTS.forEach((input) => {
-        input.addEventListener("input", () => {
-          clearTimeout(interactionDebounceTimer);
-          interactionDebounceTimer = setTimeout(() => {
-            const rawData = collectInput();
-            const normalizedData = normalizeInput(rawData);
-            updateInteractionTracking(rawData, normalizedData);
-          }, 300);
-        });
-      });
-    }
-
     elements.menuButton.addEventListener("click", openMenu);
     elements.closeMenuButton.addEventListener("click", closeMenu);
     elements.menuOverlay.addEventListener("click", closeMenu);
 
     elements.form.addEventListener("input", () => {
-      clearTimeout(calculationDebounceTimer);
-      calculationDebounceTimer = setTimeout(() => {
-        calculateAndRender();
-      }, 150);
+      saveFormData();
     });
 
     elements.form.addEventListener("change", (event) => {
       if (event.target.name === "type") {
         const nextMode = getCurrentType();
         updateVisibility(nextMode);
-        resetInteractionTracking(nextMode);
       }
-      calculateAndRender();
+      saveFormData();
     });
 
     elements.calculateButton.addEventListener("click", () => {
-      flushInteractionTracking();
-      maybeTriggerPopunderFromGesture();
-      calculateAndRender({ forceErrors: true });
+      saveFormData();
+      const computed = calculateAndRender({ forceErrors: true });
+      if (!computed) {
+        return;
+      }
+
+      incrementCalcClickCount();
+      schedulePopupIfEligible();
+    });
+
+    elements.resetButton.addEventListener("click", () => {
+      clearPopupSchedule();
+
+      ALL_INPUTS.forEach((input) => {
+        input.value = "";
+      });
+
+      const defaultRadio = elements.form.querySelector('input[name="type"][value="2026"]');
+      if (defaultRadio) {
+        defaultRadio.checked = true;
+      }
+
+      updateVisibility("2026");
+      showError([]);
+      clearResultUI();
+      localStorage.removeItem(STORAGE_KEYS.formData);
+      localStorage.removeItem(STORAGE_KEYS.calcClickCount);
+      localStorage.removeItem(STORAGE_KEYS.popupShown);
+      syncQueryString({ type: "2026" });
     });
 
     elements.screenshotButton.addEventListener("click", toggleScreenshotMode);
@@ -994,11 +974,10 @@
 
     renderRaporGrid();
     refreshInputCache();
+    applyStoredFormData();
     applyQueryValues();
     bindAutoAdvance();
-    bindInteractionTracking();
     updateVisibility(getCurrentType());
-    calculateAndRender();
   </script>
 </body>
 </html>
