@@ -252,7 +252,8 @@
         <div class="bg-[linear-gradient(180deg,_rgba(18,140,126,0.08),_rgba(255,255,255,0.95))] px-5 pb-4 pt-5">
           <p class="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-pine/80">Rekomendasi</p>
           <h2 class="font-display text-[1.4rem] font-semibold text-ink">Sekolah yang Direkomendasikan</h2>
-          <p class="mt-1 text-xs text-slate-600">Diurutkan dari peluang terbesar (selisih nilai tertinggi)</p>
+              <p class="mt-1 text-xs text-slate-600">Diurutkan dari sekolah paling kompetitif yang masih bisa ditembus</p>
+
         </div>
         
         <div id="recommendationsContent" class="px-5 pb-5 pt-3">
@@ -838,188 +839,296 @@
       }
     };
 
+    
     /**
-     * ============================================
-     * 🎯 SCHOOL RECOMMENDATION MODULE (NEW)
-     * ============================================
-     */
-    const SchoolRecommender = {
-      /**
-       * Generate zone label based on selisih (margin above cutoff)
-       * @param {number} selisih - nilaiUser - cutoff
-       */
-      getZoneLabel: function(selisih) {
-        if (selisih < 0) return "TIDAK LOLOS";
-        if (selisih < 0.5) return "KRITIS";
-        if (selisih < 1) return "RAWAN";
-        if (selisih < 2) return "SANGAT TIPIS";
-        if (selisih < 5) return "TIPIS";
-        if (selisih < 10) return "CUKUP AMAN";
-        if (selisih < 20) return "AMAN";
-        if (selisih < 50) return "SANGAT AMAN";
-        return "OVERKILL";
-      },
+ * ============================================
+ * 🎯 SCHOOL RECOMMENDATION MODULE (FIXED)
+ * Priority: Most competitive schools user can STILL pass
+ * ============================================
+ */
+const SchoolRecommender = {
+  /**
+   * Generate zone label + priority score for intelligent sorting
+   * Score: Higher = Better recommendation priority
+   * 
+   * Priority order: TIPIS(5) > CUKUP AMAN(4) > SANGAT TIPIS(4) > 
+   *                 AMAN(3) > RAWAN(2) > SANGAT AMAN(2) > 
+   *                 KRITIS(1) > OVERKILL(1) > TIDAK LOLOS(-1)
+   */
+  getZoneInfo: function(selisih) {
+    if (selisih < 0) return { label: "TIDAK LOLOS", score: -1, color: "zone-TIDAK-LOLOS" };
+    if (selisih < 0.5) return { label: "KRITIS", score: 1, color: "zone-KRITIS" };
+    if (selisih < 1) return { label: "RAWAN", score: 2, color: "zone-RAWAN" };
+    if (selisih < 2) return { label: "SANGAT TIPIS", score: 4, color: "zone-SANGAT-TIPIS" };
+    if (selisih < 5) return { label: "TIPIS", score: 5, color: "zone-TIPIS" };     // 🎯 SWEET SPOT
+    if (selisih < 10) return { label: "CUKUP AMAN", score: 4, color: "zone-CUKUP-AMAN" };
+    if (selisih < 20) return { label: "AMAN", score: 3, color: "zone-AMAN" };
+    if (selisih < 50) return { label: "SANGAT AMAN", score: 2, color: "zone-SANGAT-AMAN" };
+    return { label: "OVERKILL", score: 1, color: "zone-OVERKILL" };
+  },
 
-      /**
-       * Get Tailwind color class for zone badge
-       */
-      getZoneColorClass: function(zona) {
-        const classes = {
-          "KRITIS": "zone-KRITIS",
-          "RAWAN": "zone-RAWAN", 
-          "SANGAT TIPIS": "zone-SANGAT-TIPIS",
-          "TIPIS": "zone-TIPIS",
-          "CUKUP AMAN": "zone-CUKUP-AMAN",
-          "AMAN": "zone-AMAN",
-          "SANGAT AMAN": "zone-SANGAT-AMAN",
-          "OVERKILL": "zone-OVERKILL",
-          "TIDAK LOLOS": "zone-TIDAK-LOLOS"
-        };
-        return classes[zona] || "zone-TIDAK-LOLOS";
-      },
-
-      /**
-       * Core lookup function - O(n) filter + sort
-       * Efficient for small datasets (<100 schools per category)
-       */
-      findMatchingSchools: function(schoolData, userScore, maxResults = CONFIG.RECOMMENDATION.MAX_SCHOOLS_PER_CATEGORY) {
-        // Filter schools where user score >= cutoff (with buffer for near-miss display)
-        const minSelisih = CONFIG.RECOMMENDATION.MIN_SELIHSH_FOR_DISPLAY;
+  /**
+   * Core lookup: Filter → Map → Smart Sort → Group
+   * 
+   * Sorting priority (descending importance):
+   * 1. cutoff DESC (most competitive first)
+   * 2. zone.score DESC (TIPIS/CUKUP AMAN prioritized)
+   * 3. selisih ASC (tighter margin preferred for same cutoff)
+   */
+  findMatchingSchools: function(schoolData, userScore, maxResults = CONFIG.RECOMMENDATION.MAX_SCHOOLS_PER_CATEGORY) {
+    const minSelisih = CONFIG.RECOMMENDATION.MIN_SELIHSH_FOR_DISPLAY;
+    
+    const matches = schoolData
+      // Step 1: Filter - only schools user can potentially pass
+      .filter(([cutoff]) => {
+        const selisih = userScore - cutoff;
+        return selisih >= minSelisih;
+      })
+      // Step 2: Map - enrich with zone info
+      .map(([cutoff, nama]) => {
+        const selisih = +(userScore - cutoff).toFixed(2);
+        const zoneInfo = this.getZoneInfo(selisih);
         
-        const matches = schoolData
-          .filter(([cutoff]) => {
-            const selisih = userScore - cutoff;
-            return selisih >= minSelisih;
-          })
-          .map(([cutoff, nama]) => {
-            const selisih = +(userScore - cutoff).toFixed(2);
-            return {
-              nama,
-              cutoff,
-              selisih,
-              zona: this.getZoneLabel(selisih)
-            };
-          })
-          // Sort by selisih descending (safest first)
-          .sort((a, b) => b.selisih - a.selisih)
-          .slice(0, maxResults);
-        
-        return matches;
-      },
-
-      /**
-       * Generate recommendations for all categories
-       */
-      getAllRecommendations: function(userScore) {
         return {
-          SMAN_japres: this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore),
-          SMAN_jadomwil: this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore),
-          SMK_jadomwil: this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore)
+          nama,
+          cutoff,
+          selisih,
+          zona: zoneInfo.label,
+          zoneScore: zoneInfo.score,
+          zoneColor: zoneInfo.color
         };
+      })
+      // Step 3: Smart Sort - MOST COMPETITIVE first, with zone priority
+      .sort((a, b) => {
+        // Primary: Higher cutoff = more competitive (user's main goal)
+        if (b.cutoff !== a.cutoff) return b.cutoff - a.cutoff;
+        // Secondary: Better zone score = smarter choice
+        if (b.zoneScore !== a.zoneScore) return b.zoneScore - a.zoneScore;
+        // Tertiary: Tighter selisih = more efficient use of score
+        return a.selisih - b.selisih;
+      })
+      .slice(0, maxResults);
+    
+    return matches;
+  },
+
+  /**
+   * Group schools by recommendation tier for better UX
+   */
+  groupByTier: function(schools) {
+    const groups = {
+      target: [],    // TIPIS, CUKUP AMAN (sweet spot)
+      safe: [],      // AMAN, SANGAT AMAN (safe but less competitive)
+      easy: [],      // OVERKILL (too easy, low priority)
+      risky: []      // KRITIS, RAWAN (high risk)
+    };
+    
+    schools.forEach(school => {
+      switch(school.zona) {
+        case "TIPIS":
+        case "CUKUP AMAN":
+          groups.target.push(school);
+          break;
+        case "AMAN":
+        case "SANGAT AMAN":
+          groups.safe.push(school);
+          break;
+        case "OVERKILL":
+        case "SANGAT TIPIS":
+          groups.easy.push(school);
+          break;
+        case "KRITIS":
+        case "RAWAN":
+          groups.risky.push(school);
+          break;
+      }
+    });
+    
+    return groups;
+  },
+
+  /**
+   * Get all recommendations grouped by category AND tier
+   */
+  getAllRecommendations: function(userScore) {
+    return {
+      SMAN_japres: {
+        label: "🏆 SMAN Jalur Prestasi",
+        schools: this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore),
+        grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore))
       },
-
-      /**
-       * Render a single recommendation category
-       */
-      renderCategory: function(categoryKey, schools, categoryLabel) {
-        if (!schools || schools.length === 0) {
-          return `
-            <div class="mb-6 last:mb-0">
-              <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs">${categoryLabel}</span>
-              </h3>
-              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
-                Belum ada rekomendasi untuk kategori ini dengan nilai saat ini.
-              </div>
-            </div>
-          `;
-        }
-
-        const schoolItems = schools.map((school, index) => {
-          const zoneClass = SchoolRecommender.getZoneColorClass(school.zona);
-          const isTopPick = index === 0 && school.selisih >= 5;
-          
-          return `
-            <div class="group flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-pine/30 hover:shadow-sm ${isTopPick ? 'ring-2 ring-pine/20' : ''}">
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-2">
-                  ${isTopPick ? '<span class="inline-flex items-center rounded-full bg-pine/10 px-2 py-0.5 text-[10px] font-bold text-pine">⭐ TOP PICK</span>' : ''}
-                  <p class="truncate text-sm font-medium text-slate-800">${Utils.escapeHtml(school.nama)}</p>
-                </div>
-                <p class="mt-0.5 text-xs text-slate-500">Cutoff: <strong>${Utils.formatDisplay(school.cutoff)}</strong></p>
-              </div>
-              <div class="text-right shrink-0">
-                <span class="zone-badge ${zoneClass}">${Utils.escapeHtml(school.zona)}</span>
-                <p class="mt-1 text-xs font-semibold ${school.selisih >= 0 ? 'text-green-600' : 'text-red-600'}">
-                  ${school.selisih >= 0 ? '+' : ''}${Utils.formatDisplay(school.selisih)}
-                </p>
-              </div>
-            </div>
-          `;
-        }).join("");
-
-        return `
-          <div class="mb-6 last:mb-0">
-            <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs">${categoryLabel}</span>
-              <span class="text-xs font-normal text-slate-500">(${schools.length} sekolah)</span>
-            </h3>
-            <div class="space-y-2">
-              ${schoolItems}
-            </div>
-          </div>
-        `;
+      SMAN_jadomwil: {
+        label: "🏠 SMAN Jalur Domisili",
+        schools: this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore),
+        grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore))
       },
-
-      /**
-       * Render all recommendations to DOM
-       */
-      render: function(userScore) {
-        const container = DOM.recommendationsContent;
-        if (!container) return;
-
-        const recommendations = this.getAllRecommendations(userScore);
-        const hasAnyResults = Object.values(recommendations).some(arr => arr.length > 0);
-
-        if (!hasAnyResults) {
-          container.innerHTML = `
-            <div class="text-center py-8 text-slate-500 text-sm">
-              <p class="font-medium">Belum ada rekomendasi yang cocok.</p>
-              <p class="mt-1">Coba periksa kembali input nilai atau tingkatkan skor simulasi Anda.</p>
-              <div class="mt-4 inline-flex flex-wrap justify-center gap-2">
-                <span class="zone-badge zone-KRITIS">KRITIS</span>
-                <span class="zone-badge zone-AMAN">AMAN</span>
-                <span class="zone-badge zone-SANGAT-AMAN">SANGAT AMAN</span>
-              </div>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = `
-          ${this.renderCategory('SMAN_japres', recommendations.SMAN_japres, '🏆 SMAN Jalur Prestasi')}
-          ${this.renderCategory('SMAN_jadomwil', recommendations.SMAN_jadomwil, '🏠 SMAN Jalur Domisili')}
-          ${this.renderCategory('SMK_jadomwil', recommendations.SMK_jadomwil, '🔧 SMKN Jalur Domisili')}
-          <div class="mt-4 rounded-2xl bg-mist/50 p-3 text-xs text-pine/90">
-            <p><strong>💡 Tips:</strong> Pilih 3-5 sekolah dengan zona "AMAN" atau "SANGAT AMAN" sebagai prioritas utama.</p>
-          </div>
-        `;
-      },
-
-      /**
-       * Clear recommendations display
-       */
-      clear: function() {
-        if (DOM.recommendationsContent) {
-          DOM.recommendationsContent.innerHTML = `
-            <div class="text-center py-8 text-slate-500 text-sm">
-              <p>Hitung Nilai Gabungan terlebih dahulu untuk melihat rekomendasi sekolah.</p>
-              <p class="mt-1 text-xs">💡 Semakin besar selisih nilai Anda dengan cutoff, semakin aman peluang diterima.</p>
-            </div>
-          `;
-        }
+      SMK_jadomwil: {
+        label: "🔧 SMKN Jalur Domisili",
+        schools: this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore),
+        grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore))
       }
     };
+  },
+
+  /**
+   * Render a single school card with proper TOP PICK logic
+   */
+  renderSchoolCard: function(school, isTopPick) {
+    return `
+      <div class="group flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-pine/30 hover:shadow-sm ${isTopPick ? 'ring-2 ring-pine/30 bg-mist/30' : ''}">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            ${isTopPick ? '<span class="inline-flex items-center rounded-full bg-pine/15 px-2 py-0.5 text-[10px] font-bold text-pine">🎯 TOP PICK</span>' : ''}
+            <p class="truncate text-sm font-medium text-slate-800">${Utils.escapeHtml(school.nama)}</p>
+          </div>
+          <p class="mt-0.5 text-xs text-slate-500">
+            Cutoff: <strong class="text-slate-700">${Utils.formatDisplay(school.cutoff)}</strong>
+            <span class="mx-1 text-slate-300">•</span>
+            Selisih: <strong class="${school.selisih >= 0 ? 'text-green-600' : 'text-red-600'}">${school.selisih >= 0 ? '+' : ''}${Utils.formatDisplay(school.selisih)}</strong>
+          </p>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="zone-badge ${school.zoneColor}">${Utils.escapeHtml(school.zona)}</span>
+        </div>
+      </div>
+    `;
+  },
+
+  /**
+   * Render grouped schools by tier
+   */
+  renderGroupedSchools: function(grouped, categoryKey) {
+    let html = '';
+    
+    // 🎯 TARGET: Sweet spot recommendations (show first, most important)
+    if (grouped.target.length > 0) {
+      html += `<div class="mb-3"><p class="text-xs font-semibold text-pine mb-2 flex items-center gap-1">🎯 Target Direkomendasikan</p><div class="space-y-2">`;
+      grouped.target.forEach((school, idx) => {
+        const isTopPick = (categoryKey === 'SMAN_japres' && idx === 0) || 
+                         (categoryKey === 'SMAN_jadomwil' && idx === 0 && grouped.target[0]?.zona === 'TIPIS');
+        html += this.renderSchoolCard(school, isTopPick && school.zona === 'TIPIS');
+      });
+      html += `</div></div>`;
+    }
+    
+    // 🟢 SAFE: Good options but less competitive
+    if (grouped.safe.length > 0) {
+      html += `<div class="mb-3"><p class="text-xs font-semibold text-slate-600 mb-2">🟢 Opsi Aman</p><div class="space-y-2">`;
+      grouped.safe.forEach(school => {
+        html += this.renderSchoolCard(school, false);
+      });
+      html += `</div></div>`;
+    }
+    
+    // ⚪ EASY: Too easy, last resort
+    if (grouped.easy.length > 0) {
+      html += `<details class="mb-3"><summary class="text-xs font-semibold text-slate-500 mb-2 cursor-pointer hover:text-slate-700">⚪ Opsi Terlalu Mudah (klik untuk lihat)</summary><div class="space-y-2 mt-2">`;
+      grouped.easy.forEach(school => {
+        html += this.renderSchoolCard(school, false);
+      });
+      html += `</div></details>`;
+    }
+    
+    // ⚠️ RISKY: High risk, show with warning
+    if (grouped.risky.length > 0) {
+      html += `<details class="mb-3"><summary class="text-xs font-semibold text-amber-600 mb-2 cursor-pointer hover:text-amber-700">⚠️ Opsi Berisiko Tinggi</summary><div class="space-y-2 mt-2">`;
+      grouped.risky.forEach(school => {
+        html += this.renderSchoolCard(school, false);
+      });
+      html += `</div></details>`;
+    }
+    
+    return html;
+  },
+
+  /**
+   * Render a single recommendation category
+   */
+  renderCategory: function(categoryKey, data) {
+    const { label, schools, grouped } = data;
+    
+    if (!schools || schools.length === 0) {
+      return `
+        <div class="mb-6 last:mb-0">
+          <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs">${label}</span>
+          </h3>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
+            Belum ada sekolah di kategori ini yang sesuai dengan nilai Anda.
+            <p class="mt-1 text-xs">💡 Coba tingkatkan nilai simulasi atau pertimbangkan kategori lain.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Find the actual TOP PICK: highest cutoff with zone in sweet spot
+    const topPick = schools.find(s => s.zona === 'TIPIS' || s.zona === 'CUKUP AMAN') || schools[0];
+
+    return `
+      <div class="mb-6 last:mb-0">
+        <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs">${label}</span>
+          <span class="text-xs font-normal text-slate-500">(${schools.length} sekolah)</span>
+        </h3>
+        ${this.renderGroupedSchools(grouped, categoryKey)}
+      </div>
+    `;
+  },
+
+  /**
+   * Render all recommendations to DOM
+   */
+  render: function(userScore) {
+    const container = DOM.recommendationsContent;
+    if (!container) return;
+
+    const recommendations = this.getAllRecommendations(userScore);
+    const hasAnyResults = Object.values(recommendations).some(cat => cat.schools.length > 0);
+
+    if (!hasAnyResults) {
+      container.innerHTML = `
+        <div class="text-center py-8 text-slate-500 text-sm">
+          <p class="font-medium">Belum ada rekomendasi yang cocok.</p>
+          <p class="mt-1">Coba periksa kembali input nilai atau tingkatkan skor simulasi Anda.</p>
+          <div class="mt-4 inline-flex flex-wrap justify-center gap-2">
+            <span class="zone-badge zone-TIPIS">🎯 TIPIS</span>
+            <span class="zone-badge zone-CUKUP-AMAN">CUKUP AMAN</span>
+            <span class="zone-badge zone-AMAN">🟢 AMAN</span>
+          </div>
+          <p class="mt-3 text-xs text-slate-400">Prioritas: Pilih sekolah dengan zona TIPIS atau CUKUP AMAN</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="mb-4 rounded-2xl bg-pine/5 border border-pine/20 p-3 text-xs text-pine">
+        <p class="font-semibold">💡 Strategi Memilih:</p>
+        <p>Prioritaskan sekolah dengan zona <strong class="zone-badge zone-TIPIS">TIPIS</strong> atau <strong class="zone-badge zone-CUKUP-AMAN">CUKUP AMAN</strong> untuk peluang optimal.</p>
+      </div>
+      ${this.renderCategory('SMAN_japres', recommendations.SMAN_japres)}
+      ${this.renderCategory('SMAN_jadomwil', recommendations.SMAN_jadomwil)}
+      ${this.renderCategory('SMK_jadomwil', recommendations.SMK_jadomwil)}
+      <div class="mt-4 rounded-2xl bg-mist/50 p-3 text-xs text-pine/90">
+        <p><strong>📋 Tips Final:</strong> Pilih 3-5 sekolah: 1-2 "Target", 2-3 "Aman", 1 "Cadangan".</p>
+      </div>
+    `;
+  },
+
+  /**
+   * Clear recommendations display
+   */
+  clear: function() {
+    if (DOM.recommendationsContent) {
+      DOM.recommendationsContent.innerHTML = `
+        <div class="text-center py-8 text-slate-500 text-sm">
+          <p>Hitung Nilai Gabungan terlebih dahulu untuk melihat rekomendasi sekolah.</p>
+          <p class="mt-1 text-xs">🎯 Rekomendasi akan diurutkan dari sekolah paling kompetitif yang masih bisa Anda tembus.</p>
+        </div>
+      `;
+    }
+  }
+};
 
     /**
      * ============================================
