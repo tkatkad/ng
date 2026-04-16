@@ -997,27 +997,17 @@ openPopUnder: function() {
 },
 
 
-      handleUserClickOLD: function() {
+      handleUserClick: function() {
 			const next = Storage.incrementClickCount(); // single source of truth
 			appState.clickCount = next;
 
-			if (next >= CONFIG.POPUP.TRIGGER_CLICK_COUNT && !appState.popupShown) {
+			if (next === CONFIG.POPUP.TRIGGER_CLICK_COUNT && !appState.popupShown) {
 			this.openPopUnder();
 			}
 		}
 		
 		
-		handleUserClick: function() {
-  const next = Storage.incrementClickCount();
-  appState.clickCount = next;
 
-  if (
-    next === CONFIG.POPUP.TRIGGER_CLICK_COUNT &&
-    !appState.popupShown
-  ) {
-    this.openPopUnder();
-  }
-}
 
 		
 		
