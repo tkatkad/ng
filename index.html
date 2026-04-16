@@ -818,7 +818,7 @@ const tesWeighted = this.round(CONFIG.WEIGHT_TES * tesRawTotal);
         
         if (type === "2026") {
           lines.push(["Mode hitung", result.detail.mode]);
-          lines.push(["Total TKA/D (raw)", Utils.formatDisplay(detail.tesRawTotal)]);
+          lines.push(["Total TKA/D", Utils.formatDisplay(detail.tesRawTotal)]);
           lines.push(["Setelah bobot 60%", Utils.formatDisplay(detail.tesWeighted)]);
         } else {
           lines.push(["Mode hitung", result.detail.mode]);
@@ -826,7 +826,7 @@ const tesWeighted = this.round(CONFIG.WEIGHT_TES * tesRawTotal);
           lines.push(["Setelah bobot 60%", Utils.formatDisplay(detail.tesWeighted)]);
         }
 
-        lines.push(["Total Rapor (raw, 4 mapel)", Utils.formatDisplay(detail.raporRawTotal)]);
+        lines.push(["Total Rapor (4 mapel)", Utils.formatDisplay(detail.raporRawTotal)]);
         lines.push(["Setelah bobot 40%", Utils.formatDisplay(detail.raporWeighted)]);
         lines.push(["Rerata B. Indonesia", Utils.formatDisplay(detail.subjectAverages.indo)]);
         lines.push(["Rerata Matematika", Utils.formatDisplay(detail.subjectAverages.mtk)]);
