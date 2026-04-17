@@ -55,12 +55,18 @@
     .zone-SANGAT-AMAN { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
     .zone-PASTI { background: #dfffd6; color: #64748b; border: 1px solid #e2e8f0; }
     .zone-TIDAK-LOLOS { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+	
+
+.zone-locked { background: #f8fafc; color: #64748b; border: 1px dashed #cbd5e1; }
+.progress-amber { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+
+
   </style>
 </head>
 <body class="min-h-screen bg-[#efeae2] text-ink font-body antialiased">
   <div id="app" class="mx-auto min-h-screen max-w-md px-3 pb-28 pt-3 sm:max-w-xl sm:px-5">
     <!-- Header -->
-    <header class="no-print mb-4 flex items-center justify-between" data-screenshot-hide>
+	<header class="no-print sticky top-0 z-50 mb-4 flex items-center justify-between bg-[#efeae2]/90 backdrop-blur px-1 py-2"  data-screenshot-hide>
       <div>
         <p class="text-xs font-semibold uppercase tracking-[0.28em] text-pine/70">SPMB SMAN/SMKN DIY 2026/2027</p>
         <h1 class="font-display text-2xl font-bold text-ink">Simulasi Nilai Gabungan</h1>
@@ -73,8 +79,8 @@
     </header>
 
     <!-- Menu Overlay & Sidebar -->
-    <div id="menuOverlay" class="no-print pointer-events-none fixed inset-0 z-30 bg-ink/35 opacity-0 transition-opacity duration-300" data-screenshot-hide></div>
-    <aside id="sideMenu" class="overflow-y-auto no-print fixed right-0 top-0 z-40 h-full w-72 translate-x-full bg-white p-6 shadow-2xl transition-transform duration-300" data-screenshot-hide aria-hidden="true">
+    <div id="menuOverlay" class="no-print pointer-events-none fixed inset-0 z-[60] bg-ink/35 opacity-0 transition-opacity duration-300" data-screenshot-hide></div>
+    <aside id="sideMenu" class="overflow-y-auto no-print fixed right-0 top-0 z-[70] h-full w-72 translate-x-full bg-white p-6 shadow-2xl transition-transform duration-300" data-screenshot-hide aria-hidden="true">
       <div class="mb-8 flex items-center justify-between">
         <div>
           <p class="text-xs uppercase tracking-[0.24em] text-pine/60">Menu</p>
@@ -1004,28 +1010,36 @@ const SchoolRecommender = {
     return groups;
   },
 
-  /**
-   * Get all recommendations grouped by category AND tier
-   */
-  getAllRecommendations: function(userScore) {
-    return {
-      SMAN_japres: {
-        label: "🏆 SMAN Jalur Prestasi",
-        schools: this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore),
-        grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore))
-      },
-      SMAN_jadomwil: {
-        label: "🏠 SMAN Jalur Domisili",
-        schools: this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore),
-        grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore))
-      },
-      SMK_jadomwil: {
-        label: "🔧 SMKN Jalur Domisili",
-        schools: this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore),
-        grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore))
-      }
-    };
-  },
+
+  
+/**
+ * Get all recommendations grouped by category AND tier
+ * Business rule: Jalur Prestasi requires NG >= 290
+ */
+getAllRecommendations: function(userScore) {
+  // Helper to check if japres is enabled
+  const isJapresEnabled = userScore >= 290;
+  
+  return {
+    SMAN_japres: {
+      label: "🏆 SMAN Jalur Prestasi",
+      disabled: !isJapresEnabled,  // ✅ NEW: disabled flag
+      minScore: 290,               // ✅ NEW: threshold info
+      schools: isJapresEnabled ? this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore) : [],
+      grouped: isJapresEnabled ? this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore)) : { target: [], safe: [], easy: [], risky: [] }
+    },
+    SMAN_jadomwil: {
+      label: "🏠 SMAN Jalur Domisili",
+      schools: this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore),
+      grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore))
+    },
+    SMK_jadomwil: {
+      label: "🔧 SMKN Jalur Domisili",
+      schools: this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore),
+      grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore))
+    }
+  };
+},
 
   /**
    * Render a single school card with proper TOP PICK logic
@@ -1035,7 +1049,7 @@ const SchoolRecommender = {
       <div class="group flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-pine/30 hover:shadow-sm ${isTopPick ? 'ring-2 ring-pine/30 bg-mist/30' : ''}">
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2 flex-wrap">
-            ${isTopPick ? '<span class="inline-flex items-center rounded-full bg-pine/15 px-2 py-0.5 text-[10px] font-bold text-pine">🎯 TOP PICK</span>' : ''}
+            ${isTopPick ? '<span class="inline-flex items-center rounded-full bg-pine/15 px-2 py-0.5 text-[10px] font-bold text-pine">🎯 #1</span>' : ''}
             <p class="truncate text-sm font-medium text-slate-800">${Utils.escapeHtml(school.nama)}</p>
           </div>
           <p class="mt-0.5 text-xs text-slate-500">
@@ -1059,7 +1073,7 @@ const SchoolRecommender = {
     
     // 🎯 TARGET: Sweet spot recommendations (show first, most important)
     if (grouped.target.length > 0) {
-      html += `<div class="mb-3"><p class="text-xs font-semibold text-pine mb-2 flex items-center gap-1">🎯 Target Direkomendasikan</p><div class="space-y-2">`;
+      html += `<div class="mb-3"><p class="text-xs font-semibold text-pine mb-2 flex items-center gap-1">🎯 Sesuaikan Rayon  </p><div class="space-y-2">`;
       grouped.target.forEach((school, idx) => {
         const isTopPick = (categoryKey === 'SMAN_japres' && idx === 0) || 
                          (categoryKey === 'SMAN_jadomwil' && idx === 0 && grouped.target[0]?.zona === 'TIPIS');
@@ -1079,7 +1093,7 @@ const SchoolRecommender = {
     
     // ⚪ EASY: Too easy, last resort
     if (grouped.easy.length > 0) {
-      html += `<details class="mb-3"><summary class="text-xs font-semibold text-slate-500 mb-2 cursor-pointer hover:text-slate-700">⚪ Opsi Terlalu Mudah (klik untuk lihat)</summary><div class="space-y-2 mt-2">`;
+      html += `<details class="mb-3"><summary class="text-xs font-semibold text-slate-500 mb-2 cursor-pointer hover:text-slate-700">⚪ Opsi Terlalu Mudah (buka)</summary><div class="space-y-2 mt-2">`;
       grouped.easy.forEach(school => {
         html += this.renderSchoolCard(school, false);
       });
@@ -1101,48 +1115,93 @@ const SchoolRecommender = {
   /**
    * Render a single recommendation category
    */
-  renderCategory: function(categoryKey, data) {
-    const { label, schools, grouped } = data;
-    
-    if (!schools || schools.length === 0) {
-      return `
-        <div class="mb-6 last:mb-0">
-          <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
-            <span class="rounded-full bg-slate-100 px-2.5 py-10 text-lg">${label}</span>
-          </h3>
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
-            Belum ada sekolah di kategori ini yang sesuai dengan nilai Anda.
-            <p class="mt-1 text-xs">💡 Coba tingkatkan nilai simulasi atau pertimbangkan kategori lain.</p>
-          </div>
-        </div>
-      `;
-    }
-
-    // Find the actual TOP PICK: highest nilai minimum jalur tersebut tahun lalu with zone in sweet spot
-    const topPick = schools.find(s => s.zona === 'TIPIS' || s.zona === 'CUKUP AMAN') || schools[0];
-
+  /**
+ * Render a single recommendation category
+ * Handles disabled state for Jalur Prestasi
+ */
+renderCategory: function(categoryKey, data) {
+  const { label, schools, grouped, disabled, minScore } = data;
+  
+  // ✅ NEW: Handle disabled state (Jalur Prestasi < 290)
+ 
+  // Di dalam renderCategory(), bagian disabled:
+if (disabled) {
+  const currentNG = appState.lastCalculation?.nilaiGabungan || 0;
+  const kurang = Math.max(0, minScore - currentNG);
+  
+  return `
+    <div class="mb-6 last:mb-0">
+      <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-400">
+        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs opacity-60">${label}</span>
+        <span class="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">⚠️ Tertutup</span>
+      </h3>
+      <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+        <p class="text-sm font-semibold text-amber-800">Jalur Prestasi belum tersedia</p>
+        <p class="mt-1 text-sm text-amber-700">
+          Butuh <strong>Nilai Gabungan minimal ${minScore}</strong>.
+        </p>
+        <p class="mt-2 text-xs text-amber-600">
+          Nilai kamu: <strong>${Utils.formatDisplay(currentNG)}</strong>
+          <br>Kurang <strong class="text-red-600">${Utils.formatDisplay(kurang)}</strong> poin lagi.
+        </p>
+      </div>
+    </div>
+  `;
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // Normal rendering when enabled
+  if (!schools || schools.length === 0) {
     return `
       <div class="mb-6 last:mb-0">
         <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
-          <span class="rounded-full bg-slate-100 px-2.5 py-10 text-xl">${label}</span>
-          <span class="text-xs font-normal text-slate-500">(${schools.length} sekolah)</span>
+          <span class="rounded-full bg-slate-100 px-2.5 py-10 text-xs">${label}</span>
         </h3>
-        ${this.renderGroupedSchools(grouped, categoryKey)}
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
+          Belum ada sekolah di kategori ini yang sesuai dengan nilai Anda.
+          <p class="mt-1 text-xs">💡 Coba tingkatkan nilai simulasi atau pertimbangkan kategori lain.</p>
+        </div>
       </div>
     `;
-  },
+  }
+
+  // Find TOP PICK: highest cutoff with zone in sweet spot
+  const topPick = schools.find(s => s.zona === 'TIPIS' || s.zona === 'CUKUP AMAN') || schools[0];
+
+  return `
+    <div class="mb-6 last:mb-0">
+      <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
+        <span class="rounded-full bg-slate-100 px-2.5 py-10 text-xl">${label}</span>
+        <!-- span class="text-xs font-normal text-slate-500">(${schools.length} sekolah)</span -->
+      </h3>
+      ${this.renderGroupedSchools(grouped, categoryKey)}
+    </div>
+  `;
+},
+
+
 
   /**
    * Render all recommendations to DOM
    */
-  render: function(userScore) {
-    const container = DOM.recommendationsContent;
-    if (!container) return;
+render: function(userScore) {
+  const container = DOM.recommendationsContent;
+  if (!container) return;
 
-    const recommendations = this.getAllRecommendations(userScore);
-    const hasAnyResults = Object.values(recommendations).some(cat => cat.schools.length > 0);
+  const recommendations = this.getAllRecommendations(userScore);
+  const hasAnyResults = Object.values(recommendations).some(cat => cat.schools?.length > 0);
+  const isJapresDisabled = recommendations.SMAN_japres?.disabled;
 
-    if (!hasAnyResults) {
+  if (!hasAnyResults && !isJapresDisabled) {
       container.innerHTML = `
         <div class="text-center py-8 text-slate-500 text-sm">
           <p class="font-medium">Belum ada rekomendasi yang cocok.</p>
@@ -1185,7 +1244,21 @@ const SchoolRecommender = {
       `;
       return;
     }
+	
+	
+	// ✅ NEW: Add header notice if japres is disabled
+  const japresNotice = isJapresDisabled ? `
+    <!-- div class="mb-3 rounded-2xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
+      <!-- strong>⚠️ Jalur Prestasi terkunci</strong> — Butuh NG ≥ 290. --> 
+      <!-- Fokus pada Jalur Domisili terlebih dahulu. -->
+    </div -->
+  ` : '';
+  
 
+	
+	
+	
+	
     container.innerHTML = `
       <div class="mb-4 rounded-2xl bg-pine/5 border border-pine/20 p-3 text-xs text-pine">
         <p class="font-semibold">💡 Strategi Memilih:</p>
@@ -1195,6 +1268,7 @@ const SchoolRecommender = {
 		
 		
       </div>
+	  ${japresNotice}
       ${this.renderCategory('SMAN_japres', recommendations.SMAN_japres)}
       ${this.renderCategory('SMAN_jadomwil', recommendations.SMAN_jadomwil)}
       ${this.renderCategory('SMK_jadomwil', recommendations.SMK_jadomwil)}
