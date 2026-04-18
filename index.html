@@ -44,29 +44,12 @@
     }
     .warning-badge { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
     .error-badge { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    /* Zone badge styles */
-    .zone-badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-    .zone-KRITIS { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-    .zone-RAWAN { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; }
-    .zone-SANGAT-TIPIS { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
-    .zone-TIPIS { background: #fefce8; color: #ca8a04; border: 1px solid #fef08a; }
-    .zone-CUKUP-AMAN { background: #f7fee7; color: #65a30d; border: 1px solid #d9f99d; }
-    .zone-AMAN { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
-    .zone-SANGAT-AMAN { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-    .zone-PASTI { background: #dfffd6; color: #64748b; border: 1px solid #e2e8f0; }
-    .zone-TIDAK-LOLOS { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-	
-
-.zone-locked { background: #f8fafc; color: #64748b; border: 1px dashed #cbd5e1; }
-.progress-amber { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
-
-
   </style>
 </head>
 <body class="min-h-screen bg-[#efeae2] text-ink font-body antialiased">
   <div id="app" class="mx-auto min-h-screen max-w-md px-3 pb-28 pt-3 sm:max-w-xl sm:px-5">
     <!-- Header -->
-	<header class="no-print sticky top-0 z-50 mb-4 flex items-center justify-between bg-[#efeae2]/90 backdrop-blur px-1 py-2"  data-screenshot-hide>
+    <header class="no-print mb-4 flex items-center justify-between" data-screenshot-hide>
       <div>
         <p class="text-xs font-semibold uppercase tracking-[0.28em] text-pine/70">SPMB SMAN/SMKN DIY 2026/2027</p>
         <h1 class="font-display text-2xl font-bold text-ink">Simulasi Nilai Gabungan</h1>
@@ -79,8 +62,8 @@
     </header>
 
     <!-- Menu Overlay & Sidebar -->
-    <div id="menuOverlay" class="no-print pointer-events-none fixed inset-0 z-[60] bg-ink/35 opacity-0 transition-opacity duration-300" data-screenshot-hide></div>
-    <aside id="sideMenu" class="overflow-y-auto no-print fixed right-0 top-0 z-[70] h-full w-72 translate-x-full bg-white p-6 shadow-2xl transition-transform duration-300" data-screenshot-hide aria-hidden="true">
+    <div id="menuOverlay" class="no-print pointer-events-none fixed inset-0 z-30 bg-ink/35 opacity-0 transition-opacity duration-300" data-screenshot-hide></div>
+    <aside id="sideMenu" class="no-print fixed right-0 top-0 z-40 h-full w-72 translate-x-full bg-white p-6 shadow-2xl transition-transform duration-300" data-screenshot-hide aria-hidden="true">
       <div class="mb-8 flex items-center justify-between">
         <div>
           <p class="text-xs uppercase tracking-[0.24em] text-pine/60">Menu</p>
@@ -95,100 +78,18 @@
       <nav class="space-y-3">
         <a href="#app" class="block rounded-2xl bg-mist px-4 py-3 font-semibold text-pine">Beranda</a>
         <a href="#calculator" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Simulasi Nilai</a>
-        <a href="#recommendations" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Rekomendasi Sekolah</a>
-
+        <button type="button" class="w-full rounded-2xl border border-dashed border-slate-300 px-4 py-3 text-left text-slate-500">Passing Grade (coming soon)</button>
         <a href="#faq" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">FAQ</a>
         <a href="#tentang" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Tentang</a>
-		
-		<a href="https://tkatkad.github.io/ng/Juknis%20Penerimaan%20Murid%20Baru%20Jenjang%20SMA%20SMK%20dan%20SLB%20TA%202026-2027.pdf" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">FAQ</a>
-		
-		<a href="https://tkatkad.github.io/ng/timeline-sman.jpeg" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Timeline</a>
-		<a href="https://tkatkad.github.io/ng/Cakupan%20Materi%20TKAD%20Tahun%202026%20(1).pdf" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Materi TKAD 2026</a>
-        <button type="button" class="w-full rounded-2xl border border-dashed border-slate-300 px-4 py-3 text-left text-slate-500">Passing Grade 2025:</button>		
-		<a href="https://tkatkad.github.io/ng/passing-grade-terendah-jalur-domisili-wilayah-SMAN-2026.jpeg" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Domwil SMAN</a>
-		
-		<a href="https://tkatkad.github.io/ng/passing-grade-terendah-jalur-domisili-wilayah-dan-jalur-cadangan-SMKN-2026.jpeg" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Domwil SMKN</a>
-		
-		<a href="https://tkatkad.github.io/ng/passing-grade-terendah-jalur-prestasi-SMAN-2026.jpeg" class="block rounded-2xl border border-slate-200 px-4 py-3 text-slate-700">Japres SMAN</a>
-		
-
       </nav>
     </aside>
 
     <main class="space-y-4">
-
-
-
-
-
-
-     
-<!-- 📍 Cek Rayon Domisili Section -->
-<section id="rayonChecker" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
-  <div class="mb-4">
-    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-pine/80">Data KK Siswa</p>
-    <h2 class="font-display text-[1.4rem] font-semibold text-ink">Cek Rayon Sekolah Anda</h2>
-    <p class="mt-1 text-xs text-slate-600">Pilih Kecamatan & Kelurahan untuk melihat daftar SMAN Rayon 1 & 2.</p>
-  </div>
-
-  <!-- Tambahkan di atas form calculator, setelah rayonChecker -->
-<div class="text-center text-xs text-slate-500 mb-2">
-  💡 <strong>Tip:</strong> Isi kecamatan & kelurahan KK siswa di bawah ini untuk rekomendasi yang lebih personal. 
-  Bisa juga dikosongkan untuk melihat rekomendasi semua sekolah di DIY.
-</div>
-
-
-  <form id="rayonForm" class="space-y-3">
-    <div class="grid gap-3 sm:grid-cols-2">
-      <div>
-        <label class="mb-1 block text-xs font-semibold text-slate-700">Kecamatan</label>
-        <select id="kecamatanSelect" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-accent focus:bg-white disabled:opacity-50">
-          <option value="">Pilih Kecamatan</option>
-        </select>
-      </div>
-      <div>
-        <label class="mb-1 block text-xs font-semibold text-slate-700">Kelurahan/Desa</label>
-        <select id="kelurahanSelect" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-accent focus:bg-white disabled:opacity-50" disabled>
-          <option value="">Pilih Kelurahan</option>
-        </select>
-      </div>
-    </div>
-    
-    <button type="button" id="checkRayonBtn" class="w-full rounded-2xl bg-[#128c7e] px-4 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed">
-      Lihat Rayon Sekolah
-    </button>
-  </form>
-
-  <!-- Result Container -->
-  <div id="rayonResult" class="mt-4 hidden">
-    <div class="rounded-2xl border border-slate-200 bg-white p-4 space-y-4">
-      <div class="flex items-center justify-between">
-        <p class="text-sm font-semibold text-ink" id="resultLocation"></p>
-        <span id="rayonCount" class="rounded-full bg-mist px-3 py-1 text-xs font-semibold text-pine"></span>
-      </div>
-      
-      <div id="rayonGroups" class="space-y-3"></div>
-      
-      <div class="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-800 leading-relaxed">
-        <strong>📌 Catatan Juknis:</strong>
-        <ul class="mt-1 space-y-1 list-disc list-inside">
-          <li><strong>Rayon 3:</strong> Seluruh SMAN di DIY yang <em>tidak</em> masuk Rayon 1 & 2.</li>
-          <li><strong>Rayon 4:</strong> Wilayah di luar DIY (kecuali desa perbatasan Jateng).</li>
-          <li><strong>SMKN:</strong> Seluruh wilayah DIY = Rayon 1. Tidak ada pembagian rayon 2/3 untuk SMKN di dalam DIY.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-
       <!-- Calculator Section -->
       <section id="calculator" class="no-print rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
         <div class="mb-4">
           <p class="text-xs font-semibold uppercase tracking-[0.18em] text-pine/80">Input Nilai</p>
-          <h2 class="font-display text-[1.65rem] font-semibold">Isikan tahun kelulusan dan data nilai untuk simulasi:</h2>
+          <h2 class="font-display text-[1.65rem] font-semibold">Isi data untuk simulasi Nilai Gabungan</h2>
         </div>
 
         <form id="calculatorForm" class="space-y-4" novalidate>
@@ -202,7 +103,7 @@
               </label>
               <label class="cursor-pointer">
                 <input class="peer sr-only" type="radio" name="type" value="2025">
-                <span class="block rounded-xl px-3 py-3 text-center text-sm font-semibold text-slate-700 transition peer-checked:bg-white peer-checked:text-ink peer-checked:shadow">Lulusan 2025 / sebelumnya</span>
+                <span class="block rounded-xl px-3 py-3 text-center text-sm font-semibold text-slate-700 transition peer-checked:bg-white peer-checked:text-ink peer-checked:shadow">Lulusan 2025/sebelumnya</span>
               </label>
             </div>
           </div>
@@ -333,60 +234,6 @@
           </div>
         </div>
       </section>
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  <script src="rayon_data.js"></script>
-	  
-<script>
-  // Fallback jika rayon_data.js gagal load
-  if (typeof window.RAYON_DATA === 'undefined') {
-    console.warn('⚠️ rayon_data.js tidak termuat. Menggunakan mode global (tanpa filter rayon).');
-    window.RAYON_DATA = { SMAN_RAYON: [] };
-  }
-</script>
-
-	    
-
-	  
-	  
-	  
-	  
-
-	  
-	  
-
-	  
-	  
-	  
-	  
-
-      <!-- 🎯 NEW: School Recommendations Section -->
-      <section id="recommendations" class="print-card rounded-[28px] border border-[#477458] bg-[#fdfdfd] shadow-card">
-        <div class="bg-[linear-gradient(180deg,_rgba(18,140,126,0.08),_rgba(255,255,255,0.95))] px-5 pb-4 pt-5">
-          <p class="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-pine/80">Rekomendasi</p>
-          <h2 class="font-display text-[1.4rem] font-semibold text-ink">Sekolah yang Direkomendasikan</h2>
-              <p class="mt-1 text-xs text-slate-600">Diurutkan dari sekolah paling kompetitif yang masih bisa ditembus</p>
-
-        </div>
-        
-        <div id="recommendationsContent" class="px-5 pb-5 pt-3">
-          <div class="text-center py-8 text-slate-500 text-sm">
-            <p>Hitung Nilai Gabungan terlebih dahulu untuk melihat rekomendasi sekolah.</p>
-            <p class="mt-1 text-xs">💡 Semakin besar selisih nilai Anda dengan nilai minimum jalur tersebut tahun lalu, semakin aman peluang diterima.</p>
-          </div>
-        </div>
-      </section>
-
-
-
-
-
 
       <!-- Actions -->
       <section class="no-print rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
@@ -418,235 +265,36 @@
             <button id="tiktokShare" type="button" class="rounded-2xl border border-emerald-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition col-span-2 sm:col-span-1">TikTok / YouTube</button>
           </div>
           <div class="mt-2 grid grid-cols-2 gap-2">
-            <button id="copyLink" type="button" class="rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition">Copy Link NG</button>
-            <button id="copySummary" type="button" class="rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition">Copy Ringkasan NG</button>
+            <button id="copyLink" type="button" class="rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition">Copy Link</button>
+            <button id="copySummary" type="button" class="rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition">Copy Ringkasan</button>
           </div>
         </div>
-        <p id="shareHint" class="mt-3 text-sm leading-6 text-slate-600">Tip: manfaatkan mode screenshot untuk tampilan yang lebih bersih saat dibagikan.</p>
+        <p id="shareHint" class="mt-3 text-sm leading-6 text-slate-600">Tip: aktifkan mode screenshot untuk tampilan yang lebih bersih saat dibagikan.</p>
       </section>
 
-<!-- FAQ & About -->
-<section id="faq" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
-  <h2 class="font-display text-2xl font-bold text-ink">FAQ Singkat</h2>
-  
-  <div class="mt-4 space-y-5 text-sm text-slate-700 leading-relaxed">
-    
-    <!-- FAQ 1: Rumus Rapor -->
-    <article class="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
-      <h3 class="font-semibold text-ink text-base">Bagaimana rumus rapor dihitung?</h3>
-      <p class="mt-2 text-slate-600">
-        <strong>R</strong> diambil dari rerata tiap mapel selama SMP Semester 1–5, lalu dijumlahkan: 
-        <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-medium">B. Indonesia + Matematika + B. Inggris + IPA</code>.
-      </p>
-    </article>
-
-    <!-- FAQ 2: Prestasi -->
-    <article class="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
-      <h3 class="font-semibold text-ink text-base">Apakah nilai prestasi ikut dibobot?</h3>
-      <p class="mt-2 text-slate-600">
-        Tidak. Poin prestasi ditambahkan <strong>langsung ke total akhir</strong> setelah pembobotan tes (60%) dan rapor (40%).
-      </p>
-    </article>
-
-    <!-- FAQ 3: Status Resmi -->
-    <article class="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
-      <h3 class="font-semibold text-ink text-base">Apakah hasil ini hasil resmi?</h3>
-      <p class="mt-2 text-slate-600">
-        Ini hanya <strong>simulasi mandiri</strong> berbasis rumus resmi. Verifikasi data, rayon, dan hasil akhir tetap harus melalui laman resmi <a href="https://spmb.jogjaprov.go.id" class="text-pine underline" target="_blank">SPMB DIY</a>.
-      </p>
-    </article>
-
-    <!-- FAQ 4: Cara Membaca Rekomendasi -->
-    <article class="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
-      <h3 class="font-semibold text-ink text-base">Bagaimana cara membaca rekomendasi sekolah?</h3>
-      <p class="mt-2 text-slate-600">
-        Sekolah diurutkan dari yang paling <strong>kompetitif</strong> (cutoff tertinggi) yang masih bisa Anda tembus berdasarkan Nilai Gabungan (NG).
-      </p>
-      
-      <!-- Zone Badges Grid -->
-      <div class="mt-3 grid gap-3">
-        <div>
-          <p class="font-semibold text-red-600 text-sm">❌ Sebaiknya dihindari</p>
-          <div class="mt-1.5 flex flex-wrap gap-1.5">
-            <span class="zone-badge zone-TIDAK-LOLOS">TIDAK LOLOS</span>
+      <!-- FAQ & About -->
+      <section id="faq" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
+        <h2 class="font-display text-2xl font-bold">FAQ Singkat</h2>
+        <div class="mt-3 space-y-3 text-sm text-slate-600">
+          <div>
+            <p class="font-semibold text-ink">Bagaimana rumus rapor dihitung?</p>
+            <p>R diambil dari rerata tiap mapel selama sekolah SMP Semester 1 sampai 5, lalu dijumlahkan: B. Indonesia + Matematika + B. Inggris + IPA.</p>
+          </div>
+          <div>
+            <p class="font-semibold text-ink">Apakah nilai prestasi ikut dibobot?</p>
+            <p>Tidak. Poin prestasi ditambahkan langsung ke total akhir.</p>
+          </div>
+          <div>
+            <p class="font-semibold text-ink">Apakah hasil ini hasil resmi?</p>
+            <p>Ini hanya simulasi mandiri. Verifikasi data tetap harus melalui laman resmi SPMB DIY.</p>
           </div>
         </div>
-        
-        <div>
-          <p class="font-semibold text-orange-600 text-sm">🎯 Pilihan 1 (target / berani)</p>
-          <div class="mt-1.5 flex flex-wrap gap-1.5">
-            <span class="zone-badge zone-KRITIS">KRITIS</span>
-            <span class="zone-badge zone-RAWAN">RAWAN</span>
-            <span class="zone-badge zone-SANGAT-TIPIS">SANGAT TIPIS</span>
-          </div>
-        </div>
-        
-        <div>
-          <p class="font-semibold text-yellow-600 text-sm">⚖️ Pilihan 2 (realistis)</p>
-          <div class="mt-1.5 flex flex-wrap gap-1.5">
-            <span class="zone-badge zone-TIPIS">TIPIS</span>
-            <span class="zone-badge zone-CUKUP-AMAN">CUKUP AMAN</span>
-          </div>
-        </div>
-        
-        <div>
-          <p class="font-semibold text-green-600 text-sm">🛡️ Pilihan 3 (aman / cadangan)</p>
-          <div class="mt-1.5 flex flex-wrap gap-1.5">
-            <span class="zone-badge zone-AMAN">AMAN</span>
-            <span class="zone-badge zone-SANGAT-AMAN">SANGAT AMAN</span>
-            <span class="zone-badge zone-PASTI">PASTI</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="mt-3 rounded-xl bg-slate-50 p-3 text-xs text-slate-600 leading-relaxed">
-        💡 Selain nilai gabungan, sesuaikan pilihan dengan <strong>rayon domisili</strong>, jarak tempuh, dan karakter sekolah (akademik/non-akademik) agar sesuai dengan minat dan gaya belajar anak.
-      </div>
-    </article>
+      </section>
 
-    <!-- FAQ 5: Aturan Rayon -->
-    <article class="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
-      <h3 class="font-semibold text-ink text-base">Bagaimana aturan pemilihan sekolah berdasarkan Rayon?</h3>
-      
-      <div class="mt-3 space-y-4">
-        <!-- SMAN -->
-        <div class="rounded-xl bg-blue-50 border border-blue-200 p-3">
-          <p class="font-semibold text-blue-800 text-sm">🏫 SMAN: Pembagian Rayon</p>
-          <ul class="mt-2 space-y-1.5 text-xs text-slate-700 list-disc list-inside leading-relaxed">
-            <li><strong>Rayon 1:</strong> 3 SMAN terdekat dari kantor kelurahan KK siswa</li>
-            <li><strong>Rayon 2:</strong> 3 SMAN terdekat berikutnya setelah Rayon 1</li>
-            <li><strong>Rayon 3:</strong> SMAN lain di DIY yang tidak termasuk Rayon 1 & 2</li>
-            <li><strong>Rayon 4:</strong> Wilayah di luar DIY (kecuali desa perbatasan)</li>
-          </ul>
-        </div>
-        
-        <!-- SMKN -->
-        <div class="rounded-xl bg-green-50 border border-green-200 p-3">
-          <p class="font-semibold text-green-800 text-sm">🔧 SMKN: Pembagian Rayon</p>
-          <ul class="mt-2 space-y-1.5 text-xs text-slate-700 list-disc list-inside leading-relaxed">
-            <li><strong>Rayon 1:</strong> Seluruh wilayah DIY + desa perbatasan Jateng yang bekerja sama</li>
-            <li><strong>Rayon 2:</strong> Wilayah di luar DIY (kecuali desa perbatasan)</li>
-            <li class="text-green-700 font-semibold mt-1">✅ Artinya: Semua SMKN negeri di DIY = Rayon 1 untuk pendaftar DIY</li>
-          </ul>
-        </div>
-        
-        <!-- Jalur Pendaftaran -->
-        <div>
-          <p class="font-semibold text-pine text-sm">📋 Aturan per Jalur Pendaftaran</p>
-          <ul class="mt-2 space-y-2 text-xs text-slate-700 leading-relaxed">
-            <li>
-              <strong class="text-slate-800">Jalur Domisili Wilayah:</strong><br>
-              <span class="text-slate-600">• SMAN: Prioritas Rayon 1 (sistem urutkan: Rayon 1 > Rayon 2 > dst)</span><br>
-              <span class="text-slate-600">• SMKN: Bebas pilih semua sekolah (semua = Rayon 1)</span>
-            </li>
-            <li>
-              <strong class="text-slate-800">Jalur Afirmasi:</strong><br>
-              <span class="text-slate-600">• Hanya boleh daftar sekolah di <strong>Rayon 1</strong> domisili Anda</span>
-            </li>
-            <li>
-              <strong class="text-slate-800">Jalur Prestasi:</strong><br>
-              <span class="text-slate-600">• SMAN: Hanya untuk domisili di <strong>luar Rayon 1</strong> sekolah tujuan</span><br>
-              <span class="text-slate-600">• SMKN: Terbuka untuk Rayon 1 dan Rayon 2</span>
-            </li>
-          </ul>
-        </div>
-        
-        <!-- Prioritas Seleksi -->
-        <div class="rounded-xl bg-slate-100 p-3 border border-slate-200">
-          <p class="font-semibold text-slate-800 text-sm">🔁 Urutan Prioritas Seleksi (Domisili Wilayah)</p>
-          <ol class="mt-2 space-y-1.5 text-xs text-slate-700 list-decimal list-inside leading-relaxed">
-            <li>Status Rayon (Rayon 1 selalu didahulukan)</li>
-            <li>Nilai Gabungan (jika rayon sama)</li>
-            <li>Pilihan sekolah (Pilihan 1 > Pilihan 2)</li>
-            <li>Waktu pendaftaran (tiebreaker terakhir)</li>
-          </ol>
-        </div>
-      </div>
-      
-      <div class="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-800 leading-relaxed">
-        ⚠️ <strong>Penting:</strong> Rayon dihitung berdasarkan <em>jarak darat</em> dari koordinat kelurahan domisili ke sekolah. Pastikan data domisili sesuai KTP/KK. Cek peta rayon resmi di <a href="https://spmb.jogjaprov.go.id" class="text-pine underline font-medium" target="_blank" rel="noopener">spmb.jogjaprov.go.id</a>.
-      </div>
-    </article>
-
-    <!-- FAQ 6: Cara Cek Rayon 1 -->
-    <article class="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
-      <h3 class="font-semibold text-ink text-base">Bagaimana cara mengetahui sekolah mana yang masuk Rayon 1 domisili saya?</h3>
-      <p class="mt-2 text-slate-600">
-        Cara mengetahuinya berbeda untuk SMAN dan SMKN. Gunakan salah satu dari 3 metode berikut:
-      </p>
-      <ul class="mt-3 space-y-3 text-sm text-slate-700 list-none pl-0">
-        <li class="flex gap-2">
-          <span class="text-pine font-bold">✅</span>
-          <span><strong>Laman Resmi SPMB:</strong> Selama masa <em>Cek NIK</em> (18–29 Mei 2026), login di <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">spmb.jogjaprov.go.id</code>. Sistem otomatis memetakan daftar Rayon 1 & 2 berdasarkan data Kartu Keluarga Anda.</span>
-        </li>
-        <li class="flex gap-2">
-          <span class="text-pine font-bold">📄</span>
-          <span><strong>Tabel Juknis:</strong> Dokumen resmi menyertakan daftar lengkap pembagian wilayah dan koordinat sekolah yang bisa dicek manual.</span>
-        </li>
-        <li class="flex gap-2">
-          <span class="text-pine font-bold">📍</span>
-          <span>
-            <strong>Cek Mandiri (Google Maps):</strong> Salin koordinat sekolah dari Juknis, lalu gunakan fitur <em>"Ukur Jarak"</em> dari lokasi domisili.<br>
-            <span class="mt-1 block text-xs text-slate-600">
-              • <strong>SMAN:</strong> 3 sekolah dengan <em>jarak darat</em> terdekat dari kantor kelurahan KK siswa  = Rayon 1<br>
-              • <strong>SMKN:</strong> Seluruh SMKN di DIY otomatis = Rayon 1
-            </span>
-          </span>
-        </li>
-      </ul>
-    </article>
-
-    <!-- FAQ 7: Bukan Rayon 1 = Rayon 2? -->
-    <article class="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
-      <h3 class="font-semibold text-ink text-base">Apakah sekolah yang bukan Rayon 1 saya pasti termasuk Rayon 2?</h3>
-      <p class="mt-2 text-red-600 font-semibold">❌ Jawabannya: Tidak selalu. Tergantung jenjang sekolah.</p>
-      
-      <div class="mt-4 grid gap-4">
-        <!-- SMAN Box -->
-        <div class="rounded-xl bg-blue-50 border border-blue-200 p-4">
-          <p class="font-semibold text-blue-800 text-sm">🏫 Untuk SMAN: Bisa jadi Rayon 2 atau Rayon 3</p>
-          <ul class="mt-2 space-y-1.5 text-xs text-slate-700 list-disc list-inside leading-relaxed">
-            <li><strong>Rayon 1:</strong> 3 SMAN terdekat dari kantor kelurahan KK siswa</li>
-            <li><strong>Rayon 2:</strong> 3 SMAN terdekat berikutnya</li>
-            <li><strong>Rayon 3:</strong> Seluruh SMAN lain di DIY yang tidak masuk Rayon 1 & 2</li>
-            <li><strong>Rayon 4:</strong> Wilayah di luar DIY</li>
-          </ul>
-          <p class="mt-2 text-xs text-slate-600 italic">
-            Jadi, jika bukan Rayon 1, sekolah tersebut bisa masuk Rayon 2 <em>atau</em> justru Rayon 3.
-          </p>
-        </div>
-        
-        <!-- SMKN Box -->
-        <div class="rounded-xl bg-green-50 border border-green-200 p-4">
-          <p class="font-semibold text-green-800 text-sm">🔧 Untuk SMKN: Tidak ada Rayon 2/3 untuk warga DIY</p>
-          <ul class="mt-2 space-y-1.5 text-xs text-slate-700 list-disc list-inside leading-relaxed">
-            <li><strong>Rayon 1:</strong> Seluruh wilayah DIY (termasuk desa perbatasan Jateng)</li>
-            <li><strong>Rayon 2:</strong> Wilayah di luar DIY</li>
-          </ul>
-          <p class="mt-2 text-xs text-slate-700 font-medium">
-            ✅ Artinya: <strong>seluruh SMKN negeri di DIY otomatis berstatus Rayon 1</strong> untuk pendaftar yang berdomisili di DIY.
-          </p>
-        </div>
-      </div>
-      
-      <div class="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-800 leading-relaxed">
-        ⚠️ <strong>Penting:</strong> Status rayon sangat berpengaruh di <strong>Jalur Domisili Wilayah</strong>. Sistem selalu memprioritaskan pendaftar Rayon 1 lebih tinggi dari Rayon 2/3, meskipun nilai pendaftar luar rayon lebih besar.
-      </div>
-    </article>
-
-  </div>
-</section>
-
-
-<section id="tentang" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card">
+      <section id="tentang" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card">
         <h2 class="font-display text-2xl font-bold">Website apa ini?</h2>
-        <p class="mt-3 text-sm leading-6 text-slate-600">Link website <a href="https://tkatkad.github.io/ng/" class="text-pine hover:underline">https://tkatkad.github.io/ng/</a> adalah sebuah Kalkulator Simulator NG berbasis rumus resmi Nilai Gabungan SPMB SMAN/SMKN DIY 2026/2027.</p>
-</section>
-
-
-
-
-
+        <p class="mt-3 text-sm leading-6 text-slate-600">Link website <a href="https://tkatkad.github.io/ng/" class="text-pine hover:underline">https://tkatkad.github.io/ng/</a> adalah sebuah Kalkulator Simulator berbasis rumus resmi Nilai Gabungan SPMB SMAN/SMKN DIY 2026/2027.</p>
+      </section>
     </main>
   </div>
 
@@ -655,198 +303,9 @@
   </button>
 
   <script>
-
     /**
- * Normalisasi nama sekolah agar match antara rayon_data dan SCHOOL_DATA
- * "SMAN 1 Depok" → "sma negeri 1 depok"
- * "SMA NEGERI 1 DEPOK" → "sma negeri 1 depok"
- */
-function normalizeSchoolName(name) {
-  return String(name || "")
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, " ")           // hapus spasi ganda
-    .replace(/\b(sman|smkn)\b/gi, "sma negeri")  // SMAN/SMKN → SMA NEGERI
-    .replace(/\bsma\s+negeri\b/gi, "sma negeri") // standarisasi
-    .replace(/\bsmk\s+negeri\b/gi, "smk negeri"); // standarisasi SMK
-}
-
-
-
-    /**
-     * ============================================
-     * SCHOOL RECOMMENDATION DATA (nilai minimum jalur tersebut tahun lalu Values)
-     * Format: [nilai minimum jalur tersebut tahun lalu_score, "School Name"]
-     * Data sample - bisa diperbarui sesuai sumber resmi
-     * ============================================
-     */
-    const SCHOOL_DATA = {
-      // SMKN - Jalur Domisili Wilayah
-      SMK_jadomwil: [
-  [97.76, "SMKN 1 GIRIMULYO"],
-  [117.76, "SMKN 1 SAMIGALUH"],
-  [128.40, "SMKN 1 TEPUS"],
-  [159.81, "SMKN 1 TANJUNGSARI"],
-  [161.94, "SMKN 1 GIRISUBO"],
-  [173.22, "SMKN 1 KOKAP"],
-  [175.20, "SMKN 1 GEDANGSARI"],
-  [176.57, "SMKN 1 TEMON"],
-  [179.44, "SMKN 1 DLINGO"],
-  [182.31, "SMKN 1 PURWOSARI"],
-  [191.26, "SMKN 1 SANDEN"],
-  [193.02, "SMKN 1 PONJONG"],
-  [198.58, "SMKN 1 PANJATAN"],
-  [199.13, "SMKN 1 NGLIPAR"],
-  [199.85, "SMKN 1 SAPTOSARI"],
-  [202.35, "SMKN 1 PANDAK"],
-  [203.28, "SMKN 1 PAJANGAN"],
-  [204.20, "SMKN 1 NGAWEN"],
-  [205.37, "SMKN 1 NANGGULAN"],
-  [208.28, "SMKN 1 SEDAYU"],
-  [208.31, "SMKN 1 PUNDONG"],
-  [209.08, "SMKN 2 SEWON"],
-  [209.11, "SMKN 1 SEWON"],
-  [210.08, "SMKN 2 GODEAN"],
-  [210.17, "SMKN 1 TEMPEL"],
-  [210.56, "SMKN 1 CANGKRINGAN"],
-  [211.73, "SMKN 1 SEYEGAN"],
-  [212.33, "SMKN 4 YOGYAKARTA"],
-  [212.47, "SMKN 5 YOGYAKARTA"],
-  [213.10, "SMKN 1 PLERET"],
-  [213.29, "SMKN 3 WONOSARI"],
-  [214.64, "SMKN 1 KALASAN"],
-  [216.10, "SMKN 6 YOGYAKARTA"],
-  [217.82, "SMKN 7 YOGYAKARTA"],
-  [217.83, "SMKN 1 GODEAN"],
-  [219.35, "SMKN 1 BANTUL"],
-  [219.77, "SMKN 1 WONOSARI"],
-  [220.46, "SMKN 3 YOGYAKARTA"],
-  [220.55, "SMKN 2 PENGASIH"],
-  [220.70, "SMKN 2 WONOSARI"],
-  [221.53, "SMKN 1 PENGASIH"],
-  [223.37, "SMKN 1 DEPOK"],
-  [224.70, "SMKN 1 YOGYAKARTA"],
-  [230.07, "SMKN 2 YOGYAKARTA"],
-  [251.15, "SMKN 2 DEPOK"]
-      ],
-      // SMAN - Jalur Domisili Wilayah
-      SMAN_jadomwil: [
-  [121.94, "SMAN 1 RONGKOP"],
-  [139.52, "SMAN 1 PATUK"],
-  [171.53, "SMAN 1 GALUR"],
-  [171.81, "SMAN 1 GIRIMULYO"],
-  [172.07, "SMAN 1 TANJUNGSARI"],
-  [172.24, "SMAN 1 KOKAP"],
-  [173.75, "SMAN 1 SEMANU"],
-  [177.93, "SMAN 1 DLINGO"],
-  [182.33, "SMAN 1 PLAYEN"],
-  [183.83, "SMAN 1 TEMON"],
-  [187.59, "SMAN 1 PANGGANG"],
-  [194.17, "SMAN 1 KRETEK"],
-  [196.14, "SMAN 1 SAMIGALUH"],
-  [198.83, "SMAN 1 SRANDAKAN"],
-  [204.65, "SMAN 1 KALIBAWANG"],
-  [206.24, "SMAN 1 TEMPEL KAB. SLEMAN"],
-  [206.65, "SMAN 1 CANGKRINGAN KAB. SLEMAN"],
-  [207.22, "SMAN 1 IMOGIRI"],
-  [208.88, "SMAN 1 PAJANGAN"],
-  [210.72, "SMAN 1 TURI KAB. SLEMAN"],
-  [210.83, "SMAN 1 PLERET"],
-  [210.89, "SMAN 1 SEMIN"],
-  [211.98, "SMAN 1 KARANGMOJO"],
-  [212.58, "SMAN 1 SENTOLO"],
-  [215.95, "SMAN 1 MINGGIR SLEMAN"],
-  [220.13, "SMAN 1 SEDAYU"],
-  [220.44, "SMAN 1 LENDAH"],
-  [220.71, "SMAN 2 PLAYEN"],
-  [222.12, "SMAN 3 BANTUL"],
-  [226.17, "SMAN 1 BAMBANG LIPURO"],
-  [230.51, "SMAN 1 PIYUNGAN"],
-  [234.09, "SMAN 1 NGAGLIK"],
-  [237.49, "SMAN 1 PUNDONG"],
-  [238.25, "SMAN 1 SEYEGAN KAB. SLEMAN"],
-  [242.05, "SMAN 1 JETIS"],
-  [243.39, "SMAN 2 BANGUNTAPAN"],
-  [245.15, "SMAN 1 PAKEM KAB. SLEMAN"],
-  [247.88, "SMAN 1 NGEMPLAK KAB. SLEMAN"],
-  [250.58, "SMAN 1 PENGASIH"],
-  [251.67, "SMAN 1 WONOSARI"],
-  [255.73, "SMAN 1 SANDEN"],
-  [259.45, "SMAN 1 GAMPING KAB. SLEMAN"],
-  [262.11, "SMAN 1 PRAMBANAN KAB. SLEMAN"],
-  [264.91, "SMAN 2 SLEMAN"],
-  [266.10, "SMAN 2 WATES"],
-  [269.22, "SMAN 1 SEWON"],
-  [270.96, "SMAN 4 YOGYAKARTA"],
-  [276.56, "SMAN 1 MLATI KAB. SLEMAN"],
-  [279.55, "SMAN 2 NGAGLIK KAB. SLEMAN"],
-  [281.05, "SMAN 2 BANTUL"],
-  [282.11, "SMAN 1 KASIHAN"],
-  [287.06, "SMAN 10 YOGYAKARTA"],
-  [292.42, "SMAN 1 BANGUNTAPAN"],
-  [292.62, "SMAN 11 YOGYAKARTA"],
-  [293.71, "SMAN 1 WATES"],
-  [297.50, "SMAN 1 SLEMAN KAB. SLEMAN"],
-  [299.06, "SMAN 1 BANTUL"],
-  [305.97, "SMAN 1 DEPOK"],
-  [307.41, "SMAN 1 KALASAN KAB. SLEMAN"],
-  [313.63, "SMAN 2 YOGYAKARTA"],
-  [316.69, "SMAN 1 GODEAN KAB. SLEMAN"],
-  [323.15, "SMAN 7 YOGYAKARTA"],
-  [325.17, "SMAN 9 YOGYAKARTA"],
-  [329.53, "SMAN 5 YOGYAKARTA"],
-  [339.85, "SMAN 6 YOGYAKARTA"],
-  [343.58, "SMAN 1 YOGYAKARTA"],
-  [349.71, "SMAN 8 YOGYAKARTA"],
-  [359.53, "SMAN 3 YOGYAKARTA"]
-      ],
-      // SMAN - Jalur Prestasi
-      SMAN_japres: [
-  [290.16, "SMAN 1 KASIHAN"],
-  [290.47, "SMAN 1 PRAMBANAN SLEMAN"],
-  [290.48, "SMAN 1 PENGASIH"],
-  [290.49, "SMAN 2 NGAGLIK SLEMAN"],
-  [290.54, "SMAN 2 WATES"],
-  [290.63, "SMAN 1 SANDEN"],
-  [290.64, "SMAN 2 BANGUNTAPAN"],
-  [290.93, "SMAN 1 SEYEGAN SLEMAN"],
-  [290.96, "SMAN 1 PAKEM SLEMAN"],
-  [292.32, "SMAN 1 BAMBANGLIPURO"],
-  [293.46, "SMAN 2 PLAYEN"],
-  [293.86, "SMAN 1 PANGGANG"],
-  [294.02, "SMAN 1 JETIS"],
-  [294.65, "SMAN 1 GAMPING"],
-  [294.66, "SMAN 2 SLEMAN"],
-  [294.89, "SMAN 1 MLATI SLEMAN"],
-  [296.25, "SMAN 1 BANGUNTAPAN"],
-  [302.39, "SMAN 1 WONOSARI"],
-  [303.02, "SMAN 10 YOGYAKARTA"],
-  [305.32, "SMAN 1 KALASAN SLEMAN"],
-  [306.89, "SMAN 1 SEDAYU"],
-  [307.48, "SMAN 1 WATES"],
-  [309.52, "SMAN 1 DEPOK"],
-  [310.51, "SMAN 1 SLEMAN"],
-  [311.98, "SMAN 3 BANTUL"],
-  [312.89, "SMAN 4 YOGYAKARTA"],
-  [315.56, "SMAN 2 BANTUL"],
-  [324.33, "SMAN 11 YOGYAKARTA"],
-  [330.45, "SMAN 7 YOGYAKARTA"],
-  [334.30, "SMAN 1 GODEAN SLEMAN"],
-  [335.83, "SMAN 1 BANTUL"],
-  [340.18, "SMAN 2 YOGYAKARTA"],
-  [343.02, "SMAN 5 YOGYAKARTA"],
-  [348.02, "SMAN 9 YOGYAKARTA"],
-  [357.36, "SMAN 6 YOGYAKARTA"],
-  [362.79, "SMAN 8 YOGYAKARTA"],
-  [365.73, "SMAN 1 YOGYAKARTA"],
-  [373.00, "SMAN 3 YOGYAKARTA"]
-      ]
-    };
-
-    /**
-     * ============================================
      * CONFIGURATION CONSTANTS
-     * ============================================
+     * Semua magic number dipusatkan di sini untuk maintainability
      */
     const CONFIG = {
       // Bobot perhitungan
@@ -889,34 +348,27 @@ function normalizeSchoolName(name) {
         popupShown: "popup_shown_ng"
       },
       
-      // Popup/ads configuration
+      // Popup/ads configuration (untuk transparansi)
       POPUP: {
-        ENABLED: true,  // ⚠️ Default false untuk pengalaman user yang lebih baik
+        ENABLED: true,  // ⚠️ Set true hanya jika memang diperlukan
         TRIGGER_CLICK_COUNT: 2,
         BASE_URL: "https://s.shopee.co.id/",
-        TOKENS: ["6L0YJ9fl3Z", "9Ke9srjdHP", "20rZ9TW0fj", "AKWh4vitvZ", "6pwoucArK0", "8KlchVytti"]
+        TOKENS: ["AA4ETmAQ4H", "BHdCfr7IV", "7KknkDC8va", "5L7I0EGxuc"]
       },
       
       // UI/UX
       DEBOUNCE_DELAY_MS: 200,
-      DECIMAL_PLACES_DISPLAY: 2,
-      
-      // Recommendation settings
-      RECOMMENDATION: {
-        MAX_SCHOOLS_PER_CATEGORY: 10,
-        MIN_SELIHSH_FOR_DISPLAY: -5  // Tampilkan sekolah dengan selisih minimal -5 (sedikit di bawah nilai minimum jalur tersebut tahun lalu)
-      }
+      DECIMAL_PLACES_DISPLAY: 2
     };
 
     /**
-     * ============================================
      * APP STATE MANAGEMENT
-     * ============================================
+     * Memisahkan state dari DOM untuk testability dan maintainability
      */
     const appState = {
       screenshotMode: false,
       currentType: "2026",
-      isManualCalculating: false,
+	  isManualCalculating: false,
       formData: {},
       lastCalculation: null,
       validationErrors: [],
@@ -927,40 +379,57 @@ function normalizeSchoolName(name) {
 
     /**
      * DOM ELEMENT CACHE
+     * Cache semua element sekali di init untuk performance
      */
     const DOM = {};
 
     /**
-     * ============================================
      * UTILITY FUNCTIONS
-     * ============================================
      */
     const Utils = {
+      /**
+       * Parse string ke number dengan validasi ketat
+       * @param {string|number} value 
+       * @returns {{valid: boolean, value: number|null, error: string|null}}
+       */
       parseNumber: function(value) {
         if (value === null || value === undefined || value === "") {
-          return { valid: true, value: null, error: null };
+          return { valid: true, value: null, error: null }; // Empty is valid for optional fields
         }
+        
         const parsed = Number(value);
+        
         if (!Number.isFinite(parsed)) {
           return { valid: false, value: null, error: "Nilai harus berupa angka yang valid" };
         }
+        
         if (Number.isNaN(parsed)) {
           return { valid: false, value: null, error: "Nilai tidak boleh NaN" };
         }
+        
         return { valid: true, value: parsed, error: null };
       },
 
+      /**
+       * Round hanya untuk display, bukan untuk kalkulasi internal
+       */
       formatDisplay: function(num, decimals = CONFIG.DECIMAL_PLACES_DISPLAY) {
         if (typeof num !== "number" || !Number.isFinite(num)) return "0.00";
         return Number(num.toFixed(decimals)).toFixed(decimals);
       },
 
+      /**
+       * Sanitize string untuk output ke DOM (mencegah XSS)
+       */
       escapeHtml: function(text) {
         const div = document.createElement("div");
         div.textContent = String(text);
         return div.innerHTML;
       },
 
+      /**
+       * Debounce function untuk performance input handling
+       */
       debounce: function(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -973,22 +442,33 @@ function normalizeSchoolName(name) {
         };
       },
 
+      /**
+       * Generate compact string untuk URL sharing
+       */
       encodeToCompactString: function(data, type) {
         const orderedFields = this.getCompactFieldOrder(type);
         return orderedFields.map((key) => {
           const value = data[key];
+          // Preserve empty string, don't convert to "0"
           return (value === "" || value === null || value === undefined) ? "" : String(value);
         }).join("#");
       },
 
+      /**
+       * Decode compact string dari URL
+       * FIX: "" tetap "", tidak jadi 0
+       */
       decodeFromCompactString: function(compactString, type) {
         const values = String(compactString || "").split("#");
         const orderedFields = this.getCompactFieldOrder(type);
         const decoded = { type };
+
         orderedFields.forEach((key, index) => {
           const rawValue = values[index];
+          // FIX: Jangan konversi empty string ke 0
           decoded[key] = (rawValue !== undefined && rawValue !== "") ? rawValue : "";
         });
+
         return decoded;
       },
 
@@ -1000,72 +480,75 @@ function normalizeSchoolName(name) {
         return [...leadingFields, ...raporKeys, "prestasi"];
       },
 
+      /**
+       * Generate share URL untuk berbagai platform
+       */
       generateShareUrl: function(platform, text, url) {
         const encodedText = encodeURIComponent(text);
         const encodedUrl = encodeURIComponent(url);
+        
         const shareUrls = {
           whatsapp: `https://wa.me/?text=${encodedText}`,
           telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
           x: `https://x.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
           threads: `https://www.threads.net/intent/post?text=${encodedText} ${encodedUrl}`,
           facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`,
+          // TikTok/YouTube tidak support direct share text, fallback ke copy
           tiktok: null,
           youtube: null
         };
+        
         return shareUrls[platform] || null;
-      },
-
-      copyToClipboard: function(text, successMessage) {
-        navigator.clipboard?.writeText(text)
-          .then(() => {
-            if (DOM.shareHint) {
-              DOM.shareHint.textContent = successMessage || "Berhasil disalin!";
-              setTimeout(() => {
-                DOM.shareHint.textContent = "Tip: aktifkan mode screenshot untuk tampilan yang lebih bersih saat dibagikan.";
-              }, 3000);
-            }
-          })
-          .catch(() => {
-            if (DOM.shareHint) {
-              DOM.shareHint.textContent = "Gagal menyalin. Coba pilih dan copy manual.";
-            }
-          });
       }
     };
 
     /**
-     * ============================================
      * VALIDATION MODULE
-     * ============================================
+     * Return structured errors, jangan throw untuk flow normal
      */
     const Validator = {
+      /**
+       * Validate single field value
+       */
       validateField: function(value, label, { required = true, min = CONFIG.MIN_SCORE, max = CONFIG.MAX_SCORE_PER_SUBJECT } = {}) {
         const parseResult = Utils.parseNumber(value);
+        
         if (!parseResult.valid) {
           return { valid: false, error: `${label}: ${parseResult.error}` };
         }
+        
+        // Handle empty for optional fields
         if (parseResult.value === null) {
           if (required) {
             return { valid: false, error: `${label} harus diisi` };
           }
           return { valid: true, value: null, error: null };
         }
+        
+        // Range validation
         if (parseResult.value < min || parseResult.value > max) {
           return { valid: false, error: `${label} harus antara ${min} - ${max}` };
         }
+        
         return { valid: true, value: parseResult.value, error: null };
       },
 
+      /**
+       * Validate complete form data
+       * @returns {{valid: boolean, errors: string[], normalizedData: object|null}}
+       */
       validateFormData: function(rawData) {
         const errors = [];
         const normalized = { type: rawData.type };
         const is2026 = rawData.type === "2026";
         
+        // Validate type
         if (rawData.type !== "2026" && rawData.type !== "2025") {
           errors.push("Tahun lulusan tidak valid");
           return { valid: false, errors, normalizedData: null };
         }
 
+        // Validate tes/ASPD fields based on type
         const tesFields = is2026 ? CONFIG.TES_KEYS_2026 : CONFIG.ASPD_KEYS_2025;
         const fieldLabels = {
           tka_mtk: "Matematika (TKA)", tka_indo: "Bahasa Indonesia (TKA)",
@@ -1075,100 +558,156 @@ function normalizeSchoolName(name) {
 
         tesFields.forEach((key) => {
           const result = this.validateField(rawData[key], fieldLabels[key], { required: true });
-          if (!result.valid) errors.push(result.error);
-          else normalized[key] = result.value;
+          if (!result.valid) {
+            errors.push(result.error);
+          } else {
+            normalized[key] = result.value;
+          }
         });
 
+        // Validate rapor fields (all required)
         CONFIG.RAPOR_SUBJECTS.forEach((subject) => {
           CONFIG.RAPOR_SEMESTERS.forEach((semester) => {
             const key = `rapor_${subject.key}_s${semester}`;
             const label = `${subject.label} Semester ${semester}`;
             const result = this.validateField(rawData[key], label, { required: true });
-            if (!result.valid) errors.push(result.error);
-            else normalized[key] = result.value;
+            if (!result.valid) {
+              errors.push(result.error);
+            } else {
+              normalized[key] = result.value;
+            }
           });
         });
 
+        // Validate prestasi (optional, different max)
         const prestasiResult = this.validateField(rawData.prestasi, "Prestasi", { 
-          required: false, max: CONFIG.MAX_PRESTASI 
+          required: false, 
+          max: CONFIG.MAX_PRESTASI 
         });
-        if (!prestasiResult.valid) errors.push(prestasiResult.error);
-        else normalized.prestasi = prestasiResult.value ?? 0;
+        if (!prestasiResult.valid) {
+          errors.push(prestasiResult.error);
+        } else {
+          normalized.prestasi = prestasiResult.value ?? 0;
+        }
 
-        if (errors.length > 0) return { valid: false, errors, normalizedData: null };
+        if (errors.length > 0) {
+          return { valid: false, errors, normalizedData: null };
+        }
+
         return { valid: true, errors: [], normalizedData: normalized };
       },
 
+      /**
+       * Check for sanity warnings (non-blocking)
+       */
       generateWarnings: function(normalizedData, calculationResult) {
         const warnings = [];
+        
+        // Check if NG exceeds expected max
         if (calculationResult.nilaiGabungan > CONFIG.MAX_NG_WITH_PRESTASI) {
           warnings.push(`Nilai Gabungan (${Utils.formatDisplay(calculationResult.nilaiGabungan)}) melebihi batas wajar. Periksa input Anda.`);
         } else if (calculationResult.nilaiGabungan > CONFIG.MAX_NG_WITHOUT_PRESTASI && normalizedData.prestasi === 0) {
-          warnings.push(`Nilai Gabungan tinggi tanpa poin prestasi. Pastikan input rapor/ASPD/TKA/TKAD sudah benar.`);
+          warnings.push(`Nilai Gabungan tinggi tanpa poin prestasi. Pastikan input rapor/tes sudah benar.`);
         }
+        
+        // Check individual components
         if (calculationResult.detail.tesRawTotal > CONFIG.MAX_TES_RAW_TOTAL) {
           warnings.push(`Total nilai tes (${Utils.formatDisplay(calculationResult.detail.tesRawTotal)}) melebihi maks ${CONFIG.MAX_TES_RAW_TOTAL}`);
         }
+        
         if (calculationResult.detail.raporRawTotal > CONFIG.MAX_RAPOR_RAW_TOTAL) {
           warnings.push(`Total nilai rapor (${Utils.formatDisplay(calculationResult.detail.raporRawTotal)}) melebihi maks ${CONFIG.MAX_RAPOR_RAW_TOTAL}`);
         }
+        
         return warnings;
       }
     };
 
     /**
-     * ============================================
-     * CALCULATION ENGINE (Pure Functions)
-     * ============================================
+     * CALCULATION ENGINE
+     * Pure functions, no DOM access
      */
     const Calculator = {
-      round: function(n) { return Math.round(n * 100) / 100; },
+	
+	round: function(n) {
+  return Math.round(n * 100) / 100;
+},
 
+
+      /**
+       * Calculate average per rapor subject
+       */
       calculateSubjectAverage: function(normalizedData, subjectKey) {
         const values = CONFIG.RAPOR_SEMESTERS.map(
           (sem) => normalizedData[`rapor_${subjectKey}_s${sem}`]
         );
-        const avg = values.reduce((sum, val) => sum + val, 0) / CONFIG.RAPOR_SEMESTERS.length;
-        return this.round(avg);
+          const avg = values.reduce((sum, val) => sum + val, 0) / CONFIG.RAPOR_SEMESTERS.length;
+  return this.round(avg);
       },
 
+      /**
+       * Calculate total rapor score (sum of 4 subject averages)
+       * Max: 400
+       */
       calculateRaporTotal: function(normalizedData) {
-        const total = CONFIG.RAPOR_SUBJECTS.reduce((total, subject) => {
-          return total + this.calculateSubjectAverage(normalizedData, subject.key);
-        }, 0);
-        return this.round(total);
-      },
+  const total = CONFIG.RAPOR_SUBJECTS.reduce((total, subject) => {
+    return total + this.calculateSubjectAverage(normalizedData, subject.key);
+  }, 0);
+  return this.round(total);
+},
 
+      /**
+       * Calculate tes score based on graduation year
+       */
       calculateTesRawTotal: function(normalizedData) {
         if (normalizedData.type === "2026") {
+          // TKA/TKAD: simple sum of 4 subjects
           return CONFIG.TES_KEYS_2026.reduce((sum, key) => sum + normalizedData[key], 0);
         } else {
+          // ASPD: weighted transformation
           const total = (
-            normalizedData.aspd_read * CONFIG.ASPD.READ +
-            normalizedData.aspd_sci * CONFIG.ASPD.SCI +
-            normalizedData.aspd_num * CONFIG.ASPD.NUM
-          );
-          return this.round(total);
+  normalizedData.aspd_read * CONFIG.ASPD.READ +
+  normalizedData.aspd_sci * CONFIG.ASPD.SCI +
+  normalizedData.aspd_num * CONFIG.ASPD.NUM
+);
+return this.round(total);
         }
       },
 
+      /**
+       * Main calculation function
+       * @returns {{nilaiGabungan: number, detail: object}}
+       */
       compute: function(normalizedData) {
         const raporRawTotal = this.calculateRaporTotal(normalizedData);
         const tesRawTotal = this.calculateTesRawTotal(normalizedData);
-        const raporWeighted = this.round(CONFIG.WEIGHT_RAPOR * raporRawTotal);
-        const tesWeighted = this.round(CONFIG.WEIGHT_TES * tesRawTotal);
+        
+		
+		const raporWeighted = this.round(CONFIG.WEIGHT_RAPOR * raporRawTotal);
+const tesWeighted = this.round(CONFIG.WEIGHT_TES * tesRawTotal);
+		
         const prestasi = normalizedData.prestasi ?? 0;
-        const nilaiGabungan = this.round(tesWeighted + raporWeighted + prestasi);
+        
+        const nilaiGabungan = this.round(
+  tesWeighted + raporWeighted + prestasi
+);
 
         return {
           nilaiGabungan,
           detail: {
-            tesRawTotal, raporRawTotal, prestasi,
-            tesWeighted, raporWeighted,
+            // Raw values (before weighting)
+            tesRawTotal,
+            raporRawTotal,
+            prestasi,
+            // Weighted values (after applying bobot)
+            tesWeighted,
+            raporWeighted,
+            // Subject averages for display
             subjectAverages: CONFIG.RAPOR_SUBJECTS.reduce((acc, subject) => {
               acc[subject.key] = this.calculateSubjectAverage(normalizedData, subject.key);
               return acc;
             }, {}),
+            // Metadata
             mode: normalizedData.type === "2026" ? "TKA + TKAD" : "ASPD",
             aspdTransformed: normalizedData.type === "2025" ? tesRawTotal : null
           }
@@ -1176,16 +715,14 @@ function normalizeSchoolName(name) {
       }
     };
 
-    
-
-
-
     /**
-     * ============================================
-     * RENDERER MODULE (DOM Updates)
-     * ============================================
+     * RENDERER MODULE
+     * Handle all DOM updates, uses textContent for security
      */
     const Renderer = {
+      /**
+       * Render rapor grid inputs
+       */
       renderRaporGrid: function() {
         const grid = DOM.raporGrid;
         if (!grid) return;
@@ -1212,6 +749,9 @@ function normalizeSchoolName(name) {
         `).join("");
       },
 
+      /**
+       * Update form visibility based on graduation year
+       */
       updateFormVisibility: function(type) {
         const is2026 = type === "2026";
         DOM.fields2026?.classList.toggle("hidden", !is2026);
@@ -1220,36 +760,49 @@ function normalizeSchoolName(name) {
         DOM.tesLabel.textContent = is2026 ? "Tes Akademik (60%)" : "ASPD (60%)";
       },
 
+      /**
+       * Display validation errors
+       */
       renderErrors: function(errors) {
         if (!errors || errors.length === 0) {
           DOM.errorBox?.classList.add("hidden");
           DOM.errorBox.textContent = "";
           return;
         }
+        
         DOM.errorBox.innerHTML = errors.map((msg) => 
           `<div>• ${Utils.escapeHtml(msg)}</div>`
         ).join("");
         DOM.errorBox?.classList.remove("hidden");
       },
 
+      /**
+       * Display warnings (non-blocking)
+       */
       renderWarnings: function(warnings) {
         if (!warnings || warnings.length === 0) {
           DOM.warningBox?.classList.add("hidden");
           DOM.sanityWarning?.classList.add("hidden");
           return;
         }
+        
         const warningText = warnings.map((w) => `• ${Utils.escapeHtml(w)}`).join(" ");
         DOM.warningBox.textContent = warningText;
         DOM.warningBox?.classList.remove("hidden");
+        
         DOM.sanityWarning.textContent = `⚠️ Periksa input`;
         DOM.sanityWarning?.classList.remove("hidden");
       },
 
+      /**
+       * Render calculation results
+       */
       renderResults: function(type, result) {
         const { nilaiGabungan, detail } = result;
         const tesDominant = detail.tesWeighted > detail.raporWeighted;
         const tesLabel = type === "2026" ? "Tes Akademik" : "ASPD";
 
+        // Update main display - use textContent for security
         DOM.nilaiGabunganValue.textContent = Utils.formatDisplay(nilaiGabungan);
         DOM.tesValue.textContent = Utils.formatDisplay(detail.tesWeighted);
         DOM.raporValue.textContent = Utils.formatDisplay(detail.raporWeighted);
@@ -1260,7 +813,9 @@ function normalizeSchoolName(name) {
           ? `Kontribusi terbesar: ${tesLabel}`
           : "Kontribusi terbesar: Rapor";
 
+        // Render detail lines
         const lines = [];
+        
         if (type === "2026") {
           lines.push(["Mode hitung", result.detail.mode]);
           lines.push(["Total TKA/D", Utils.formatDisplay(detail.tesRawTotal)]);
@@ -1270,6 +825,7 @@ function normalizeSchoolName(name) {
           lines.push(["Total ASPD terkonversi", Utils.formatDisplay(detail.aspdTransformed)]);
           lines.push(["Setelah bobot 60%", Utils.formatDisplay(detail.tesWeighted)]);
         }
+
         lines.push(["Total Rapor (4 mapel)", Utils.formatDisplay(detail.raporRawTotal)]);
         lines.push(["Setelah bobot 40%", Utils.formatDisplay(detail.raporWeighted)]);
         lines.push(["Rerata B. Indonesia", Utils.formatDisplay(detail.subjectAverages.indo)]);
@@ -1286,6 +842,9 @@ function normalizeSchoolName(name) {
         `).join("");
       },
 
+      /**
+       * Clear all result displays
+       */
       clearResults: function() {
         DOM.nilaiGabunganValue.textContent = "0.00";
         DOM.tesValue.textContent = "0.00";
@@ -1299,9 +858,8 @@ function normalizeSchoolName(name) {
     };
 
     /**
-     * ============================================
      * STORAGE MODULE
-     * ============================================
+     * Handle localStorage with error handling
      */
     const Storage = {
       saveFormData: function(data) {
@@ -1325,8 +883,11 @@ function normalizeSchoolName(name) {
       },
 
       getClickCount: function() {
-        try { return Number(localStorage.getItem(CONFIG.STORAGE.calcClickCount) || 0); }
-        catch { return 0; }
+        try {
+          return Number(localStorage.getItem(CONFIG.STORAGE.calcClickCount) || 0);
+        } catch {
+          return 0;
+        }
       },
 
       incrementClickCount: function() {
@@ -1334,7 +895,9 @@ function normalizeSchoolName(name) {
           const next = this.getClickCount() + 1;
           localStorage.setItem(CONFIG.STORAGE.calcClickCount, String(next));
           return next;
-        } catch { return 0; }
+        } catch {
+          return 0;
+        }
       },
 
       clearAll: function() {
@@ -1347,9 +910,8 @@ function normalizeSchoolName(name) {
     };
 
     /**
-     * ============================================
-     * POPUP MODULE (Optional & Transparent)
-     * ============================================
+     * POPUP MODULE (Transparan & Optional)
+     * ⚠️ Hanya aktif jika CONFIG.POPUP.ENABLED = true
      */
     const PopupManager = {
       getRandomURL: function() {
@@ -1358,46 +920,126 @@ function normalizeSchoolName(name) {
         return BASE_URL + token;
       },
 
-      openPopUnder: function() {
-        if (!CONFIG.POPUP.ENABLED) return;
-        if (localStorage.getItem(CONFIG.STORAGE.popupShown) === "1") return;
+      openPopUnderOLDER: function() {
+        // Early exit if disabled or already shown
+        if (!CONFIG.POPUP.ENABLED || appState.popupShown) {
+          return;
+        }
 
         try {
           const url = this.getRandomURL();
           const popup = window.open(url, "_blank", "noopener,noreferrer");
-          localStorage.setItem(CONFIG.STORAGE.popupShown, "1");
-          appState.popupShown = true;
+          
           if (popup) {
-            setTimeout(() => { popup.blur?.(); window.focus?.(); }, 100);
+            appState.popupShown = true;
+            // Pop-under behavior: blur popup, focus main window
+            setTimeout(() => {
+              popup.blur?.();
+              window.focus?.();
+            }, 100);
           }
         } catch (e) {
           console.warn("Popup blocked or failed:", e);
         }
       },
+	  
+	  
+	  openPopUnderOLD: function() {
+  if (!CONFIG.POPUP.ENABLED) return;
+
+  if (localStorage.getItem(CONFIG.STORAGE.popupShown) === "1") {
+    return;
+  }
+
+  try {
+    const url = this.getRandomURL();
+    const popup = window.open(url, "_blank", "noopener,noreferrer");
+
+    // 🔥 langsung mark (hindari spam retry)
+    localStorage.setItem(CONFIG.STORAGE.popupShown, "1");
+
+    if (popup) {
+      setTimeout(() => {
+        popup.blur?.();
+        window.focus?.();
+      }, 100);
+    }
+  } catch (e) {
+    console.warn("Popup blocked or failed:", e);
+  }
+},
+
+
+openPopUnder: function() {
+  if (!CONFIG.POPUP.ENABLED) return;
+
+  if (localStorage.getItem(CONFIG.STORAGE.popupShown) === "1") {
+    return;
+  }
+
+  try {
+    const url = this.getRandomURL();
+    const popup = window.open(url, "_blank", "noopener,noreferrer");
+
+    // 🔥 sinkronkan KEDUA state
+    localStorage.setItem(CONFIG.STORAGE.popupShown, "1");
+    appState.popupShown = true;
+
+    if (popup) {
+      setTimeout(() => {
+        popup.blur?.();
+        window.focus?.();
+      }, 100);
+    }
+  } catch (e) {
+    console.warn("Popup blocked or failed:", e);
+  }
+},
+
 
       handleUserClick: function() {
-        const next = Storage.incrementClickCount();
-        appState.clickCount = next;
-        if (next === CONFIG.POPUP.TRIGGER_CLICK_COUNT && !appState.popupShown) {
-          this.openPopUnder();
-        }
-      }
+			const next = Storage.incrementClickCount(); // single source of truth
+			appState.clickCount = next;
+
+			if (next === CONFIG.POPUP.TRIGGER_CLICK_COUNT && !appState.popupShown) {
+			this.openPopUnder();
+			}
+		}
+		
+		
+
+
+		
+		
+		
     };
 
+
+
+
+
+
     /**
-     * ============================================
      * MAIN APP CONTROLLER
-     * ============================================
+     * Orchestrates all modules
      */
     const App = {
+      /**
+       * Collect form data from DOM
+       */
       collectFormData: function() {
         const data = { type: appState.currentType };
+        
         document.querySelectorAll("[data-field]").forEach((input) => {
           data[input.dataset.field] = input.value;
         });
+        
         return data;
       },
 
+      /**
+       * Apply form data to DOM inputs
+       */
       applyFormData: function(data) {
         if (data.type === "2025" || data.type === "2026") {
           const radio = document.querySelector(`input[name="type"][value="${data.type}"]`);
@@ -1407,6 +1049,7 @@ function normalizeSchoolName(name) {
             Renderer.updateFormVisibility(data.type);
           }
         }
+        
         document.querySelectorAll("[data-field]").forEach((input) => {
           if (data[input.dataset.field] !== undefined) {
             input.value = data[input.dataset.field];
@@ -1414,11 +1057,15 @@ function normalizeSchoolName(name) {
         });
       },
 
+      /**
+       * Sync URL query params with current state
+       */
       syncQueryString: function() {
         try {
           const params = new URLSearchParams();
           params.set("type", appState.currentType);
           params.set("d", Utils.encodeToCompactString(appState.formData, appState.currentType));
+          
           const url = new URL(window.location.href);
           url.search = params.toString();
           window.history.replaceState({}, "", url);
@@ -1427,16 +1074,21 @@ function normalizeSchoolName(name) {
         }
       },
 
+      /**
+       * Apply query params from URL on load
+       */
       applyQueryParams: function() {
         try {
           const params = new URLSearchParams(window.location.search);
           const type = params.get("type") === "2025" ? "2025" : "2026";
+          
           if (type !== appState.currentType) {
             appState.currentType = type;
             const radio = document.querySelector(`input[name="type"][value="${type}"]`);
             if (radio) radio.checked = true;
             Renderer.updateFormVisibility(type);
           }
+          
           const compactData = params.get("d");
           if (compactData) {
             const decoded = Utils.decodeFromCompactString(compactData, type);
@@ -1447,103 +1099,132 @@ function normalizeSchoolName(name) {
         }
       },
 
+      /**
+       * Main calculation handler
+       */
+
+	   
       handleCalculate: function({ forceErrors = false } = {}) {
-        appState.isManualCalculating = true;
+	  
+	    appState.isManualCalculating = true;
+        // Collect and validate
         const rawData = this.collectFormData();
         const validation = Validator.validateFormData(rawData);
         
+        // Show errors if forced or if user has started filling
         const hasStarted = Object.values(rawData).some((v) => v !== "" && v !== null);
         if (!validation.valid && (forceErrors || hasStarted)) {
           Renderer.renderErrors(validation.errors);
           Renderer.clearResults();
-
           return null;
         }
         
-        Renderer.renderErrors([]);
+        Renderer.renderErrors([]); // Clear errors
+        
+        // Calculate
         const result = Calculator.compute(validation.normalizedData);
+        
+        // Generate and show warnings
         const warnings = Validator.generateWarnings(validation.normalizedData, result);
         Renderer.renderWarnings(warnings);
+        
+        // Render results
         Renderer.renderResults(rawData.type, result);
         
-        // 🎯 Render school recommendations
-
-        RayonAwareRecommender.render(result.nilaiGabungan);
-        
+        // Update state and storage
         appState.formData = rawData;
         appState.lastCalculation = result;
         Storage.saveFormData(rawData);
         this.syncQueryString();
-        PopupManager.handleUserClick();
         
-        setTimeout(() => appState.isManualCalculating = false, 300);
+        // Handle popup (if enabled)
+        PopupManager.handleUserClick();
+		 setTimeout(() => appState.isManualCalculating = false, 300);
+        
         return { rawData, result };
       },
 
+      /**
+       * Debounced auto-calculate for better UX
+       */
       handleAutoCalculate: Utils.debounce(function() {
+        // Only auto-calc if form is complete enough
         const rawData = App.collectFormData();
         const validation = Validator.validateFormData(rawData);
-        if (appState.isManualCalculating) return;
 		
-		
-
-
+		if (appState.isManualCalculating) return;
         
         if (validation.valid) {
           const result = Calculator.compute(validation.normalizedData);
           const warnings = Validator.generateWarnings(validation.normalizedData, result);
           Renderer.renderWarnings(warnings);
           Renderer.renderResults(rawData.type, result);
-          // 🎯 Auto-update recommendations on valid input
-
-          
-
-            
-		  RayonAwareRecommender.render(result.nilaiGabungan); // ✅ auto-update  
-		  
-		  appState.lastCalculation = result;
+          appState.lastCalculation = result;
         }
+		
+		
       }, CONFIG.DEBOUNCE_DELAY_MS),
 
+      /**
+       * Reset form to initial state
+       */
       handleReset: function() {
-        document.querySelectorAll("[data-field]").forEach((input) => { input.value = ""; });
+        document.querySelectorAll("[data-field]").forEach((input) => {
+          input.value = "";
+        });
+        
         const defaultRadio = document.querySelector('input[name="type"][value="2026"]');
         if (defaultRadio) {
           defaultRadio.checked = true;
           appState.currentType = "2026";
           Renderer.updateFormVisibility("2026");
         }
+        
         Renderer.renderErrors([]);
         Renderer.renderWarnings([]);
         Renderer.clearResults();
-
+        
+        // Reset state
         appState.formData = {};
         appState.lastCalculation = null;
         appState.clickCount = 0;
         appState.popupShown = false;
+        
+        // Clear storage
         Storage.clearAll();
         this.syncQueryString();
       },
 
+      /**
+       * Toggle screenshot mode
+       */
       toggleScreenshotMode: function() {
         appState.screenshotMode = !appState.screenshotMode;
         document.body.classList.toggle("screenshot-mode", appState.screenshotMode);
+        
         document.querySelectorAll("[data-screenshot-hide]").forEach((node) => {
           node.classList.toggle("hidden", appState.screenshotMode);
         });
+        
         DOM.screenshotButton.textContent = appState.screenshotMode 
           ? "Keluar Screenshot" 
           : "Mode Screenshot";
         DOM.screenshotExitButton?.classList.toggle("hidden", !appState.screenshotMode);
+        
         DOM.shareHint.textContent = appState.screenshotMode
           ? "Mode screenshot aktif. Gunakan fitur tangkap layar browser."
           : "Tip: aktifkan mode screenshot untuk tampilan yang lebih bersih.";
+        
         window.scrollTo({ top: 0, behavior: "smooth" });
       },
 
+      /**
+       * Generate share text
+       */
       buildShareText: function(result, type) {
         const modeLabel = type === "2026" ? "Lulusan 2026" : "Lulusan 2025 atau sebelumnya";
         const tesLabel = type === "2026" ? "TKA/TKAD" : "ASPD";
+        
         return [
           `📊 Nilai Gabungan SPMB DIY: ${Utils.formatDisplay(result.nilaiGabungan)}`,
           "",
@@ -1552,43 +1233,50 @@ function normalizeSchoolName(name) {
           `📚 Rapor: ${Utils.formatDisplay(result.detail.raporWeighted)}`,
           `🏆 Prestasi: ${Utils.formatDisplay(result.detail.prestasi)}`,
           "",
-          "Cek simulasi & rekomendasi sekolah:",
+          "Cek simulasi kamu juga:",
           window.location.href
         ].join("\n");
       },
 
+      /**
+       * Handle share button click
+       */
       handleShare: function(platform) {
         if (!appState.lastCalculation) {
           DOM.shareHint.textContent = "Hitung nilai terlebih dahulu sebelum membagikan.";
           return;
         }
+        
         const text = this.buildShareText(appState.lastCalculation, appState.currentType);
         const url = window.location.href;
         
         if (platform === "copyLink") {
-          Utils.copyToClipboard(url, "Link simulasi NG anda berhasil disalin.");
+          Utils.copyToClipboard(url, "Link simulasi berhasil disalin.");
           return;
         }
+        
         if (platform === "copySummary") {
-          Utils.copyToClipboard(text, "Ringkasan hasil NG anda berhasil disalin.");
+          Utils.copyToClipboard(text, "Ringkasan hasil berhasil disalin.");
           return;
         }
+        
         const shareUrl = Utils.generateShareUrl(platform, text, url);
+        
         if (shareUrl) {
           window.open(shareUrl, "_blank", "noopener,noreferrer");
         } else {
-          Utils.copyToClipboard(`${text}\n\n${url}`, "Link dan ringkasan NG telah disalin. Silakan paste manual.");
+          // Fallback for platforms without direct share (TikTok/YouTube)
+          Utils.copyToClipboard(`${text}\n\n${url}`, "Link dan ringkasan disalin. Silakan paste manual.");
           DOM.shareHint.textContent = "Platform ini tidak mendukung share langsung. Konten telah disalin ke clipboard.";
         }
       }
     };
 
     /**
-     * ============================================
      * INITIALIZATION
-     * ============================================
      */
     function initDOMCache() {
+      // Cache all DOM elements once
       Object.assign(DOM, {
         body: document.body,
         menuButton: document.getElementById("menuButton"),
@@ -1623,13 +1311,12 @@ function normalizeSchoolName(name) {
         tiktokShare: document.getElementById("tiktokShare"),
         copyLink: document.getElementById("copyLink"),
         copySummary: document.getElementById("copySummary"),
-        shareHint: document.getElementById("shareHint"),
-        // 🎯 New: Recommendations
-        recommendationsContent: document.getElementById("recommendationsContent")
+        shareHint: document.getElementById("shareHint")
       });
     }
 
     function bindEvents() {
+      // Menu toggle
       const openMenu = () => {
         DOM.sideMenu?.classList.remove("translate-x-full");
         DOM.menuOverlay?.classList.remove("pointer-events-none", "opacity-0");
@@ -1637,6 +1324,7 @@ function normalizeSchoolName(name) {
         DOM.sideMenu?.setAttribute("aria-hidden", "false");
         DOM.body?.classList.add("menu-open");
       };
+      
       const closeMenu = () => {
         DOM.sideMenu?.classList.add("translate-x-full");
         DOM.menuOverlay?.classList.add("pointer-events-none", "opacity-0");
@@ -1649,6 +1337,7 @@ function normalizeSchoolName(name) {
       DOM.closeMenuButton?.addEventListener("click", closeMenu);
       DOM.menuOverlay?.addEventListener("click", closeMenu);
 
+      // Form type change
       document.querySelectorAll('input[name="type"]').forEach((radio) => {
         radio.addEventListener("change", (e) => {
           appState.currentType = e.target.value;
@@ -1657,25 +1346,48 @@ function normalizeSchoolName(name) {
         });
       });
 
+      // Input handling with debounce
       DOM.form?.addEventListener("input", (e) => {
         if (e.target.dataset.field) {
           Storage.saveFormData(App.collectFormData());
-          App.handleAutoCalculate();
+          App.handleAutoCalculate(); // Debounced auto-calc
         }
       });
 
-      DOM.calculateButton?.addEventListener("click", () => {
-        const btn = DOM.calculateButton;
-        if (!btn) return;
-        btn.disabled = true;
-        App.handleCalculate({ forceErrors: true });
-        setTimeout(() => { btn.disabled = false; }, 300);
+      // Calculate button
+	  DOM.calculateButton?.addEventListener("click", () => {
+		const btn = DOM.calculateButton;
+		if (!btn) return;
+
+		// Prevent spam click
+		btn.disabled = true;
+
+		App.handleCalculate({ forceErrors: true });
+          //Storage.incrementClickCount();//perlu ini kah?
+
+			// Re-enable setelah delay
+			setTimeout(() => {
+				btn.disabled = false;
+			}, 300);
+		});
+
+
+
+      // Reset button
+      DOM.resetButton?.addEventListener("click", () => {
+        App.handleReset();
       });
 
-      DOM.resetButton?.addEventListener("click", () => { App.handleReset(); });
-      DOM.screenshotButton?.addEventListener("click", () => { App.toggleScreenshotMode(); });
-      DOM.screenshotExitButton?.addEventListener("click", () => { App.toggleScreenshotMode(); });
+      // Screenshot toggle
+      DOM.screenshotButton?.addEventListener("click", () => {
+        App.toggleScreenshotMode();
+      });
+      
+      DOM.screenshotExitButton?.addEventListener("click", () => {
+        App.toggleScreenshotMode();
+      });
 
+      // Share buttons
       DOM.whatsappShare?.addEventListener("click", () => App.handleShare("whatsapp"));
       DOM.telegramShare?.addEventListener("click", () => App.handleShare("telegram"));
       DOM.xShare?.addEventListener("click", () => App.handleShare("x"));
@@ -1685,6 +1397,7 @@ function normalizeSchoolName(name) {
       DOM.copyLink?.addEventListener("click", () => App.handleShare("copyLink"));
       DOM.copySummary?.addEventListener("click", () => App.handleShare("copySummary"));
 
+      // Auto-advance on Enter (for better UX)
       document.querySelectorAll('input[type="number"]').forEach((input, index, inputs) => {
         input.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
@@ -1694,6 +1407,7 @@ function normalizeSchoolName(name) {
         });
       });
 
+      // Event delegation for rapor grid (performance)
       DOM.raporGrid?.addEventListener("input", (e) => {
         if (e.target.dataset.field?.startsWith("rapor_")) {
           Storage.saveFormData(App.collectFormData());
@@ -1702,594 +1416,73 @@ function normalizeSchoolName(name) {
       });
     }
 
-/**
- * ============================================
- * 📍 RAYON CHECKER MODULE (Dynamic from rayon_data.js)
- * ============================================
- */
-
-/**
- * 📍 RAYON CHECKER MODULE
- * Membaca data dari window.RAYON_DATA.SMAN_RAYON
- */
-const RayonChecker = {
-  lookupMap: new Map(),
-  kecamatans: new Set(),
-  kelurahansByKec: {},
-
-
-  
-  init() {
-    if (!window.RAYON_DATA?.SMAN_RAYON) {
-      console.warn("⚠️ Data rayon belum termuat. Pastikan <script src='rayon_data.js'> ada sebelum script utama.");
-      return;
-    }
-
-    // Build optimized lookup (O(n))
-    window.RAYON_DATA.SMAN_RAYON.forEach(entry => {
-      const key = `${entry.k}|${entry.d}`;
-      this.lookupMap.set(key, { r1: entry.r1, r2: entry.r2 });
-      this.kecamatans.add(entry.k);
-      if (!this.kelurahansByKec[entry.k]) this.kelurahansByKec[entry.k] = [];
-      if (!this.kelurahansByKec[entry.k].includes(entry.d)) {
-        this.kelurahansByKec[entry.k].push(entry.d);
-      }
-    });
-
-    // Sort for UX consistency
-    const sortedKec = Array.from(this.kecamatans).sort();
-    for (const kec in this.kelurahansByKec) this.kelurahansByKec[kec].sort();
-
-    this.populateDropdowns(sortedKec);
-    this.bindEvents();
-  },
-
-  populateDropdowns(sortedKec) {
-    const kecSelect = document.getElementById("kecamatanSelect");
-    if (!kecSelect) return;
-    sortedKec.forEach(kec => {
-      const opt = document.createElement("option");
-      opt.value = kec;
-      opt.textContent = kec;
-      kecSelect.appendChild(opt);
-    });
-  },
-
-  bindEvents() {
-    const kecSelect = document.getElementById("kecamatanSelect");
-    const kelSelect = document.getElementById("kelurahanSelect");
-    const btn = document.getElementById("checkRayonBtn");
-
-    kecSelect?.addEventListener("change", () => {
-      kelSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-      kelSelect.disabled = true;
-      const selected = kecSelect.value;
-      if (selected && this.kelurahansByKec[selected]) {
-        this.kelurahansByKec[selected].forEach(kel => {
-          const opt = document.createElement("option");
-          opt.value = kel;
-          opt.textContent = kel;
-          kelSelect.appendChild(opt);
+    // Utility: Copy to clipboard with feedback
+    Utils.copyToClipboard = function(text, successMessage) {
+      navigator.clipboard?.writeText(text)
+        .then(() => {
+          if (DOM.shareHint) {
+            DOM.shareHint.textContent = successMessage || "Berhasil disalin!";
+            setTimeout(() => {
+              DOM.shareHint.textContent = "Tip: aktifkan mode screenshot untuk tampilan yang lebih bersih saat dibagikan.";
+            }, 3000);
+          }
+        })
+        .catch(() => {
+          if (DOM.shareHint) {
+            DOM.shareHint.textContent = "Gagal menyalin. Coba pilih dan copy manual.";
+          }
         });
-        kelSelect.disabled = false;
-      }
-    });
-
-    btn?.addEventListener("click", () => {
-      const kec = kecSelect.value;
-      const kel = kelSelect.value;
-      if (!kec || !kel) return alert("Silakan pilih Kecamatan & Kelurahan terlebih dahulu.");
-      this.render(kec, kel);
-    });
-  },
-
-  render(kec, kel) {
-
-
-    const data = this.lookupMap.get(`${kec}|${kel}`);
-    const container = document.getElementById("rayonResult");
-    const header = document.getElementById("resultLocation");
-    const groups = document.getElementById("rayonGroups");
-
-
-
-
-
-
-    if (!data) {
-      container.classList.remove("hidden");
-      groups.innerHTML = `<p class="text-center text-sm text-slate-500 py-2">Data tidak ditemukan.</p>`;
-      return;
-    }
-
-    container.classList.remove("hidden");
-    header.textContent = `📍 ${kel}, ${kec}`;
-    
-    groups.innerHTML = `
-      ${this.renderGroup("🎯 Rayon 1 (Prioritas Utama untuk pilihan di Jalur Domisili anda)", data.r1, "zone-AMAN", "3 SMAN terdekat dari kantor kelurahan KK siswa")}
-      ${this.renderGroup("📍 Rayon 2 (Alternatif untuk pilihan di Jalur Prestasi anda)", data.r2, "zone-CUKUP-AMAN", "3 SMAN terdekat berikutnya")}
-    `;
-    container.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  },
-
-  renderGroup(title, schools, badgeClass, desc) {
-    if (!schools?.length) return "";
-    const list = schools.map(s => 
-      `<li class="py-1.5 px-3 rounded-lg bg-white border border-slate-200 text-sm text-slate-800 flex items-center gap-2 shadow-sm">
-        <span class="h-1.5 w-1.5 rounded-full bg-pine"></span>${Utils.escapeHtml(s)}
-      </li>`
-    ).join("");
-    
-    return `
-      <div class="mb-3 last:mb-0">
-        <div class="flex items-center justify-between mb-2">
-          <h3 class="text-sm font-semibold text-ink">${title}</h3>
-          <span class="rounded-full ${badgeClass} px-2 py-0.5 text-[10px] font-bold">${schools.length} sekolah</span>
-        </div>
-        <p class="text-xs text-slate-500 mb-2">${desc}</p>
-        <ul class="space-y-1.5">${list}</ul>
-      </div>
-    `;
-  }
-};
-
-/**
- * ============================================
- * 🎯 RAYON-AWARE SCHOOL RECOMMENDER
- * Use Case: 
- * - Jika lokasi diisi → filter berdasarkan rayon
- * - Jika lokasi kosong → mode global (semua sekolah)
- * ============================================
- */
-/**
- * ============================================
- * 🎯 RAYON-AWARE SCHOOL RECOMMENDER (FIXED)
- * Priority: Rayon > Selisih > Zone
- * ============================================
- */
-const RayonAwareRecommender = {
-  userLocation: null,
-
-  setUserLocation(kecamatan, kelurahan) {
-    if (!window.RAYON_DATA?.SMAN_RAYON) return false;
-    const entry = window.RAYON_DATA.SMAN_RAYON.find(
-      e => e.k === kecamatan && e.d === kelurahan
-    );
-    if (!entry) return false;
-    this.userLocation = {
-      kecamatan,
-      kelurahan,
-      rayon1: new Set(entry.r1),
-      rayon2: new Set(entry.r2)
     };
-    return true;
-  },
 
-
-
-  /**
- * Cek status rayon untuk SMAN (SMKN selalu rayon1 untuk DIY)
- * ✅ FIX: Gunakan normalisasi nama untuk matching case-insensitive
- */
-getRayonStatus(schoolName, isSMKN = false) {
-  if (isSMKN) return "rayon1"; // SMKN: semua DIY = Rayon 1
-  if (!this.userLocation) return "unknown";
-  
-  // ✅ Normalisasi nama sekolah untuk matching
-  const normalizedName = normalizeSchoolName(schoolName);
-  
-  const { rayon1, rayon2 } = this.userLocation;
-  
-  // Cek Rayon 1 dengan normalisasi
-  for (const school of rayon1) {
-    if (normalizeSchoolName(school) === normalizedName) {
-      return "rayon1";
-    }
-  }
-  
-  // Cek Rayon 2 dengan normalisasi
-  for (const school of rayon2) {
-    if (normalizeSchoolName(school) === normalizedName) {
-      return "rayon2";
-    }
-  }
-    
-  console.log('🔍 Rayon Match:', {
-    input: schoolName,
-    normalized: normalizedName,
-    rayon1Match: Array.from(rayon1).some(s => normalizeSchoolName(s) === normalizedName),
-    rayon2Match: Array.from(rayon2).some(s => normalizeSchoolName(s) === normalizedName)
-  });
-
-  
-  return "rayon3"; // SMAN lain di DIY
-},
-
-
-
-  getZoneInfo(selisih) {
-    if (selisih < 0) return { label: "TIDAK LOLOS", color: "zone-TIDAK-LOLOS", priority: -1 };
-    if (selisih < 0.5) return { label: "TIPIS", color: "zone-TIPIS", priority: 4 };
-    if (selisih < 2) return { label: "CUKUP AMAN", color: "zone-CUKUP-AMAN", priority: 3 };
-    if (selisih < 5) return { label: "AMAN", color: "zone-AMAN", priority: 2 };
-    return { label: "SANGAT AMAN", color: "zone-SANGAT-AMAN", priority: 1 };
-  },
-
-  /**
-   * ✅ FILTER: Jalur Domisili = semua rayon valid
-   *           Jalur Prestasi SMAN = exclude Rayon 1
-   */
-  filterByLocation(schoolData, jalur, isSMKN = false) {
-    if (!this.userLocation) return schoolData;
-    
-    return schoolData.filter(([cutoff, nama]) => {
-      const rayon = this.getRayonStatus(nama, isSMKN);
+    /**
+     * Bootstrap
+     */
+    function init() {
+      // 1. Cache DOM
+      initDOMCache();
       
-      if (jalur === "jadomwil") {
-        return true; // Semua rayon valid untuk domisili
+      // 2. Render static parts
+      Renderer.renderRaporGrid();
+      
+      // 3. Load saved state
+      const savedData = Storage.loadFormData();
+      appState.clickCount = Storage.getClickCount();
+      
+      if (Object.keys(savedData).length > 0) {
+        App.applyFormData(savedData);
       }
       
-      if (jalur === "japres" && !isSMKN) {
-        // ✅ Prestasi SMAN: exclude Rayon 1
-        return rayon !== "rayon1";
+      // 4. Apply URL params (override saved if present)
+      App.applyQueryParams();
+      
+      // 5. Bind events
+      bindEvents();
+      
+      // 6. Initial visibility
+      Renderer.updateFormVisibility(appState.currentType);
+      
+      // 7. Auto-calc if data is complete
+      const rawData = App.collectFormData();
+      const validation = Validator.validateFormData(rawData);
+      if (validation.valid) {
+        const result = Calculator.compute(validation.normalizedData);
+        Renderer.renderResults(rawData.type, result);
+        appState.lastCalculation = result;
       }
       
-      return true;
-    });
-  },
-
-  /**
-   * ✅ SORTING UTAMA: Rayon Priority FIRST
-   * Rayon 1 = 300, Rayon 2 = 200, Rayon 3 = 100
-   */
-  rankSchools(schoolData, userScore, isJapres = false) {
-    return schoolData
-      .map(([cutoff, nama]) => {
-        const selisih = +(userScore - cutoff).toFixed(2);
-        const zone = this.getZoneInfo(selisih);
-        const rayonStatus = this.getRayonStatus(nama, false);
-        
-        // ✅ Rayon priority score
-        const rayonPriority = {
-          "rayon1": isJapres ? -100 : 300, // ❌ Rayon 1 tidak valid untuk Japres
-          "rayon2": 200,
-          "rayon3": 100,
-          "unknown": 0
-        }[rayonStatus] || 0;
-        
-        return { nama, cutoff, selisih, zone, rayonStatus, rayonPriority };
-      })
-      .sort((a, b) => {
-        // 1️⃣ Rayon priority DESC (utama)
-        if (b.rayonPriority !== a.rayonPriority) {
-          return b.rayonPriority - a.rayonPriority;
-        }
-        // 2️⃣ Selisih ASC (dalam rayon sama)
-        if (a.selisih !== b.selisih) {
-          return a.selisih - b.selisih;
-        }
-        // 3️⃣ Zone priority DESC
-        return b.zone.priority - a.zone.priority;
+      console.log("✅ App initialized | Config:", {
+        weights: { tes: CONFIG.WEIGHT_TES, rapor: CONFIG.WEIGHT_RAPOR },
+        maxValues: { tes: CONFIG.MAX_TES_RAW_TOTAL, rapor: CONFIG.MAX_RAPOR_RAW_TOTAL, ng: CONFIG.MAX_NG_WITH_PRESTASI },
+        popupEnabled: CONFIG.POPUP.ENABLED
       });
-  },
-
-  /**
-   * ✅ BADGE: Tampilkan status rayon dengan jelas
-   */
-  renderRayonBadge(rayonStatus, isSMKN = false, isJapres = false) {
-    if (!this.userLocation) return "";
-    
-    if (isSMKN) {
-      return '<span class="zone-badge zone-AMAN">Rayon 1 ✓</span>';
     }
-    
-    if (isJapres) {
-      if (rayonStatus === "rayon1") {
-        return '<span class="zone-badge zone-locked">Rayon 1 ⛔</span>';
-      }
-      if (rayonStatus === "rayon2") {
-        return '<span class="zone-badge zone-CUKUP-AMAN">Rayon 2 ✓</span>';
-      }
-      return '<span class="zone-badge zone-TIPIS">Rayon 3</span>';
-    }
-    
-    // Jalur Domisili
-    if (rayonStatus === "rayon1") {
-      return '<span class="zone-badge zone-AMAN">🎯 Rayon 1 Anda</span>';
-    }
-    if (rayonStatus === "rayon2") {
-      return '<span class="zone-badge zone-CUKUP-AMAN">Rayon 2</span>';
-    }
-    return '<span class="zone-badge zone-TIPIS">Rayon 3</span>';
-  },
 
-  /**
-   * ✅ CARD: Tampilkan badge + info rayon
-   */
-  renderSchoolCard(school, isTopPick, isSMKN = false, isJapres = false) {
-    const rayonStatus = this.getRayonStatus(school.nama, isSMKN);
-    const rayonBadge = this.renderRayonBadge(rayonStatus, isSMKN, isJapres);
-    
-    return `
-      <div class="group flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-pine/30 hover:shadow-sm ${isTopPick ? 'ring-2 ring-pine/30 bg-mist/30' : ''}">
-        <div class="min-w-0 flex-1">
-          <div class="flex items-center gap-2 flex-wrap">
-            ${isTopPick ? '<span class="inline-flex items-center rounded-full bg-pine/15 px-2 py-0.5 text-[10px] font-bold text-pine">🎯 Rekomendasi</span>' : ''}
-            <p class="truncate text-sm font-medium text-slate-800">${Utils.escapeHtml(school.nama)}</p>
-          </div>
-          <p class="mt-0.5 text-xs text-slate-500">
-            Minim: <strong class="text-slate-700">${Utils.formatDisplay(school.cutoff)}</strong>
-            <span class="mx-1 text-slate-300">•</span>
-            Selisih: <strong class="${school.selisih >= 0 ? 'text-green-600' : 'text-red-600'}">${school.selisih >= 0 ? '+' : ''}${Utils.formatDisplay(school.selisih)}</strong>
-          </p>
-        </div>
-        <div class="text-right shrink-0 flex flex-col items-end gap-1">
-          ${rayonBadge}
-          <span class="zone-badge ${school.zone.color}">${Utils.escapeHtml(school.zone.label)}</span>
-        </div>
-      </div>
-    `;
-  },
-
-  /**
-   * ✅ RENDER CATEGORY: Filter + Sort + Render dengan logika rayon
-   */
-  renderCategory(categoryKey, schools, userScore, isSMKN = false) {
-    const labels = {
-      SMAN_jadomwil: "🏠 SMAN Jalur Domisili",
-      SMK_jadomwil: "🔧 SMKN Jalur Domisili", 
-      SMAN_japres: "🏆 SMAN Jalur Prestasi"
-    };
-    
-    const title = labels[categoryKey] || categoryKey;
-    const isJapres = categoryKey === "SMAN_japres";
-    
-    // ✅ Filter berdasarkan rayon
-    const filtered = this.filterByLocation(schools, isJapres ? "japres" : "jadomwil", isSMKN);
-    
-    // ✅ Sort dengan rayon priority
-    const ranked = this.rankSchools(filtered, userScore, isJapres).slice(0, 10);
-    
-    if (ranked.length === 0) {
-      const msg = isJapres 
-        ? "Tidak ada SMAN di luar Rayon 1 yang sesuai dengan nilai Anda."
-        : (this.userLocation ? "Tidak ada sekolah yang sesuai dengan rayon & nilai Anda." : "Belum ada rekomendasi untuk nilai ini.");
-      
-      return `
-        <div class="mb-6">
-          <h3 class="mb-3 text-sm font-semibold text-slate-700">${title}</h3>
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
-            ${msg}
-            ${!this.userLocation ? '<p class="mt-1 text-xs">💡 Isi kecamatan & kelurahan untuk rekomendasi berbasis rayon.</p>' : ''}
-          </div>
-        </div>
-      `;
-    }
-    
-    // ✅ Top pick: Rayon 1 + selisih positif + zone TIPIS/CUKUP AMAN
-    const topPick = ranked.find(s => 
-      s.rayonPriority >= 200 && s.selisih >= 0 && 
-      (s.zone.label === "TIPIS" || s.zone.label === "CUKUP AMAN")
-    ) || ranked[0];
-    
-    // ✅ Location hint
-    const locationHint = this.userLocation 
-      ? `<p class="text-xs text-slate-500 mb-2">📍 Berdasarkan: ${this.userLocation.kelurahan}, ${this.userLocation.kecamatan}</p>`
-      : `<p class="text-xs text-slate-400 mb-2">🌐 Mode global (semua sekolah DIY)</p>`;
-    
-    // ✅ Japres warning
-    const japresWarning = isJapres && this.userLocation
-      ? `<div class="mb-2 rounded-xl bg-amber-50 border border-amber-200 p-2 text-xs text-amber-700">
-          ⚠️ Jalur Prestasi SMAN hanya untuk domisili di <strong>luar Rayon 1</strong> sekolah tujuan.
-        </div>`
-      : '';
-    
-    // ✅ Render cards
-    const cards = ranked.map(s => 
-      this.renderSchoolCard(s, s.nama === topPick.nama && s.selisih >= 0, isSMKN, isJapres)
-    ).join("");
-    
-    return `
-      <div class="mb-6">
-        <h3 class="mb-1 text-sm font-semibold text-slate-700">${title}</h3>
-        ${locationHint}
-        ${japresWarning}
-        <div class="space-y-2">${cards}</div>
-      </div>
-    `;
-  },
-
-  /**
-   * ✅ MAIN RENDER
-   */
-  render(userScore) {
-
-
-  // ✅ TAMBAHKAN HANYA INI di baris pertama:
-  console.log('🔍 Debug Rayon:', {
-    lokasi: this.userLocation ? 'Terisi' : 'Null',
-    rayon1: this.userLocation?.rayon1?.size || 0,
-    rayon2: this.userLocation?.rayon2?.size || 0,
-    nilai: userScore || 'Belum dihitung'
-  });
-
-  // ... sisa kode render Anda di bawah ini ...
-
-
-    const container = DOM.recommendationsContent;
-    if (!container) return;
-    
-    // ✅ Header mode
-    const modeHeader = this.userLocation
-      ? `<div class="mb-3 rounded-2xl bg-pine/5 border border-pine/20 p-3 text-xs text-pine">
-          <p class="font-semibold">📍 Rekomendasi berbasis domisili</p>
-          <p>${this.userLocation.kelurahan}, ${this.userLocation.kecamatan}</p>
-        </div>`
-      : `<div class="mb-3 rounded-2xl bg-slate-50 border border-slate-200 p-3 text-xs text-slate-600">
-          <p class="font-semibold">🌐 Mode global</p>
-          <p>Tanpa filter rayon. Isi kecamatan & kelurahan untuk rekomendasi lebih personal.</p>
-        </div>`;
-    
-    // ✅ Render categories: Japres dulu (karena ada filter khusus)
-    const sections = [
-      this.renderCategory("SMAN_japres", SCHOOL_DATA.SMAN_japres, userScore, false),
-      this.renderCategory("SMAN_jadomwil", SCHOOL_DATA.SMAN_jadomwil, userScore, false),
-      this.renderCategory("SMK_jadomwil", SCHOOL_DATA.SMK_jadomwil, userScore, true)
-    ].join("");
-    
-    // ✅ Tips footer
-    const tips = `
-      <div class="mt-4 rounded-2xl bg-mist/50 p-3 text-xs text-pine/90">
-        <p><strong>💡 Tips:</strong></p>
-        <ul class="mt-1 space-y-1 list-disc list-inside">
-          <li><strong>TIPIS/CUKUP AMAN:</strong> Pilihan realistis (selisih 0-2 poin)</li>
-          <li><strong>AMAN/SANGAT AMAN:</strong> Pilihan cadangan (selisih >2 poin)</li>
-          <li><strong>🎯 Rayon 1:</strong> Prioritas tertinggi di Jalur Domisili</li>
-          <li><strong>⛔ Rayon 1 di Japres:</strong> Tidak valid, pilih Rayon 2/3</li>
-          ${!this.userLocation ? '<li>Isi lokasi untuk melihat status rayon sekolah</li>' : ''}
-        </ul>
-      </div>
-    `;
-    
-    container.innerHTML = modeHeader + sections + tips;
-  },
-
-  clear() {
-    if (DOM.recommendationsContent) {
-      DOM.recommendationsContent.innerHTML = `
-        <div class="text-center py-8 text-slate-500 text-sm">
-          <p>Hitung Nilai Gabungan terlebih dahulu untuk melihat rekomendasi sekolah.</p>
-          <p class="mt-1 text-xs">🎯 Isi kecamatan & kelurahan untuk rekomendasi berbasis rayon.</p>
-        </div>
-      `;
-    }
-    this.userLocation = null;
-  }
-};
-
-
-//-----------------------
-
-
-
-
-
-
-
-
-
-//-----------------------
-
-
-function init() {
-  initDOMCache();
-  
-  // ✅ Safety: Pastikan DOM elements ada sebelum render
-  if (!DOM.raporGrid) {
-    console.error('❌ DOM element #raporGrid tidak ditemukan!');
-    return;
-  }
-  
-  Renderer.renderRaporGrid();
-  
-  // ✅ Inisialisasi Cek Rayon (dengan try-catch)
-  try {
-    if (typeof RayonChecker !== "undefined") RayonChecker.init();
-  } catch (e) {
-    console.warn('⚠️ RayonChecker.init() error:', e);
-  }
-
-
-  // 🔄 Sync location to recommender when user selects & checks
-  const checkRayonBtn = document.getElementById("checkRayonBtn");
-  const kecSelect = document.getElementById("kecamatanSelect");
-  const kelSelect = document.getElementById("kelurahanSelect");
-
-  checkRayonBtn?.addEventListener("click", () => {
-    const kec = kecSelect.value;
-    const kel = kelSelect.value;
-    if (kec && kel) {
-      RayonAwareRecommender.setUserLocation(kec, kel);
-      if (appState.lastCalculation?.nilaiGabungan) {
-        RayonAwareRecommender.render(appState.lastCalculation.nilaiGabungan);
-      }
-    }
-  });
-
-  // Load saved data
-  const savedData = Storage.loadFormData();
-  appState.clickCount = Storage.getClickCount();
-  if (Object.keys(savedData).length > 0) { 
-    App.applyFormData(savedData); 
-  }
-  App.applyQueryParams();
-  bindEvents();
-  Renderer.updateFormVisibility(appState.currentType);
-  
-  // Initial calculation if valid data exists
-  // ✅ Initial calculation dengan safety check
-  const rawData = App.collectFormData();
-  const validation = Validator.validateFormData(rawData);
-  
-  if (validation.valid) {
-    try {
-      const result = Calculator.compute(validation.normalizedData);
-      Renderer.renderResults(rawData.type, result);
-      
-      // ✅ Safety call ke recommender
-      if (typeof RayonAwareRecommender?.render === 'function') {
-        RayonAwareRecommender.render(result.nilaiGabungan);
-      }
-      appState.lastCalculation = result;
-    } catch (e) {
-      console.error('❌ Error saat kalkulasi awal:', e);
-    }
-  }
-  
-  console.log("✅ App initialized | Config:", {
-    weights: { tes: CONFIG.WEIGHT_TES, rapor: CONFIG.WEIGHT_RAPOR },
-    maxValues: { tes: CONFIG.MAX_TES_RAW_TOTAL, rapor: CONFIG.MAX_RAPOR_RAW_TOTAL, ng: CONFIG.MAX_NG_WITH_PRESTASI },
-    popupEnabled: CONFIG.POPUP.ENABLED,
-    recommendations: { categories: Object.keys(SCHOOL_DATA).length }
-  });
-
-
-  // 📊 Debug info
-console.table({
-  'RayonChecker': typeof RayonChecker,
-  'RayonAwareRecommender': typeof RayonAwareRecommender,
-  'SCHOOL_DATA categories': Object.keys(SCHOOL_DATA).length,
-  'RAYON_DATA loaded': !!window.RAYON_DATA?.SMAN_RAYON?.length,
-  'DOM recommendationsContent': !!DOM.recommendationsContent
-});
-
-
-
-
-}
-
-/////////////////////////////end of init()////////////////////////
-
-
-    
-
-
-
-
-
+    // Start app when DOM ready
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", init);
     } else {
-
-
-
-
       init();
     }
   </script>
-  
-
-
-
 </body>
 </html>
