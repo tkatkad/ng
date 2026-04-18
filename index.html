@@ -116,11 +116,79 @@
     </aside>
 
     <main class="space-y-4">
+
+
+
+
+
+
+     
+<!-- 📍 Cek Rayon Domisili Section -->
+<section id="rayonChecker" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
+  <div class="mb-4">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-pine/80">Data KK Siswa</p>
+    <h2 class="font-display text-[1.4rem] font-semibold text-ink">Cek Rayon Sekolah Anda</h2>
+    <p class="mt-1 text-xs text-slate-600">Pilih Kecamatan & Kelurahan untuk melihat daftar SMAN Rayon 1 & 2.</p>
+  </div>
+
+  <!-- Tambahkan di atas form calculator, setelah rayonChecker -->
+<div class="text-center text-xs text-slate-500 mb-2">
+  💡 <strong>Tip:</strong> Isi kecamatan & kelurahan KK siswa di bawah ini untuk rekomendasi yang lebih personal. 
+  Bisa juga dikosongkan untuk melihat rekomendasi semua sekolah di DIY.
+</div>
+
+
+  <form id="rayonForm" class="space-y-3">
+    <div class="grid gap-3 sm:grid-cols-2">
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-700">Kecamatan</label>
+        <select id="kecamatanSelect" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-accent focus:bg-white disabled:opacity-50">
+          <option value="">Pilih Kecamatan</option>
+        </select>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-700">Kelurahan/Desa</label>
+        <select id="kelurahanSelect" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-accent focus:bg-white disabled:opacity-50" disabled>
+          <option value="">Pilih Kelurahan</option>
+        </select>
+      </div>
+    </div>
+    
+    <button type="button" id="checkRayonBtn" class="w-full rounded-2xl bg-[#128c7e] px-4 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed">
+      Lihat Rayon Sekolah
+    </button>
+  </form>
+
+  <!-- Result Container -->
+  <div id="rayonResult" class="mt-4 hidden">
+    <div class="rounded-2xl border border-slate-200 bg-white p-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-semibold text-ink" id="resultLocation"></p>
+        <span id="rayonCount" class="rounded-full bg-mist px-3 py-1 text-xs font-semibold text-pine"></span>
+      </div>
+      
+      <div id="rayonGroups" class="space-y-3"></div>
+      
+      <div class="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-800 leading-relaxed">
+        <strong>📌 Catatan Juknis:</strong>
+        <ul class="mt-1 space-y-1 list-disc list-inside">
+          <li><strong>Rayon 3:</strong> Seluruh SMAN di DIY yang <em>tidak</em> masuk Rayon 1 & 2.</li>
+          <li><strong>Rayon 4:</strong> Wilayah di luar DIY (kecuali desa perbatasan Jateng).</li>
+          <li><strong>SMKN:</strong> Seluruh wilayah DIY = Rayon 1. Tidak ada pembagian rayon 2/3 untuk SMKN di dalam DIY.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
       <!-- Calculator Section -->
       <section id="calculator" class="no-print rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
         <div class="mb-4">
           <p class="text-xs font-semibold uppercase tracking-[0.18em] text-pine/80">Input Nilai</p>
-          <h2 class="font-display text-[1.65rem] font-semibold">Isikan data untuk simulasi :</h2>
+          <h2 class="font-display text-[1.65rem] font-semibold">Isikan tahun kelulusan dan data nilai untuk simulasi:</h2>
         </div>
 
         <form id="calculatorForm" class="space-y-4" novalidate>
@@ -265,6 +333,38 @@
           </div>
         </div>
       </section>
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  <script src="rayon_data.js"></script>
+	  
+<script>
+  // Fallback jika rayon_data.js gagal load
+  if (typeof window.RAYON_DATA === 'undefined') {
+    console.warn('⚠️ rayon_data.js tidak termuat. Menggunakan mode global (tanpa filter rayon).');
+    window.RAYON_DATA = { SMAN_RAYON: [] };
+  }
+</script>
+
+	    
+
+	  
+	  
+	  
+	  
+
+	  
+	  
+
+	  
+	  
+	  
+	  
 
       <!-- 🎯 NEW: School Recommendations Section -->
       <section id="recommendations" class="print-card rounded-[28px] border border-[#477458] bg-[#fdfdfd] shadow-card">
@@ -282,6 +382,11 @@
           </div>
         </div>
       </section>
+
+
+
+
+
 
       <!-- Actions -->
       <section class="no-print rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card" data-screenshot-hide>
@@ -408,7 +513,7 @@
         <div class="rounded-xl bg-blue-50 border border-blue-200 p-3">
           <p class="font-semibold text-blue-800 text-sm">🏫 SMAN: Pembagian Rayon</p>
           <ul class="mt-2 space-y-1.5 text-xs text-slate-700 list-disc list-inside leading-relaxed">
-            <li><strong>Rayon 1:</strong> 3 SMAN terdekat dari kelurahan domisili Anda</li>
+            <li><strong>Rayon 1:</strong> 3 SMAN terdekat dari kantor kelurahan KK siswa</li>
             <li><strong>Rayon 2:</strong> 3 SMAN terdekat berikutnya setelah Rayon 1</li>
             <li><strong>Rayon 3:</strong> SMAN lain di DIY yang tidak termasuk Rayon 1 & 2</li>
             <li><strong>Rayon 4:</strong> Wilayah di luar DIY (kecuali desa perbatasan)</li>
@@ -483,7 +588,7 @@
           <span>
             <strong>Cek Mandiri (Google Maps):</strong> Salin koordinat sekolah dari Juknis, lalu gunakan fitur <em>"Ukur Jarak"</em> dari lokasi domisili.<br>
             <span class="mt-1 block text-xs text-slate-600">
-              • <strong>SMAN:</strong> 3 sekolah dengan <em>jarak darat</em> terdekat = Rayon 1<br>
+              • <strong>SMAN:</strong> 3 sekolah dengan <em>jarak darat</em> terdekat dari kantor kelurahan KK siswa  = Rayon 1<br>
               • <strong>SMKN:</strong> Seluruh SMKN di DIY otomatis = Rayon 1
             </span>
           </span>
@@ -501,7 +606,7 @@
         <div class="rounded-xl bg-blue-50 border border-blue-200 p-4">
           <p class="font-semibold text-blue-800 text-sm">🏫 Untuk SMAN: Bisa jadi Rayon 2 atau Rayon 3</p>
           <ul class="mt-2 space-y-1.5 text-xs text-slate-700 list-disc list-inside leading-relaxed">
-            <li><strong>Rayon 1:</strong> 3 SMAN terdekat dari domisili Anda</li>
+            <li><strong>Rayon 1:</strong> 3 SMAN terdekat dari kantor kelurahan KK siswa</li>
             <li><strong>Rayon 2:</strong> 3 SMAN terdekat berikutnya</li>
             <li><strong>Rayon 3:</strong> Seluruh SMAN lain di DIY yang tidak masuk Rayon 1 & 2</li>
             <li><strong>Rayon 4:</strong> Wilayah di luar DIY</li>
@@ -531,10 +636,17 @@
 
   </div>
 </section>
-      <section id="tentang" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card">
+
+
+<section id="tentang" class="rounded-[28px] border border-[#477458] bg-[#fdfdfd] p-5 shadow-card">
         <h2 class="font-display text-2xl font-bold">Website apa ini?</h2>
         <p class="mt-3 text-sm leading-6 text-slate-600">Link website <a href="https://tkatkad.github.io/ng/" class="text-pine hover:underline">https://tkatkad.github.io/ng/</a> adalah sebuah Kalkulator Simulator NG berbasis rumus resmi Nilai Gabungan SPMB SMAN/SMKN DIY 2026/2027.</p>
-      </section>
+</section>
+
+
+
+
+
     </main>
   </div>
 
@@ -543,6 +655,24 @@
   </button>
 
   <script>
+
+    /**
+ * Normalisasi nama sekolah agar match antara rayon_data dan SCHOOL_DATA
+ * "SMAN 1 Depok" → "sma negeri 1 depok"
+ * "SMA NEGERI 1 DEPOK" → "sma negeri 1 depok"
+ */
+function normalizeSchoolName(name) {
+  return String(name || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ")           // hapus spasi ganda
+    .replace(/\b(sman|smkn)\b/gi, "sma negeri")  // SMAN/SMKN → SMA NEGERI
+    .replace(/\bsma\s+negeri\b/gi, "sma negeri") // standarisasi
+    .replace(/\bsmk\s+negeri\b/gi, "smk negeri"); // standarisasi SMK
+}
+
+
+
     /**
      * ============================================
      * SCHOOL RECOMMENDATION DATA (nilai minimum jalur tersebut tahun lalu Values)
@@ -553,163 +683,163 @@
     const SCHOOL_DATA = {
       // SMKN - Jalur Domisili Wilayah
       SMK_jadomwil: [
-  [97.76, "SMK NEGERI 1 GIRIMULYO"],
-  [117.76, "SMK NEGERI 1 SAMIGALUH"],
-  [128.40, "SMK NEGERI 1 TEPUS"],
-  [159.81, "SMK NEGERI 1 TANJUNGSARI"],
-  [161.94, "SMK NEGERI 1 GIRISUBO"],
-  [173.22, "SMK NEGERI 1 KOKAP"],
-  [175.20, "SMK NEGERI 1 GEDANGSARI"],
-  [176.57, "SMK NEGERI 1 TEMON"],
-  [179.44, "SMK NEGERI 1 DLINGO"],
-  [182.31, "SMK NEGERI 1 PURWOSARI"],
-  [191.26, "SMK NEGERI 1 SANDEN"],
-  [193.02, "SMK NEGERI 1 PONJONG"],
-  [198.58, "SMK NEGERI 1 PANJATAN"],
-  [199.13, "SMK NEGERI 1 NGLIPAR"],
-  [199.85, "SMK NEGERI 1 SAPTOSARI"],
-  [202.35, "SMK NEGERI 1 PANDAK"],
-  [203.28, "SMK NEGERI 1 PAJANGAN"],
-  [204.20, "SMK NEGERI 1 NGAWEN"],
-  [205.37, "SMK NEGERI 1 NANGGULAN"],
-  [208.28, "SMK NEGERI 1 SEDAYU"],
-  [208.31, "SMK NEGERI 1 PUNDONG"],
-  [209.08, "SMK NEGERI 2 SEWON"],
-  [209.11, "SMK NEGERI 1 SEWON"],
-  [210.08, "SMK NEGERI 2 GODEAN"],
-  [210.17, "SMK NEGERI 1 TEMPEL"],
-  [210.56, "SMK NEGERI 1 CANGKRINGAN"],
-  [211.73, "SMK NEGERI 1 SEYEGAN"],
-  [212.33, "SMK NEGERI 4 YOGYAKARTA"],
-  [212.47, "SMK NEGERI 5 YOGYAKARTA"],
-  [213.10, "SMK NEGERI 1 PLERET"],
-  [213.29, "SMK NEGERI 3 WONOSARI"],
-  [214.64, "SMK NEGERI 1 KALASAN"],
-  [216.10, "SMK NEGERI 6 YOGYAKARTA"],
-  [217.82, "SMK NEGERI 7 YOGYAKARTA"],
-  [217.83, "SMK NEGERI 1 GODEAN"],
-  [219.35, "SMK NEGERI 1 BANTUL"],
-  [219.77, "SMK NEGERI 1 WONOSARI"],
-  [220.46, "SMK NEGERI 3 YOGYAKARTA"],
-  [220.55, "SMK NEGERI 2 PENGASIH"],
-  [220.70, "SMK NEGERI 2 WONOSARI"],
-  [221.53, "SMK NEGERI 1 PENGASIH"],
-  [223.37, "SMK NEGERI 1 DEPOK"],
-  [224.70, "SMK NEGERI 1 YOGYAKARTA"],
-  [230.07, "SMK NEGERI 2 YOGYAKARTA"],
-  [251.15, "SMK NEGERI 2 DEPOK"]
+  [97.76, "SMKN 1 GIRIMULYO"],
+  [117.76, "SMKN 1 SAMIGALUH"],
+  [128.40, "SMKN 1 TEPUS"],
+  [159.81, "SMKN 1 TANJUNGSARI"],
+  [161.94, "SMKN 1 GIRISUBO"],
+  [173.22, "SMKN 1 KOKAP"],
+  [175.20, "SMKN 1 GEDANGSARI"],
+  [176.57, "SMKN 1 TEMON"],
+  [179.44, "SMKN 1 DLINGO"],
+  [182.31, "SMKN 1 PURWOSARI"],
+  [191.26, "SMKN 1 SANDEN"],
+  [193.02, "SMKN 1 PONJONG"],
+  [198.58, "SMKN 1 PANJATAN"],
+  [199.13, "SMKN 1 NGLIPAR"],
+  [199.85, "SMKN 1 SAPTOSARI"],
+  [202.35, "SMKN 1 PANDAK"],
+  [203.28, "SMKN 1 PAJANGAN"],
+  [204.20, "SMKN 1 NGAWEN"],
+  [205.37, "SMKN 1 NANGGULAN"],
+  [208.28, "SMKN 1 SEDAYU"],
+  [208.31, "SMKN 1 PUNDONG"],
+  [209.08, "SMKN 2 SEWON"],
+  [209.11, "SMKN 1 SEWON"],
+  [210.08, "SMKN 2 GODEAN"],
+  [210.17, "SMKN 1 TEMPEL"],
+  [210.56, "SMKN 1 CANGKRINGAN"],
+  [211.73, "SMKN 1 SEYEGAN"],
+  [212.33, "SMKN 4 YOGYAKARTA"],
+  [212.47, "SMKN 5 YOGYAKARTA"],
+  [213.10, "SMKN 1 PLERET"],
+  [213.29, "SMKN 3 WONOSARI"],
+  [214.64, "SMKN 1 KALASAN"],
+  [216.10, "SMKN 6 YOGYAKARTA"],
+  [217.82, "SMKN 7 YOGYAKARTA"],
+  [217.83, "SMKN 1 GODEAN"],
+  [219.35, "SMKN 1 BANTUL"],
+  [219.77, "SMKN 1 WONOSARI"],
+  [220.46, "SMKN 3 YOGYAKARTA"],
+  [220.55, "SMKN 2 PENGASIH"],
+  [220.70, "SMKN 2 WONOSARI"],
+  [221.53, "SMKN 1 PENGASIH"],
+  [223.37, "SMKN 1 DEPOK"],
+  [224.70, "SMKN 1 YOGYAKARTA"],
+  [230.07, "SMKN 2 YOGYAKARTA"],
+  [251.15, "SMKN 2 DEPOK"]
       ],
       // SMAN - Jalur Domisili Wilayah
       SMAN_jadomwil: [
-  [121.94, "SMA NEGERI 1 RONGKOP"],
-  [139.52, "SMA NEGERI 1 PATUK"],
-  [171.53, "SMA NEGERI 1 GALUR"],
-  [171.81, "SMA NEGERI 1 GIRIMULYO"],
-  [172.07, "SMA NEGERI 1 TANJUNGSARI"],
-  [172.24, "SMA NEGERI 1 KOKAP"],
-  [173.75, "SMA NEGERI 1 SEMANU"],
-  [177.93, "SMA NEGERI 1 DLINGO"],
-  [182.33, "SMA NEGERI 1 PLAYEN"],
-  [183.83, "SMA NEGERI 1 TEMON"],
-  [187.59, "SMA NEGERI 1 PANGGANG"],
-  [194.17, "SMA NEGERI 1 KRETEK"],
-  [196.14, "SMA NEGERI 1 SAMIGALUH"],
-  [198.83, "SMA NEGERI 1 SRANDAKAN"],
-  [204.65, "SMA NEGERI 1 KALIBAWANG"],
-  [206.24, "SMA NEGERI 1 TEMPEL KAB. SLEMAN"],
-  [206.65, "SMA NEGERI 1 CANGKRINGAN KAB. SLEMAN"],
-  [207.22, "SMA NEGERI 1 IMOGIRI"],
-  [208.88, "SMA NEGERI 1 PAJANGAN"],
-  [210.72, "SMA NEGERI 1 TURI KAB. SLEMAN"],
-  [210.83, "SMA NEGERI 1 PLERET"],
-  [210.89, "SMA NEGERI 1 SEMIN"],
-  [211.98, "SMA NEGERI 1 KARANGMOJO"],
-  [212.58, "SMA NEGERI 1 SENTOLO"],
-  [215.95, "SMA NEGERI 1 MINGGIR SLEMAN"],
-  [220.13, "SMA NEGERI 1 SEDAYU"],
-  [220.44, "SMA NEGERI 1 LENDAH"],
-  [220.71, "SMA NEGERI 2 PLAYEN"],
-  [222.12, "SMA NEGERI 3 BANTUL"],
-  [226.17, "SMA NEGERI 1 BAMBANG LIPURO"],
-  [230.51, "SMA NEGERI 1 PIYUNGAN"],
-  [234.09, "SMA NEGERI 1 NGAGLIK"],
-  [237.49, "SMA NEGERI 1 PUNDONG"],
-  [238.25, "SMA NEGERI 1 SEYEGAN KAB. SLEMAN"],
-  [242.05, "SMA NEGERI 1 JETIS"],
-  [243.39, "SMA NEGERI 2 BANGUNTAPAN"],
-  [245.15, "SMA NEGERI 1 PAKEM KAB. SLEMAN"],
-  [247.88, "SMA NEGERI 1 NGEMPLAK KAB. SLEMAN"],
-  [250.58, "SMA NEGERI 1 PENGASIH"],
-  [251.67, "SMA NEGERI 1 WONOSARI"],
-  [255.73, "SMA NEGERI 1 SANDEN"],
-  [259.45, "SMA NEGERI 1 GAMPING KAB. SLEMAN"],
-  [262.11, "SMA NEGERI 1 PRAMBANAN KAB. SLEMAN"],
-  [264.91, "SMA NEGERI 2 SLEMAN"],
-  [266.10, "SMA NEGERI 2 WATES"],
-  [269.22, "SMA NEGERI 1 SEWON"],
-  [270.96, "SMA NEGERI 4 YOGYAKARTA"],
-  [276.56, "SMA NEGERI 1 MLATI KAB. SLEMAN"],
-  [279.55, "SMA NEGERI 2 NGAGLIK KAB. SLEMAN"],
-  [281.05, "SMA NEGERI 2 BANTUL"],
-  [282.11, "SMA NEGERI 1 KASIHAN"],
-  [287.06, "SMA NEGERI 10 YOGYAKARTA"],
-  [292.42, "SMA NEGERI 1 BANGUNTAPAN"],
-  [292.62, "SMA NEGERI 11 YOGYAKARTA"],
-  [293.71, "SMA NEGERI 1 WATES"],
-  [297.50, "SMA NEGERI 1 SLEMAN KAB. SLEMAN"],
-  [299.06, "SMA NEGERI 1 BANTUL"],
-  [305.97, "SMA NEGERI 1 DEPOK"],
-  [307.41, "SMA NEGERI 1 KALASAN KAB. SLEMAN"],
-  [313.63, "SMA NEGERI 2 YOGYAKARTA"],
-  [316.69, "SMA NEGERI 1 GODEAN KAB. SLEMAN"],
-  [323.15, "SMA NEGERI 7 YOGYAKARTA"],
-  [325.17, "SMA NEGERI 9 YOGYAKARTA"],
-  [329.53, "SMA NEGERI 5 YOGYAKARTA"],
-  [339.85, "SMA NEGERI 6 YOGYAKARTA"],
-  [343.58, "SMA NEGERI 1 YOGYAKARTA"],
-  [349.71, "SMA NEGERI 8 YOGYAKARTA"],
-  [359.53, "SMA NEGERI 3 YOGYAKARTA"]
+  [121.94, "SMAN 1 RONGKOP"],
+  [139.52, "SMAN 1 PATUK"],
+  [171.53, "SMAN 1 GALUR"],
+  [171.81, "SMAN 1 GIRIMULYO"],
+  [172.07, "SMAN 1 TANJUNGSARI"],
+  [172.24, "SMAN 1 KOKAP"],
+  [173.75, "SMAN 1 SEMANU"],
+  [177.93, "SMAN 1 DLINGO"],
+  [182.33, "SMAN 1 PLAYEN"],
+  [183.83, "SMAN 1 TEMON"],
+  [187.59, "SMAN 1 PANGGANG"],
+  [194.17, "SMAN 1 KRETEK"],
+  [196.14, "SMAN 1 SAMIGALUH"],
+  [198.83, "SMAN 1 SRANDAKAN"],
+  [204.65, "SMAN 1 KALIBAWANG"],
+  [206.24, "SMAN 1 TEMPEL KAB. SLEMAN"],
+  [206.65, "SMAN 1 CANGKRINGAN KAB. SLEMAN"],
+  [207.22, "SMAN 1 IMOGIRI"],
+  [208.88, "SMAN 1 PAJANGAN"],
+  [210.72, "SMAN 1 TURI KAB. SLEMAN"],
+  [210.83, "SMAN 1 PLERET"],
+  [210.89, "SMAN 1 SEMIN"],
+  [211.98, "SMAN 1 KARANGMOJO"],
+  [212.58, "SMAN 1 SENTOLO"],
+  [215.95, "SMAN 1 MINGGIR SLEMAN"],
+  [220.13, "SMAN 1 SEDAYU"],
+  [220.44, "SMAN 1 LENDAH"],
+  [220.71, "SMAN 2 PLAYEN"],
+  [222.12, "SMAN 3 BANTUL"],
+  [226.17, "SMAN 1 BAMBANG LIPURO"],
+  [230.51, "SMAN 1 PIYUNGAN"],
+  [234.09, "SMAN 1 NGAGLIK"],
+  [237.49, "SMAN 1 PUNDONG"],
+  [238.25, "SMAN 1 SEYEGAN KAB. SLEMAN"],
+  [242.05, "SMAN 1 JETIS"],
+  [243.39, "SMAN 2 BANGUNTAPAN"],
+  [245.15, "SMAN 1 PAKEM KAB. SLEMAN"],
+  [247.88, "SMAN 1 NGEMPLAK KAB. SLEMAN"],
+  [250.58, "SMAN 1 PENGASIH"],
+  [251.67, "SMAN 1 WONOSARI"],
+  [255.73, "SMAN 1 SANDEN"],
+  [259.45, "SMAN 1 GAMPING KAB. SLEMAN"],
+  [262.11, "SMAN 1 PRAMBANAN KAB. SLEMAN"],
+  [264.91, "SMAN 2 SLEMAN"],
+  [266.10, "SMAN 2 WATES"],
+  [269.22, "SMAN 1 SEWON"],
+  [270.96, "SMAN 4 YOGYAKARTA"],
+  [276.56, "SMAN 1 MLATI KAB. SLEMAN"],
+  [279.55, "SMAN 2 NGAGLIK KAB. SLEMAN"],
+  [281.05, "SMAN 2 BANTUL"],
+  [282.11, "SMAN 1 KASIHAN"],
+  [287.06, "SMAN 10 YOGYAKARTA"],
+  [292.42, "SMAN 1 BANGUNTAPAN"],
+  [292.62, "SMAN 11 YOGYAKARTA"],
+  [293.71, "SMAN 1 WATES"],
+  [297.50, "SMAN 1 SLEMAN KAB. SLEMAN"],
+  [299.06, "SMAN 1 BANTUL"],
+  [305.97, "SMAN 1 DEPOK"],
+  [307.41, "SMAN 1 KALASAN KAB. SLEMAN"],
+  [313.63, "SMAN 2 YOGYAKARTA"],
+  [316.69, "SMAN 1 GODEAN KAB. SLEMAN"],
+  [323.15, "SMAN 7 YOGYAKARTA"],
+  [325.17, "SMAN 9 YOGYAKARTA"],
+  [329.53, "SMAN 5 YOGYAKARTA"],
+  [339.85, "SMAN 6 YOGYAKARTA"],
+  [343.58, "SMAN 1 YOGYAKARTA"],
+  [349.71, "SMAN 8 YOGYAKARTA"],
+  [359.53, "SMAN 3 YOGYAKARTA"]
       ],
       // SMAN - Jalur Prestasi
       SMAN_japres: [
-  [290.16, "SMA NEGERI 1 KASIHAN"],
-  [290.47, "SMA NEGERI 1 PRAMBANAN SLEMAN"],
-  [290.48, "SMA NEGERI 1 PENGASIH"],
-  [290.49, "SMA NEGERI 2 NGAGLIK SLEMAN"],
-  [290.54, "SMA NEGERI 2 WATES"],
-  [290.63, "SMA NEGERI 1 SANDEN"],
-  [290.64, "SMA NEGERI 2 BANGUNTAPAN"],
-  [290.93, "SMA NEGERI 1 SEYEGAN SLEMAN"],
-  [290.96, "SMA NEGERI 1 PAKEM SLEMAN"],
-  [292.32, "SMA NEGERI 1 BAMBANGLIPURO"],
-  [293.46, "SMA NEGERI 2 PLAYEN"],
-  [293.86, "SMA NEGERI 1 PANGGANG"],
-  [294.02, "SMA NEGERI 1 JETIS"],
-  [294.65, "SMA NEGERI 1 GAMPING"],
-  [294.66, "SMA NEGERI 2 SLEMAN"],
-  [294.89, "SMA NEGERI 1 MLATI SLEMAN"],
-  [296.25, "SMA NEGERI 1 BANGUNTAPAN"],
-  [302.39, "SMA NEGERI 1 WONOSARI"],
-  [303.02, "SMA NEGERI 10 YOGYAKARTA"],
-  [305.32, "SMA NEGERI 1 KALASAN SLEMAN"],
-  [306.89, "SMA NEGERI 1 SEDAYU"],
-  [307.48, "SMA NEGERI 1 WATES"],
-  [309.52, "SMA NEGERI 1 DEPOK"],
-  [310.51, "SMA NEGERI 1 SLEMAN"],
-  [311.98, "SMA NEGERI 3 BANTUL"],
-  [312.89, "SMA NEGERI 4 YOGYAKARTA"],
-  [315.56, "SMA NEGERI 2 BANTUL"],
-  [324.33, "SMA NEGERI 11 YOGYAKARTA"],
-  [330.45, "SMA NEGERI 7 YOGYAKARTA"],
-  [334.30, "SMA NEGERI 1 GODEAN SLEMAN"],
-  [335.83, "SMA NEGERI 1 BANTUL"],
-  [340.18, "SMA NEGERI 2 YOGYAKARTA"],
-  [343.02, "SMA NEGERI 5 YOGYAKARTA"],
-  [348.02, "SMA NEGERI 9 YOGYAKARTA"],
-  [357.36, "SMA NEGERI 6 YOGYAKARTA"],
-  [362.79, "SMA NEGERI 8 YOGYAKARTA"],
-  [365.73, "SMA NEGERI 1 YOGYAKARTA"],
-  [373.00, "SMA NEGERI 3 YOGYAKARTA"]
+  [290.16, "SMAN 1 KASIHAN"],
+  [290.47, "SMAN 1 PRAMBANAN SLEMAN"],
+  [290.48, "SMAN 1 PENGASIH"],
+  [290.49, "SMAN 2 NGAGLIK SLEMAN"],
+  [290.54, "SMAN 2 WATES"],
+  [290.63, "SMAN 1 SANDEN"],
+  [290.64, "SMAN 2 BANGUNTAPAN"],
+  [290.93, "SMAN 1 SEYEGAN SLEMAN"],
+  [290.96, "SMAN 1 PAKEM SLEMAN"],
+  [292.32, "SMAN 1 BAMBANGLIPURO"],
+  [293.46, "SMAN 2 PLAYEN"],
+  [293.86, "SMAN 1 PANGGANG"],
+  [294.02, "SMAN 1 JETIS"],
+  [294.65, "SMAN 1 GAMPING"],
+  [294.66, "SMAN 2 SLEMAN"],
+  [294.89, "SMAN 1 MLATI SLEMAN"],
+  [296.25, "SMAN 1 BANGUNTAPAN"],
+  [302.39, "SMAN 1 WONOSARI"],
+  [303.02, "SMAN 10 YOGYAKARTA"],
+  [305.32, "SMAN 1 KALASAN SLEMAN"],
+  [306.89, "SMAN 1 SEDAYU"],
+  [307.48, "SMAN 1 WATES"],
+  [309.52, "SMAN 1 DEPOK"],
+  [310.51, "SMAN 1 SLEMAN"],
+  [311.98, "SMAN 3 BANTUL"],
+  [312.89, "SMAN 4 YOGYAKARTA"],
+  [315.56, "SMAN 2 BANTUL"],
+  [324.33, "SMAN 11 YOGYAKARTA"],
+  [330.45, "SMAN 7 YOGYAKARTA"],
+  [334.30, "SMAN 1 GODEAN SLEMAN"],
+  [335.83, "SMAN 1 BANTUL"],
+  [340.18, "SMAN 2 YOGYAKARTA"],
+  [343.02, "SMAN 5 YOGYAKARTA"],
+  [348.02, "SMAN 9 YOGYAKARTA"],
+  [357.36, "SMAN 6 YOGYAKARTA"],
+  [362.79, "SMAN 8 YOGYAKARTA"],
+  [365.73, "SMAN 1 YOGYAKARTA"],
+  [373.00, "SMAN 3 YOGYAKARTA"]
       ]
     };
 
@@ -1047,406 +1177,8 @@
     };
 
     
-    /**
- * ============================================
- * 🎯 SCHOOL RECOMMENDATION MODULE (FIXED)
- * Priority: Most competitive schools user can STILL pass
- * ============================================
- */
-const SchoolRecommender = {
-  /**
-   * Generate zone label + priority score for intelligent sorting
-   * Score: Higher = Better recommendation priority
-   * 
-   * Priority order: TIPIS(5) > CUKUP AMAN(4) > SANGAT TIPIS(4) > 
-   *                 AMAN(3) > RAWAN(2) > SANGAT AMAN(2) > 
-   *                 KRITIS(1) > PASTI(1) > TIDAK LOLOS(-1)
-   */
-  getZoneInfo: function(selisih) {
-    if (selisih < 0) return { label: "TIDAK LOLOS", score: -1, color: "zone-TIDAK-LOLOS" };
-    if (selisih < 0.5) return { label: "KRITIS", score: 1, color: "zone-KRITIS" };
-    if (selisih < 1) return { label: "RAWAN", score: 2, color: "zone-RAWAN" };
-    if (selisih < 2) return { label: "SANGAT TIPIS", score: 4, color: "zone-SANGAT-TIPIS" };
-    if (selisih < 5) return { label: "TIPIS", score: 5, color: "zone-TIPIS" };     // 🎯 SWEET SPOT
-    if (selisih < 10) return { label: "CUKUP AMAN", score: 4, color: "zone-CUKUP-AMAN" };
-    if (selisih < 20) return { label: "AMAN", score: 3, color: "zone-AMAN" };
-    if (selisih < 50) return { label: "SANGAT AMAN", score: 2, color: "zone-SANGAT-AMAN" };
-    return { label: "PASTI", score: 1, color: "zone-PASTI" };
-  },
-
-  /**
-   * Core lookup: Filter → Map → Smart Sort → Group
-   * 
-   * Sorting priority (descending importance):
-   * 1. nilai minimum jalur tersebut tahun lalu DESC (most competitive first)
-   * 2. zone.score DESC (TIPIS/CUKUP AMAN prioritized)
-   * 3. selisih ASC (tighter margin preferred for same nilai minimum jalur tersebut tahun lalu)
-   */
-  findMatchingSchools: function(schoolData, userScore, maxResults = CONFIG.RECOMMENDATION.MAX_SCHOOLS_PER_CATEGORY) {
-    const minSelisih = CONFIG.RECOMMENDATION.MIN_SELIHSH_FOR_DISPLAY;
-    
-    const matches = schoolData
-      // Step 1: Filter - only schools user can potentially pass
-      .filter(([cutoff]) => {
-        const selisih = userScore - cutoff;
-        return selisih >= minSelisih;
-      })
-      // Step 2: Map - enrich with zone info
-      .map(([cutoff, nama]) => {
-        const selisih = +(userScore - cutoff).toFixed(2);
-        const zoneInfo = this.getZoneInfo(selisih);
-        
-        return {
-          nama,
-          cutoff,
-          selisih,
-          zona: zoneInfo.label,
-          zoneScore: zoneInfo.score,
-          zoneColor: zoneInfo.color
-        };
-      })
-      // Step 3: Smart Sort - MOST COMPETITIVE first, with zone priority
-      .sort((a, b) => {
-        // Primary: Higher cutoff = more competitive (user's main goal)
-        if (b.cutoff !== a.cutoff) return b.cutoff - a.cutoff;
-        // Secondary: Better zone score = smarter choice
-        if (b.zoneScore !== a.zoneScore) return b.zoneScore - a.zoneScore;
-        // Tertiary: Tighter selisih = more efficient use of score
-        return a.selisih - b.selisih;
-      })
-      .slice(0, maxResults);
-    
-    return matches;
-  },
-
-  /**
-   * Group schools by recommendation tier for better UX
-   */
-  groupByTier: function(schools) {
-    const groups = {
-      target: [],    // TIPIS, CUKUP AMAN (sweet spot)
-      safe: [],      // AMAN, SANGAT AMAN (safe but less competitive)
-      easy: [],      // PASTI (too easy, low priority)
-      risky: []      // KRITIS, RAWAN (high risk)
-    };
-    
-    schools.forEach(school => {
-      switch(school.zona) {
-        case "TIPIS":
-        case "CUKUP AMAN":
-          groups.target.push(school);
-          break;
-        case "AMAN":
-        case "SANGAT AMAN":
-          groups.safe.push(school);
-          break;
-        case "PASTI":
-        case "SANGAT TIPIS":
-          groups.easy.push(school);
-          break;
-        case "KRITIS":
-        case "RAWAN":
-          groups.risky.push(school);
-          break;
-      }
-    });
-    
-    return groups;
-  },
 
 
-  
-/**
- * Get all recommendations grouped by category AND tier
- * Business rule: Jalur Prestasi requires NG >= 280
- */
-getAllRecommendations: function(userScore) {
-  // Helper to check if japres is enabled
-  const isJapresEnabled = userScore >= 280;
-  
-  return {
-    SMAN_japres: {
-      label: "🏆 SMAN Jalur Prestasi",
-      disabled: !isJapresEnabled,  // ✅ NEW: disabled flag
-      minScore: 280,               // ✅ NEW: threshold info
-      schools: isJapresEnabled ? this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore) : [],
-      grouped: isJapresEnabled ? this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_japres, userScore)) : { target: [], safe: [], easy: [], risky: [] }
-    },
-    SMAN_jadomwil: {
-      label: "🏠 SMAN Jalur Domisili",
-      schools: this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore),
-      grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMAN_jadomwil, userScore))
-    },
-    SMK_jadomwil: {
-      label: "🔧 SMKN Jalur Domisili",
-      schools: this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore),
-      grouped: this.groupByTier(this.findMatchingSchools(SCHOOL_DATA.SMK_jadomwil, userScore))
-    }
-  };
-},
-
-  /**
-   * Render a single school card with proper TOP PICK logic
-   */
-  renderSchoolCard: function(school, isTopPick) {
-    return `
-      <div class="group flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-pine/30 hover:shadow-sm ${isTopPick ? 'ring-2 ring-pine/30 bg-mist/30' : ''}">
-        <div class="min-w-0 flex-1">
-          <div class="flex items-center gap-2 flex-wrap">
-            ${isTopPick ? '<span class="inline-flex items-center rounded-full bg-pine/15 px-2 py-0.5 text-[10px] font-bold text-pine">🎯 Bagus</span>' : ''}
-            <p class="truncate text-sm font-medium text-slate-800">${Utils.escapeHtml(school.nama)}</p>
-          </div>
-          <p class="mt-0.5 text-xs text-slate-500">
-            Minim: <strong class="text-slate-700">${Utils.formatDisplay(school.cutoff)}</strong>
-            <span class="mx-1 text-slate-300">•</span>
-            Selisih: <strong class="${school.selisih >= 0 ? 'text-green-600' : 'text-red-600'}">${school.selisih >= 0 ? '+' : ''}${Utils.formatDisplay(school.selisih)}</strong>
-          </p>
-        </div>
-        <div class="text-right shrink-0">
-          <span class="zone-badge ${school.zoneColor}">${Utils.escapeHtml(school.zona)}</span>
-        </div>
-      </div>
-    `;
-  },
-
-  /**
-   * Render grouped schools by tier
-   */
-  renderGroupedSchools: function(grouped, categoryKey) {
-    let html = '';
-    
-// 🎯 TARGET: Sweet spot recommendations (show first, most important)
-if (grouped.target.length > 0) {
-  // ✅ Dynamic rayons text based on category per Juknis 2026
-  const rayonsText = 
-    categoryKey === 'SMAN_japres' 
-      ? '🎯 Japres SMAN: Hanya untuk domisili yang berada <strong>di luar Rayon 1</strong> sekolah tujuan' 
-      : categoryKey === 'SMAN_jadomwil'
-        ? '🎯 Domisili SMAN: Untuk <strong>Rayon 1</strong> mu (3 sekolah terdekat)'
-        : '🎯 SMK: Bebas pilih seluruh DIY (semua sekolah = Rayon 1)';  // ✅ SMK rule
-  
-  html += `<div class="mb-3"><p class="text-xs font-semibold text-pine mb-2 flex items-center gap-1">${rayonsText}</p><div class="space-y-2">`;
-  
-  grouped.target.forEach((school, idx) => {
-    const isTopPick = (categoryKey === 'SMAN_japres' && idx === 0) || 
-                     (categoryKey === 'SMAN_jadomwil' && idx === 0 && grouped.target[0]?.zona === 'TIPIS');
-    html += this.renderSchoolCard(school, isTopPick && school.zona === 'TIPIS');
-  });
-  
-  html += `</div></div>`;
-}
-
-
-    // 🟢 SAFE: Good options but less competitive
-    if (grouped.safe.length > 0) {
-      html += `<div class="mb-3"><p class="text-xs font-semibold text-slate-600 mb-2">🟢 Opsi Aman</p><div class="space-y-2">`;
-      grouped.safe.forEach(school => {
-        html += this.renderSchoolCard(school, false);
-      });
-      html += `</div></div>`;
-    }
-    
-    // ⚪ EASY: Too easy, last resort
-    if (grouped.easy.length > 0) {
-      html += `<details class="mb-3"><summary class="text-xs font-semibold text-slate-500 mb-2 cursor-pointer hover:text-slate-700">⚪ Opsi Terlalu Mudah (buka)</summary><div class="space-y-2 mt-2">`;
-      grouped.easy.forEach(school => {
-        html += this.renderSchoolCard(school, false);
-      });
-      html += `</div></details>`;
-    }
-    
-    // ⚠️ RISKY: High risk, show with warning
-    if (grouped.risky.length > 0) {
-      html += `<details class="mb-3"><summary class="text-xs font-semibold text-amber-600 mb-2 cursor-pointer hover:text-amber-700">⚠️ Opsi Berisiko Tinggi</summary><div class="space-y-2 mt-2">`;
-      grouped.risky.forEach(school => {
-        html += this.renderSchoolCard(school, false);
-      });
-      html += `</div></details>`;
-    }
-    
-    return html;
-  },
-
-  /**
-   * Render a single recommendation category
-   */
-  /**
- * Render a single recommendation category
- * Handles disabled state for Jalur Prestasi
- */
-renderCategory: function(categoryKey, data) {
-  const { label, schools, grouped, disabled, minScore } = data;
-  
-  // ✅ NEW: Handle disabled state (Jalur Prestasi < 280)
- 
-  // Di dalam renderCategory(), bagian disabled:
-if (disabled) {
-  const currentNG = appState.lastCalculation?.nilaiGabungan || 0;
-  const kurang = Math.max(0, minScore - currentNG);
-  
-  return `
-    <div class="mb-6 last:mb-0">
-      <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-400">
-        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs opacity-60">${label}</span>
-        <span class="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">⚠️ Tertutup</span>
-      </h3>
-      <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-        <p class="text-sm font-semibold text-amber-800">Jalur Prestasi belum tersedia</p>
-        <p class="mt-1 text-sm text-amber-700">
-          Butuh <strong>Nilai Gabungan minimal ${minScore}</strong>.
-        </p>
-        <p class="mt-2 text-xs text-amber-600">
-          Nilai kamu: <strong>${Utils.formatDisplay(currentNG)}</strong>
-          <br>Kurang <strong class="text-red-600">${Utils.formatDisplay(kurang)}</strong> poin lagi.
-        </p>
-      </div>
-    </div>
-  `;
-}
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  // Normal rendering when enabled
-  if (!schools || schools.length === 0) {
-    return `
-      <div class="mb-6 last:mb-0">
-        <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
-          <span class="rounded-full bg-slate-100 px-2.5 py-10 text-xs">${label}</span>
-        </h3>
-        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
-          Belum ada sekolah di kategori ini yang sesuai dengan nilai Anda.
-          <p class="mt-1 text-xs">💡 Coba tingkatkan nilai simulasi atau pertimbangkan kategori lain.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  // Find TOP PICK: highest cutoff with zone in sweet spot
-  const topPick = schools.find(s => s.zona === 'TIPIS' || s.zona === 'CUKUP AMAN') || schools[0];
-
-  return `
-    <div class="mb-6 last:mb-0">
-      <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700">
-        <span class="rounded-full bg-slate-100 px-2.5 py-10 text-xl">${label}</span>
-        <!-- span class="text-xs font-normal text-slate-500">(${schools.length} sekolah)</span -->
-      </h3>
-      ${this.renderGroupedSchools(grouped, categoryKey)}
-    </div>
-  `;
-},
-
-
-
-  /**
-   * Render all recommendations to DOM
-   */
-render: function(userScore) {
-  const container = DOM.recommendationsContent;
-  if (!container) return;
-
-  const recommendations = this.getAllRecommendations(userScore);
-  const hasAnyResults = Object.values(recommendations).some(cat => cat.schools?.length > 0);
-  const isJapresDisabled = recommendations.SMAN_japres?.disabled;
-
-  if (!hasAnyResults && !isJapresDisabled) {
-      container.innerHTML = `
-        <div class="text-center py-8 text-slate-500 text-sm">
-          <p class="font-medium">Belum ada rekomendasi yang cocok.</p>
-          <p class="mt-1">Coba periksa kembali input nilai atau tingkatkan skor simulasi Anda.</p>
-          <div class="mt-4 inline-flex flex-wrap justify-center gap-2">
-
-
-  <div>
-    <p class="font-semibold text-red-600 mb-1">❌ Sebaiknya dihindari:</p>
-    <span class="zone-badge zone-TIDAK-LOLOS">TIDAK LOLOS</span>
-  </div>
-
-  <div>
-    <p class="font-semibold text-orange-600 mb-1">🎯 Pilihan 1 (target / berani):</p>
-    <span class="zone-badge zone-KRITIS">KRITIS</span>
-    <span class="zone-badge zone-RAWAN">RAWAN</span>
-    <span class="zone-badge zone-SANGAT-TIPIS">SANGAT TIPIS</span>
-  </div>
-
-  <div>
-    <p class="font-semibold text-yellow-600 mb-1">⚖️ Pilihan 2 (realistis):</p>
-    <span class="zone-badge zone-TIPIS">TIPIS</span>
-    <span class="zone-badge zone-CUKUP-AMAN">CUKUP AMAN</span>
-  </div>
-
-  <div>
-    <p class="font-semibold text-green-600 mb-1">🛡️ Pilihan 3 (aman / cadangan):</p>
-    <span class="zone-badge zone-AMAN">AMAN</span>
-    <span class="zone-badge zone-SANGAT-AMAN">SANGAT AMAN</span>
-    <span class="zone-badge zone-PASTI">PASTI</span>
-  </div>
-
-</div>
-
-
-
-
-          <p class="mt-3 text-xs text-slate-400">Selain rekomendasi ini, anda juga harus melihat karakter sekolahnya seperti apa di bidang akademik dan non akademik, agar anak anda nyaman bersekolah.</p>
-        </div>
-      `;
-      return;
-    }
-	
-	
-	// ✅ NEW: Add header notice if japres is disabled
-  const japresNotice = isJapresDisabled ? `
-    <!-- div class="mb-3 rounded-2xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-      <!-- strong>⚠️ Jalur Prestasi terkunci</strong> — Butuh NG ≥ 280. --> 
-      <!-- Fokus pada Jalur Domisili terlebih dahulu. -->
-    </div -->
-  ` : '';
-  
-
-	
-	
-	
-	
-    container.innerHTML = `
-      <div class="mb-4 rounded-2xl bg-pine/5 border border-pine/20 p-3 text-xs text-pine">
-        <p class="font-semibold">💡 Strategi Memilih:</p>
-
-		
-		<p class="mt-3 text-xs text-slate-400">Selain rekomendasi ini, harus melihat karakter sekolahnya seperti apa di bidang akademik dan non akademik, agar anak anda nyaman bersekolah.</p>
-		
-		
-      </div>
-	  ${japresNotice}
-      ${this.renderCategory('SMAN_japres', recommendations.SMAN_japres)}
-      ${this.renderCategory('SMAN_jadomwil', recommendations.SMAN_jadomwil)}
-      ${this.renderCategory('SMK_jadomwil', recommendations.SMK_jadomwil)}
-      <div class="mt-4 rounded-2xl bg-mist/50 p-3 text-xs text-pine/90">
-        <p><strong>📋 Tips </strong> Pilih 3-5 sekolah: 1-2 "Target", 2-3 "Aman", 1 "Cadangan".</p>
-      </div>
-    `;
-  },
-
-  /**
-   * Clear recommendations display
-   */
-  clear: function() {
-    if (DOM.recommendationsContent) {
-      DOM.recommendationsContent.innerHTML = `
-        <div class="text-center py-8 text-slate-500 text-sm">
-          <p>Hitung Nilai Gabungan terlebih dahulu untuk melihat rekomendasi sekolah.</p>
-          <p class="mt-1 text-xs">🎯 Rekomendasi akan diurutkan dari sekolah paling kompetitif yang masih bisa Anda tembus.</p>
-        </div>
-      `;
-    }
-  }
-};
 
     /**
      * ============================================
@@ -1724,7 +1456,7 @@ render: function(userScore) {
         if (!validation.valid && (forceErrors || hasStarted)) {
           Renderer.renderErrors(validation.errors);
           Renderer.clearResults();
-          SchoolRecommender.clear();
+
           return null;
         }
         
@@ -1735,7 +1467,8 @@ render: function(userScore) {
         Renderer.renderResults(rawData.type, result);
         
         // 🎯 Render school recommendations
-        SchoolRecommender.render(result.nilaiGabungan);
+
+        RayonAwareRecommender.render(result.nilaiGabungan);
         
         appState.formData = rawData;
         appState.lastCalculation = result;
@@ -1751,6 +1484,10 @@ render: function(userScore) {
         const rawData = App.collectFormData();
         const validation = Validator.validateFormData(rawData);
         if (appState.isManualCalculating) return;
+		
+		
+
+
         
         if (validation.valid) {
           const result = Calculator.compute(validation.normalizedData);
@@ -1758,8 +1495,13 @@ render: function(userScore) {
           Renderer.renderWarnings(warnings);
           Renderer.renderResults(rawData.type, result);
           // 🎯 Auto-update recommendations on valid input
-          SchoolRecommender.render(result.nilaiGabungan);
-          appState.lastCalculation = result;
+
+          
+
+            
+		  RayonAwareRecommender.render(result.nilaiGabungan); // ✅ auto-update  
+		  
+		  appState.lastCalculation = result;
         }
       }, CONFIG.DEBOUNCE_DELAY_MS),
 
@@ -1774,7 +1516,7 @@ render: function(userScore) {
         Renderer.renderErrors([]);
         Renderer.renderWarnings([]);
         Renderer.clearResults();
-        SchoolRecommender.clear();
+
         appState.formData = {};
         appState.lastCalculation = null;
         appState.clickCount = 0;
@@ -1960,39 +1702,594 @@ render: function(userScore) {
       });
     }
 
-    function init() {
-      initDOMCache();
-      Renderer.renderRaporGrid();
-      const savedData = Storage.loadFormData();
-      appState.clickCount = Storage.getClickCount();
-      if (Object.keys(savedData).length > 0) { App.applyFormData(savedData); }
-      App.applyQueryParams();
-      bindEvents();
-      Renderer.updateFormVisibility(appState.currentType);
+/**
+ * ============================================
+ * 📍 RAYON CHECKER MODULE (Dynamic from rayon_data.js)
+ * ============================================
+ */
+
+/**
+ * 📍 RAYON CHECKER MODULE
+ * Membaca data dari window.RAYON_DATA.SMAN_RAYON
+ */
+const RayonChecker = {
+  lookupMap: new Map(),
+  kecamatans: new Set(),
+  kelurahansByKec: {},
+
+
+  
+  init() {
+    if (!window.RAYON_DATA?.SMAN_RAYON) {
+      console.warn("⚠️ Data rayon belum termuat. Pastikan <script src='rayon_data.js'> ada sebelum script utama.");
+      return;
+    }
+
+    // Build optimized lookup (O(n))
+    window.RAYON_DATA.SMAN_RAYON.forEach(entry => {
+      const key = `${entry.k}|${entry.d}`;
+      this.lookupMap.set(key, { r1: entry.r1, r2: entry.r2 });
+      this.kecamatans.add(entry.k);
+      if (!this.kelurahansByKec[entry.k]) this.kelurahansByKec[entry.k] = [];
+      if (!this.kelurahansByKec[entry.k].includes(entry.d)) {
+        this.kelurahansByKec[entry.k].push(entry.d);
+      }
+    });
+
+    // Sort for UX consistency
+    const sortedKec = Array.from(this.kecamatans).sort();
+    for (const kec in this.kelurahansByKec) this.kelurahansByKec[kec].sort();
+
+    this.populateDropdowns(sortedKec);
+    this.bindEvents();
+  },
+
+  populateDropdowns(sortedKec) {
+    const kecSelect = document.getElementById("kecamatanSelect");
+    if (!kecSelect) return;
+    sortedKec.forEach(kec => {
+      const opt = document.createElement("option");
+      opt.value = kec;
+      opt.textContent = kec;
+      kecSelect.appendChild(opt);
+    });
+  },
+
+  bindEvents() {
+    const kecSelect = document.getElementById("kecamatanSelect");
+    const kelSelect = document.getElementById("kelurahanSelect");
+    const btn = document.getElementById("checkRayonBtn");
+
+    kecSelect?.addEventListener("change", () => {
+      kelSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+      kelSelect.disabled = true;
+      const selected = kecSelect.value;
+      if (selected && this.kelurahansByKec[selected]) {
+        this.kelurahansByKec[selected].forEach(kel => {
+          const opt = document.createElement("option");
+          opt.value = kel;
+          opt.textContent = kel;
+          kelSelect.appendChild(opt);
+        });
+        kelSelect.disabled = false;
+      }
+    });
+
+    btn?.addEventListener("click", () => {
+      const kec = kecSelect.value;
+      const kel = kelSelect.value;
+      if (!kec || !kel) return alert("Silakan pilih Kecamatan & Kelurahan terlebih dahulu.");
+      this.render(kec, kel);
+    });
+  },
+
+  render(kec, kel) {
+
+
+    const data = this.lookupMap.get(`${kec}|${kel}`);
+    const container = document.getElementById("rayonResult");
+    const header = document.getElementById("resultLocation");
+    const groups = document.getElementById("rayonGroups");
+
+
+
+
+
+
+    if (!data) {
+      container.classList.remove("hidden");
+      groups.innerHTML = `<p class="text-center text-sm text-slate-500 py-2">Data tidak ditemukan.</p>`;
+      return;
+    }
+
+    container.classList.remove("hidden");
+    header.textContent = `📍 ${kel}, ${kec}`;
+    
+    groups.innerHTML = `
+      ${this.renderGroup("🎯 Rayon 1 (Prioritas Utama untuk pilihan di Jalur Domisili anda)", data.r1, "zone-AMAN", "3 SMAN terdekat dari kantor kelurahan KK siswa")}
+      ${this.renderGroup("📍 Rayon 2 (Alternatif untuk pilihan di Jalur Prestasi anda)", data.r2, "zone-CUKUP-AMAN", "3 SMAN terdekat berikutnya")}
+    `;
+    container.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  },
+
+  renderGroup(title, schools, badgeClass, desc) {
+    if (!schools?.length) return "";
+    const list = schools.map(s => 
+      `<li class="py-1.5 px-3 rounded-lg bg-white border border-slate-200 text-sm text-slate-800 flex items-center gap-2 shadow-sm">
+        <span class="h-1.5 w-1.5 rounded-full bg-pine"></span>${Utils.escapeHtml(s)}
+      </li>`
+    ).join("");
+    
+    return `
+      <div class="mb-3 last:mb-0">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-semibold text-ink">${title}</h3>
+          <span class="rounded-full ${badgeClass} px-2 py-0.5 text-[10px] font-bold">${schools.length} sekolah</span>
+        </div>
+        <p class="text-xs text-slate-500 mb-2">${desc}</p>
+        <ul class="space-y-1.5">${list}</ul>
+      </div>
+    `;
+  }
+};
+
+/**
+ * ============================================
+ * 🎯 RAYON-AWARE SCHOOL RECOMMENDER
+ * Use Case: 
+ * - Jika lokasi diisi → filter berdasarkan rayon
+ * - Jika lokasi kosong → mode global (semua sekolah)
+ * ============================================
+ */
+/**
+ * ============================================
+ * 🎯 RAYON-AWARE SCHOOL RECOMMENDER (FIXED)
+ * Priority: Rayon > Selisih > Zone
+ * ============================================
+ */
+const RayonAwareRecommender = {
+  userLocation: null,
+
+  setUserLocation(kecamatan, kelurahan) {
+    if (!window.RAYON_DATA?.SMAN_RAYON) return false;
+    const entry = window.RAYON_DATA.SMAN_RAYON.find(
+      e => e.k === kecamatan && e.d === kelurahan
+    );
+    if (!entry) return false;
+    this.userLocation = {
+      kecamatan,
+      kelurahan,
+      rayon1: new Set(entry.r1),
+      rayon2: new Set(entry.r2)
+    };
+    return true;
+  },
+
+
+
+  /**
+ * Cek status rayon untuk SMAN (SMKN selalu rayon1 untuk DIY)
+ * ✅ FIX: Gunakan normalisasi nama untuk matching case-insensitive
+ */
+getRayonStatus(schoolName, isSMKN = false) {
+  if (isSMKN) return "rayon1"; // SMKN: semua DIY = Rayon 1
+  if (!this.userLocation) return "unknown";
+  
+  // ✅ Normalisasi nama sekolah untuk matching
+  const normalizedName = normalizeSchoolName(schoolName);
+  
+  const { rayon1, rayon2 } = this.userLocation;
+  
+  // Cek Rayon 1 dengan normalisasi
+  for (const school of rayon1) {
+    if (normalizeSchoolName(school) === normalizedName) {
+      return "rayon1";
+    }
+  }
+  
+  // Cek Rayon 2 dengan normalisasi
+  for (const school of rayon2) {
+    if (normalizeSchoolName(school) === normalizedName) {
+      return "rayon2";
+    }
+  }
+    
+  console.log('🔍 Rayon Match:', {
+    input: schoolName,
+    normalized: normalizedName,
+    rayon1Match: Array.from(rayon1).some(s => normalizeSchoolName(s) === normalizedName),
+    rayon2Match: Array.from(rayon2).some(s => normalizeSchoolName(s) === normalizedName)
+  });
+
+  
+  return "rayon3"; // SMAN lain di DIY
+},
+
+
+
+  getZoneInfo(selisih) {
+    if (selisih < 0) return { label: "TIDAK LOLOS", color: "zone-TIDAK-LOLOS", priority: -1 };
+    if (selisih < 0.5) return { label: "TIPIS", color: "zone-TIPIS", priority: 4 };
+    if (selisih < 2) return { label: "CUKUP AMAN", color: "zone-CUKUP-AMAN", priority: 3 };
+    if (selisih < 5) return { label: "AMAN", color: "zone-AMAN", priority: 2 };
+    return { label: "SANGAT AMAN", color: "zone-SANGAT-AMAN", priority: 1 };
+  },
+
+  /**
+   * ✅ FILTER: Jalur Domisili = semua rayon valid
+   *           Jalur Prestasi SMAN = exclude Rayon 1
+   */
+  filterByLocation(schoolData, jalur, isSMKN = false) {
+    if (!this.userLocation) return schoolData;
+    
+    return schoolData.filter(([cutoff, nama]) => {
+      const rayon = this.getRayonStatus(nama, isSMKN);
       
-      const rawData = App.collectFormData();
-      const validation = Validator.validateFormData(rawData);
-      if (validation.valid) {
-        const result = Calculator.compute(validation.normalizedData);
-        Renderer.renderResults(rawData.type, result);
-        // 🎯 Initial recommendations if data is valid
-        SchoolRecommender.render(result.nilaiGabungan);
-        appState.lastCalculation = result;
+      if (jalur === "jadomwil") {
+        return true; // Semua rayon valid untuk domisili
       }
       
-      console.log("✅ App initialized | Config:", {
-        weights: { tes: CONFIG.WEIGHT_TES, rapor: CONFIG.WEIGHT_RAPOR },
-        maxValues: { tes: CONFIG.MAX_TES_RAW_TOTAL, rapor: CONFIG.MAX_RAPOR_RAW_TOTAL, ng: CONFIG.MAX_NG_WITH_PRESTASI },
-        popupEnabled: CONFIG.POPUP.ENABLED,
-        recommendations: { categories: Object.keys(SCHOOL_DATA).length }
+      if (jalur === "japres" && !isSMKN) {
+        // ✅ Prestasi SMAN: exclude Rayon 1
+        return rayon !== "rayon1";
+      }
+      
+      return true;
+    });
+  },
+
+  /**
+   * ✅ SORTING UTAMA: Rayon Priority FIRST
+   * Rayon 1 = 300, Rayon 2 = 200, Rayon 3 = 100
+   */
+  rankSchools(schoolData, userScore, isJapres = false) {
+    return schoolData
+      .map(([cutoff, nama]) => {
+        const selisih = +(userScore - cutoff).toFixed(2);
+        const zone = this.getZoneInfo(selisih);
+        const rayonStatus = this.getRayonStatus(nama, false);
+        
+        // ✅ Rayon priority score
+        const rayonPriority = {
+          "rayon1": isJapres ? -100 : 300, // ❌ Rayon 1 tidak valid untuk Japres
+          "rayon2": 200,
+          "rayon3": 100,
+          "unknown": 0
+        }[rayonStatus] || 0;
+        
+        return { nama, cutoff, selisih, zone, rayonStatus, rayonPriority };
+      })
+      .sort((a, b) => {
+        // 1️⃣ Rayon priority DESC (utama)
+        if (b.rayonPriority !== a.rayonPriority) {
+          return b.rayonPriority - a.rayonPriority;
+        }
+        // 2️⃣ Selisih ASC (dalam rayon sama)
+        if (a.selisih !== b.selisih) {
+          return a.selisih - b.selisih;
+        }
+        // 3️⃣ Zone priority DESC
+        return b.zone.priority - a.zone.priority;
       });
+  },
+
+  /**
+   * ✅ BADGE: Tampilkan status rayon dengan jelas
+   */
+  renderRayonBadge(rayonStatus, isSMKN = false, isJapres = false) {
+    if (!this.userLocation) return "";
+    
+    if (isSMKN) {
+      return '<span class="zone-badge zone-AMAN">Rayon 1 ✓</span>';
     }
+    
+    if (isJapres) {
+      if (rayonStatus === "rayon1") {
+        return '<span class="zone-badge zone-locked">Rayon 1 ⛔</span>';
+      }
+      if (rayonStatus === "rayon2") {
+        return '<span class="zone-badge zone-CUKUP-AMAN">Rayon 2 ✓</span>';
+      }
+      return '<span class="zone-badge zone-TIPIS">Rayon 3</span>';
+    }
+    
+    // Jalur Domisili
+    if (rayonStatus === "rayon1") {
+      return '<span class="zone-badge zone-AMAN">🎯 Rayon 1 Anda</span>';
+    }
+    if (rayonStatus === "rayon2") {
+      return '<span class="zone-badge zone-CUKUP-AMAN">Rayon 2</span>';
+    }
+    return '<span class="zone-badge zone-TIPIS">Rayon 3</span>';
+  },
+
+  /**
+   * ✅ CARD: Tampilkan badge + info rayon
+   */
+  renderSchoolCard(school, isTopPick, isSMKN = false, isJapres = false) {
+    const rayonStatus = this.getRayonStatus(school.nama, isSMKN);
+    const rayonBadge = this.renderRayonBadge(rayonStatus, isSMKN, isJapres);
+    
+    return `
+      <div class="group flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-pine/30 hover:shadow-sm ${isTopPick ? 'ring-2 ring-pine/30 bg-mist/30' : ''}">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            ${isTopPick ? '<span class="inline-flex items-center rounded-full bg-pine/15 px-2 py-0.5 text-[10px] font-bold text-pine">🎯 Rekomendasi</span>' : ''}
+            <p class="truncate text-sm font-medium text-slate-800">${Utils.escapeHtml(school.nama)}</p>
+          </div>
+          <p class="mt-0.5 text-xs text-slate-500">
+            Minim: <strong class="text-slate-700">${Utils.formatDisplay(school.cutoff)}</strong>
+            <span class="mx-1 text-slate-300">•</span>
+            Selisih: <strong class="${school.selisih >= 0 ? 'text-green-600' : 'text-red-600'}">${school.selisih >= 0 ? '+' : ''}${Utils.formatDisplay(school.selisih)}</strong>
+          </p>
+        </div>
+        <div class="text-right shrink-0 flex flex-col items-end gap-1">
+          ${rayonBadge}
+          <span class="zone-badge ${school.zone.color}">${Utils.escapeHtml(school.zone.label)}</span>
+        </div>
+      </div>
+    `;
+  },
+
+  /**
+   * ✅ RENDER CATEGORY: Filter + Sort + Render dengan logika rayon
+   */
+  renderCategory(categoryKey, schools, userScore, isSMKN = false) {
+    const labels = {
+      SMAN_jadomwil: "🏠 SMAN Jalur Domisili",
+      SMK_jadomwil: "🔧 SMKN Jalur Domisili", 
+      SMAN_japres: "🏆 SMAN Jalur Prestasi"
+    };
+    
+    const title = labels[categoryKey] || categoryKey;
+    const isJapres = categoryKey === "SMAN_japres";
+    
+    // ✅ Filter berdasarkan rayon
+    const filtered = this.filterByLocation(schools, isJapres ? "japres" : "jadomwil", isSMKN);
+    
+    // ✅ Sort dengan rayon priority
+    const ranked = this.rankSchools(filtered, userScore, isJapres).slice(0, 10);
+    
+    if (ranked.length === 0) {
+      const msg = isJapres 
+        ? "Tidak ada SMAN di luar Rayon 1 yang sesuai dengan nilai Anda."
+        : (this.userLocation ? "Tidak ada sekolah yang sesuai dengan rayon & nilai Anda." : "Belum ada rekomendasi untuk nilai ini.");
+      
+      return `
+        <div class="mb-6">
+          <h3 class="mb-3 text-sm font-semibold text-slate-700">${title}</h3>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
+            ${msg}
+            ${!this.userLocation ? '<p class="mt-1 text-xs">💡 Isi kecamatan & kelurahan untuk rekomendasi berbasis rayon.</p>' : ''}
+          </div>
+        </div>
+      `;
+    }
+    
+    // ✅ Top pick: Rayon 1 + selisih positif + zone TIPIS/CUKUP AMAN
+    const topPick = ranked.find(s => 
+      s.rayonPriority >= 200 && s.selisih >= 0 && 
+      (s.zone.label === "TIPIS" || s.zone.label === "CUKUP AMAN")
+    ) || ranked[0];
+    
+    // ✅ Location hint
+    const locationHint = this.userLocation 
+      ? `<p class="text-xs text-slate-500 mb-2">📍 Berdasarkan: ${this.userLocation.kelurahan}, ${this.userLocation.kecamatan}</p>`
+      : `<p class="text-xs text-slate-400 mb-2">🌐 Mode global (semua sekolah DIY)</p>`;
+    
+    // ✅ Japres warning
+    const japresWarning = isJapres && this.userLocation
+      ? `<div class="mb-2 rounded-xl bg-amber-50 border border-amber-200 p-2 text-xs text-amber-700">
+          ⚠️ Jalur Prestasi SMAN hanya untuk domisili di <strong>luar Rayon 1</strong> sekolah tujuan.
+        </div>`
+      : '';
+    
+    // ✅ Render cards
+    const cards = ranked.map(s => 
+      this.renderSchoolCard(s, s.nama === topPick.nama && s.selisih >= 0, isSMKN, isJapres)
+    ).join("");
+    
+    return `
+      <div class="mb-6">
+        <h3 class="mb-1 text-sm font-semibold text-slate-700">${title}</h3>
+        ${locationHint}
+        ${japresWarning}
+        <div class="space-y-2">${cards}</div>
+      </div>
+    `;
+  },
+
+  /**
+   * ✅ MAIN RENDER
+   */
+  render(userScore) {
+
+
+  // ✅ TAMBAHKAN HANYA INI di baris pertama:
+  console.log('🔍 Debug Rayon:', {
+    lokasi: this.userLocation ? 'Terisi' : 'Null',
+    rayon1: this.userLocation?.rayon1?.size || 0,
+    rayon2: this.userLocation?.rayon2?.size || 0,
+    nilai: userScore || 'Belum dihitung'
+  });
+
+  // ... sisa kode render Anda di bawah ini ...
+
+
+    const container = DOM.recommendationsContent;
+    if (!container) return;
+    
+    // ✅ Header mode
+    const modeHeader = this.userLocation
+      ? `<div class="mb-3 rounded-2xl bg-pine/5 border border-pine/20 p-3 text-xs text-pine">
+          <p class="font-semibold">📍 Rekomendasi berbasis domisili</p>
+          <p>${this.userLocation.kelurahan}, ${this.userLocation.kecamatan}</p>
+        </div>`
+      : `<div class="mb-3 rounded-2xl bg-slate-50 border border-slate-200 p-3 text-xs text-slate-600">
+          <p class="font-semibold">🌐 Mode global</p>
+          <p>Tanpa filter rayon. Isi kecamatan & kelurahan untuk rekomendasi lebih personal.</p>
+        </div>`;
+    
+    // ✅ Render categories: Japres dulu (karena ada filter khusus)
+    const sections = [
+      this.renderCategory("SMAN_japres", SCHOOL_DATA.SMAN_japres, userScore, false),
+      this.renderCategory("SMAN_jadomwil", SCHOOL_DATA.SMAN_jadomwil, userScore, false),
+      this.renderCategory("SMK_jadomwil", SCHOOL_DATA.SMK_jadomwil, userScore, true)
+    ].join("");
+    
+    // ✅ Tips footer
+    const tips = `
+      <div class="mt-4 rounded-2xl bg-mist/50 p-3 text-xs text-pine/90">
+        <p><strong>💡 Tips:</strong></p>
+        <ul class="mt-1 space-y-1 list-disc list-inside">
+          <li><strong>TIPIS/CUKUP AMAN:</strong> Pilihan realistis (selisih 0-2 poin)</li>
+          <li><strong>AMAN/SANGAT AMAN:</strong> Pilihan cadangan (selisih >2 poin)</li>
+          <li><strong>🎯 Rayon 1:</strong> Prioritas tertinggi di Jalur Domisili</li>
+          <li><strong>⛔ Rayon 1 di Japres:</strong> Tidak valid, pilih Rayon 2/3</li>
+          ${!this.userLocation ? '<li>Isi lokasi untuk melihat status rayon sekolah</li>' : ''}
+        </ul>
+      </div>
+    `;
+    
+    container.innerHTML = modeHeader + sections + tips;
+  },
+
+  clear() {
+    if (DOM.recommendationsContent) {
+      DOM.recommendationsContent.innerHTML = `
+        <div class="text-center py-8 text-slate-500 text-sm">
+          <p>Hitung Nilai Gabungan terlebih dahulu untuk melihat rekomendasi sekolah.</p>
+          <p class="mt-1 text-xs">🎯 Isi kecamatan & kelurahan untuk rekomendasi berbasis rayon.</p>
+        </div>
+      `;
+    }
+    this.userLocation = null;
+  }
+};
+
+
+//-----------------------
+
+
+
+
+
+
+
+
+
+//-----------------------
+
+
+function init() {
+  initDOMCache();
+  
+  // ✅ Safety: Pastikan DOM elements ada sebelum render
+  if (!DOM.raporGrid) {
+    console.error('❌ DOM element #raporGrid tidak ditemukan!');
+    return;
+  }
+  
+  Renderer.renderRaporGrid();
+  
+  // ✅ Inisialisasi Cek Rayon (dengan try-catch)
+  try {
+    if (typeof RayonChecker !== "undefined") RayonChecker.init();
+  } catch (e) {
+    console.warn('⚠️ RayonChecker.init() error:', e);
+  }
+
+
+  // 🔄 Sync location to recommender when user selects & checks
+  const checkRayonBtn = document.getElementById("checkRayonBtn");
+  const kecSelect = document.getElementById("kecamatanSelect");
+  const kelSelect = document.getElementById("kelurahanSelect");
+
+  checkRayonBtn?.addEventListener("click", () => {
+    const kec = kecSelect.value;
+    const kel = kelSelect.value;
+    if (kec && kel) {
+      RayonAwareRecommender.setUserLocation(kec, kel);
+      if (appState.lastCalculation?.nilaiGabungan) {
+        RayonAwareRecommender.render(appState.lastCalculation.nilaiGabungan);
+      }
+    }
+  });
+
+  // Load saved data
+  const savedData = Storage.loadFormData();
+  appState.clickCount = Storage.getClickCount();
+  if (Object.keys(savedData).length > 0) { 
+    App.applyFormData(savedData); 
+  }
+  App.applyQueryParams();
+  bindEvents();
+  Renderer.updateFormVisibility(appState.currentType);
+  
+  // Initial calculation if valid data exists
+  // ✅ Initial calculation dengan safety check
+  const rawData = App.collectFormData();
+  const validation = Validator.validateFormData(rawData);
+  
+  if (validation.valid) {
+    try {
+      const result = Calculator.compute(validation.normalizedData);
+      Renderer.renderResults(rawData.type, result);
+      
+      // ✅ Safety call ke recommender
+      if (typeof RayonAwareRecommender?.render === 'function') {
+        RayonAwareRecommender.render(result.nilaiGabungan);
+      }
+      appState.lastCalculation = result;
+    } catch (e) {
+      console.error('❌ Error saat kalkulasi awal:', e);
+    }
+  }
+  
+  console.log("✅ App initialized | Config:", {
+    weights: { tes: CONFIG.WEIGHT_TES, rapor: CONFIG.WEIGHT_RAPOR },
+    maxValues: { tes: CONFIG.MAX_TES_RAW_TOTAL, rapor: CONFIG.MAX_RAPOR_RAW_TOTAL, ng: CONFIG.MAX_NG_WITH_PRESTASI },
+    popupEnabled: CONFIG.POPUP.ENABLED,
+    recommendations: { categories: Object.keys(SCHOOL_DATA).length }
+  });
+
+
+  // 📊 Debug info
+console.table({
+  'RayonChecker': typeof RayonChecker,
+  'RayonAwareRecommender': typeof RayonAwareRecommender,
+  'SCHOOL_DATA categories': Object.keys(SCHOOL_DATA).length,
+  'RAYON_DATA loaded': !!window.RAYON_DATA?.SMAN_RAYON?.length,
+  'DOM recommendationsContent': !!DOM.recommendationsContent
+});
+
+
+
+
+}
+
+/////////////////////////////end of init()////////////////////////
+
+
+    
+
+
+
+
 
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", init);
     } else {
+
+
+
+
       init();
     }
   </script>
+  
+
+
+
 </body>
 </html>
