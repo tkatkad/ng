@@ -1,6 +1,6 @@
 Berikut adalah daftar prediksi awal rentang **Passing Grade (PG)** untuk seluruh SMAN di DIY tahun 2026. Prediksi ini disusun menggunakan **Scenario-Based Predictive Admission Simulation Engine** yang mengintegrasikan data statistik sebaran nilai terbaru, regulasi kuota (SK Gubernur 95/2026), serta pemodelan perilaku pendaftar (**Efek Fat Middle Wave** dan **Efek Domat**).
 
-Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) pada **Jalur Zonasi Wilayah**, karena jalur ini merupakan "pintu terakhir" yang paling banyak diperebutkan. Untuk menghitung NG, saya gunakan kalkulator: https://tkatkad.github.io/ng/
+Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) pada **Jalur Zonasi Wilayah**, karena jalur ini merupakan "pintu terakhir" yang paling banyak diperebutkan. Untuk menghitung NG, saya gunakan kalkulator: [https://tkatkad.github.io/ng/](https://tkatkad.github.io/ng/ .)
 .
 
 
