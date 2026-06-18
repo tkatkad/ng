@@ -51,7 +51,7 @@ Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) 
 3.  **Tie-Breaker Waktu Pendaftaran:** Karena kepadatan populasi di rentang nilai 310-330, akan banyak sekali pendaftar dengan **Nilai Gabungan kembar**. Penentu utama kelulusan di urutan kursi terakhir adalah **siapa yang mendaftar lebih awal**. Sangat disarankan untuk melakukan pemilihan sekolah segera saat sistem dibuka.
 4.  **Prediksi Limpahan Kuota (Turahan):** Angka di atas sudah mengasumsikan adanya penambahan kapasitas sekitar **5-10%** dari sisa kuota Afirmasi dan Radius yang tidak terisi penuh (berdasarkan tren 2025). Tanpa limpahan ini, ambang batas PG akan jauh lebih tinggi.
 
-Pekerjaan pak @proyek yang lain masih banyak. Itulah data sementara yang bisa pak @proyek bikin untuk menjawab permintaan admin grup WA SPMB SMAN SMKN Kelas 9 SMP. https://chat.whatsapp.com/CHe8iBeRpGX19E2xWtDKkM
+Pekerjaan pak @proyek yang lain masih banyak. Itulah data sementara yang bisa pak @proyek bikin untuk menjawab permintaan admin grup WA SPMB SMAN SMKN Kelas 9 SMP. [https://chat.whatsapp.com/CHe8iBeRpGX19E2xWtDKkM](https://chat.whatsapp.com/CHe8iBeRpGX19E2xWtDKkM)
 
 
 **Pak @proyek bisa saja salah ketik atau pandangannya memang salah. Ambil keputusan dan risiko sendiri. 🙏🏻 Jika menurut anda jawaban pak @proyek ini berguna untuk orang lain, mohon bantuannya untuk di share kan kembali, agar bermanfaat untuk orang lain. Selamat memantau proses SPMB. Semoga proses SPMB ananda lancar, mendapatkan kursi yang nyaman di sekolah yang dikehendakinya.**
