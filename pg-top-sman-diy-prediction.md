@@ -1,6 +1,9 @@
 Berikut adalah daftar prediksi awal rentang **Passing Grade (PG)** untuk seluruh SMAN di DIY tahun 2026. Prediksi ini disusun menggunakan **Scenario-Based Predictive Admission Simulation Engine** yang mengintegrasikan data statistik sebaran nilai terbaru, regulasi kuota (SK Gubernur 95/2026), serta pemodelan perilaku pendaftar (**Efek Fat Middle Wave** dan **Efek Domat**).
 
-Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) pada **Jalur Zonasi Wilayah**, karena jalur ini merupakan "pintu terakhir" yang paling banyak diperebutkan. Pekerjaan pak @proyek yang lain masih banyak. Ini data sementara yang pak @proyek bikin untuk menjawab permintaan Bu Linda, admin grup WA SPMB SMAN SMKN Kelas 9 SMP. https://chat.whatsapp.com/CHe8iBeRpGX19E2xWtDKkM
+Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) pada **Jalur Zonasi Wilayah**, karena jalur ini merupakan "pintu terakhir" yang paling banyak diperebutkan. Untuk menghitung NG, saya gunakan kalkulator: https://tkatkad.github.io/ng/
+.
+
+
 
 ### **Tabel Prediksi Passing Grade Beberapa SMAN DIY 2026**
 
@@ -47,5 +50,8 @@ Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) 
 2.  **Efek "Glundung" Terhadap Sekolah Penopang:** Pendaftar nilai tinggi yang gagal di sekolah *Top-Tier* (SMAN 1, 3, 8 Yk) akan dialirkan secara masif ke Pilihan 2 mereka, yaitu sekolah klaster menengah-atas. Pemilik Nilai Gabungan di bawah **325.00** di wilayah Sleman dan Kota harus ekstra waspada terhadap gelombang ini.
 3.  **Tie-Breaker Waktu Pendaftaran:** Karena kepadatan populasi di rentang nilai 310-330, akan banyak sekali pendaftar dengan **Nilai Gabungan kembar**. Penentu utama kelulusan di urutan kursi terakhir adalah **siapa yang mendaftar lebih awal**. Sangat disarankan untuk melakukan pemilihan sekolah segera saat sistem dibuka.
 4.  **Prediksi Limpahan Kuota (Turahan):** Angka di atas sudah mengasumsikan adanya penambahan kapasitas sekitar **5-10%** dari sisa kuota Afirmasi dan Radius yang tidak terisi penuh (berdasarkan tren 2025). Tanpa limpahan ini, ambang batas PG akan jauh lebih tinggi.
+
+Pekerjaan pak @proyek yang lain masih banyak. Itulah data sementara yang bisa pak @proyek bikin untuk menjawab permintaan admin grup WA SPMB SMAN SMKN Kelas 9 SMP. https://chat.whatsapp.com/CHe8iBeRpGX19E2xWtDKkM
+
 
 **Pak @proyek bisa saja salah ketik atau pandangannya memang salah. Ambil keputusan dan risiko sendiri. 🙏🏻 Jika menurut anda jawaban pak @proyek ini berguna untuk orang lain, mohon bantuannya untuk di share kan kembali, agar bermanfaat untuk orang lain. Selamat memantau proses SPMB. Semoga proses SPMB ananda lancar, mendapatkan kursi yang nyaman di sekolah yang dikehendakinya.**
