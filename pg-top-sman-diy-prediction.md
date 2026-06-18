@@ -1,6 +1,6 @@
 Berikut adalah daftar prediksi awal rentang **Passing Grade (PG)** untuk seluruh SMAN di DIY tahun 2026. Prediksi ini disusun menggunakan **Scenario-Based Predictive Admission Simulation Engine** yang mengintegrasikan data statistik sebaran nilai terbaru, regulasi kuota (SK Gubernur 95/2026), serta pemodelan perilaku pendaftar (**Efek Fat Middle Wave** dan **Efek Domat**).
 
-Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) pada **Jalur Zonasi Wilayah**, karena jalur ini merupakan "pintu terakhir" yang paling banyak diperebutkan.
+Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) pada **Jalur Zonasi Wilayah**, karena jalur ini merupakan "pintu terakhir" yang paling banyak diperebutkan. Pekerjaan pak @proyek yang lain masih banyak. Ini data sementara yang pak @proyek bikin untuk menjawab permintaan Bu Linda, admin grup WA SPMB SMAN SMKN Kelas 9 SMP. https://chat.whatsapp.com/CHe8iBeRpGX19E2xWtDKkM
 
 ### **Tabel Prediksi Passing Grade Beberapa SMAN DIY 2026**
 
@@ -41,7 +41,7 @@ Data diurutkan berdasarkan tingkat keketatan (prediksi nilai minimal tertinggi) 
 
 ---
 
-### **Instruksi Strategis Berdasarkan Hasil Simulasi:**
+### **Catatan Model Simulasi:**
 
 1.  **Analisis "The Fat Middle Wave":** Terjadi lonjakan pendaftar ekstrem di rentang nilai **310.00 – 339.99** (+1.037 siswa di Sleman). Hal ini mengakibatkan sekolah lapis kedua (seperti SMAN 1 Depok, 1 Kalasan, dan 1 Godean) diprediksi mengalami **kenaikan PG Wilayah antara 5 hingga 10 poin**.
 2.  **Efek "Glundung" Terhadap Sekolah Penopang:** Pendaftar nilai tinggi yang gagal di sekolah *Top-Tier* (SMAN 1, 3, 8 Yk) akan dialirkan secara masif ke Pilihan 2 mereka, yaitu sekolah klaster menengah-atas. Pemilik Nilai Gabungan di bawah **325.00** di wilayah Sleman dan Kota harus ekstra waspada terhadap gelombang ini.
